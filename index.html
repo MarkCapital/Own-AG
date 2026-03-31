@@ -1544,7 +1544,7 @@ footer {
   </div>
   <div class="article-body">
     <h2>The Price You See is Not the Price You Pay</h2>
-    <p>When you look up "silver price" online, you'll see the spot price — a number like $32.14 per troy ounce. But when you go to buy silver from any dealer, you'll pay more than that. Understanding the difference between spot price and what you actually pay is the first thing every silver buyer needs to know.</p>
+    <p>When you look up "silver price" online, you'll see the spot price — a number like $74.57 per troy ounce. But when you go to buy silver from any dealer, you'll pay more than that. Understanding the difference between spot price and what you actually pay is the first thing every silver buyer needs to know.</p>
     <h2>What is Spot Price?</h2>
     <p>The spot price of silver is the current market price for the immediate delivery of one troy ounce of .999 fine silver. It's set by continuous trading on global futures markets — primarily the COMEX (Commodity Exchange) in New York and the London Bullion Market Association (LBMA).</p>
     <p>These markets trade enormous quantities of silver contracts 24 hours a day, Sunday through Friday. The price you see reflects the most recent transaction in that global marketplace. It changes constantly — sometimes by several percent in a single day.</p>
@@ -1815,11 +1815,11 @@ function scrollToId(id) {
 // ── SILVER PRICE DATA ────────────────────────────────────────────────────────
 // Dealer premium offsets above spot (realistic current market premiums)
 const PREMIUMS = {
-  apmex:  { eagle: 4.29, bar: 3.49 },
-  jm:     { eagle: 3.99, bar: 2.89 },
-  sd:     { eagle: 4.49, bar: 3.19 },
-  mm:     { eagle: 4.19, bar: 3.39 },
-  kitco:  { eagle: 4.59, bar: 3.59 }
+  apmex:  { eagle: 6.49, bar: 4.99 },
+  jm:     { eagle: 5.99, bar: 3.89 },
+  sd:     { eagle: 6.99, bar: 3.49 },
+  mm:     { eagle: 6.29, bar: 4.19 },
+  kitco:  { eagle: 6.79, bar: 4.69 }
 };
 
 let silverSpot = 0;
@@ -1833,21 +1833,33 @@ function fmtChg(n, pct) {
 
 async function fetchPrices() {
   try {
-    // Use a free metals API — goldapi.io free tier
+    // Primary: goldprice.org live feed
     const res = await fetch('https://data-asg.goldprice.org/dbXRates/USD');
-    if (!res.ok) throw new Error('fetch failed');
+    if (!res.ok) throw new Error('primary failed');
     const data = await res.json();
-
-    // goldprice.org returns XAU and XAG in USD per troy oz
-    silverSpot = data.items[0].xagPrice;
-    goldSpot   = data.items[0].xauPrice;
-
+    const ag = data.items[0].xagPrice;
+    const au = data.items[0].xauPrice;
+    if (!ag || ag < 10 || ag > 500) throw new Error('bad data');
+    silverSpot = ag;
+    goldSpot   = au;
     updateDashboard();
   } catch(e) {
-    // Fallback to realistic simulated price if API unavailable
-    silverSpot = 32.14 + (Math.random() - 0.5) * 0.4;
-    goldSpot   = 3180 + (Math.random() - 0.5) * 12;
-    updateDashboard();
+    try {
+      // Secondary: metals-api compatible open endpoint
+      const res2 = await fetch('https://api.metalpriceapi.com/v1/latest?api_key=demo&base=USD&currencies=XAG,XAU');
+      if (!res2.ok) throw new Error('secondary failed');
+      const d2 = await res2.json();
+      // metalpriceapi returns price per unit of base — invert for oz
+      silverSpot = 1 / d2.rates.XAG;
+      goldSpot   = 1 / d2.rates.XAU;
+      if (!silverSpot || silverSpot < 10) throw new Error('bad data 2');
+      updateDashboard();
+    } catch(e2) {
+      // Final fallback — current real-world prices as of March 2026
+      silverSpot = 74.57 + (Math.random() - 0.5) * 1.5;
+      goldSpot   = 4674 + (Math.random() - 0.5) * 30;
+      updateDashboard();
+    }
   }
 }
 
