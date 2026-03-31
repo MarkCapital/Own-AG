@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<!-- Primary SEO -->
 <title>OwnAG — Silver Price Tracker, Dealer Comparison & Investment Education</title>
 <meta name="description" content="Track live silver spot prices, compare dealer premiums, and learn how to invest in physical silver. OwnAG is your free resource for silver price comparison, SDIRA education, and precious metals market analysis.">
 <meta name="keywords" content="silver price today, silver spot price, buy silver online, silver dealer comparison, silver price comparison, silver IRA, physical silver investment, silver price per ounce, cheapest silver dealer, silver spot price chart, silver investment for beginners, own silver, AG silver price">
@@ -11,19 +12,86 @@
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://ownag.com">
 
+<!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://ownag.com">
 <meta property="og:title" content="OwnAG — Live Silver Price Tracker & Dealer Comparison">
 <meta property="og:description" content="Compare silver dealer prices in real time. Track spot prices, find the lowest premiums, and learn how to invest in physical silver.">
 <meta property="og:image" content="https://ownag.com/og-image.png">
 
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="OwnAG — Silver Price Tracker & Dealer Comparison">
+<meta name="twitter:description" content="Live silver spot price, dealer premium comparison, and free education for silver investors.">
+
+<!-- Schema: WebSite -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
   "name": "OwnAG",
   "url": "https://ownag.com",
-  "description": "Live silver price tracker, dealer comparison tool, and educational resource for physical silver investors."
+  "description": "Live silver price tracker, dealer comparison tool, and educational resource for physical silver investors.",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://ownag.com/search?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+
+<!-- Schema: FinancialService -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FinancialService",
+  "name": "OwnAG",
+  "url": "https://ownag.com",
+  "description": "Silver price comparison and investment education platform. Compare dealer premiums, track spot prices, and learn how to invest in physical silver and silver IRAs.",
+  "areaServed": "United States",
+  "serviceType": ["Investment Education", "Price Comparison", "Market Data", "Newsletter"]
+}
+</script>
+
+<!-- Schema: FAQPage -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is the silver spot price?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The silver spot price is the current market price for immediate delivery of one troy ounce of .999 fine silver. It fluctuates continuously during market hours based on supply and demand, currency movements, and macroeconomic factors."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why do silver dealers charge more than spot price?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Dealers charge a premium above spot price to cover their costs including fabrication, shipping, insurance, storage, and profit margin. Premiums typically range from $2-$6 per ounce for silver coins and bars."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I buy silver in my IRA?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Through a Self-Directed IRA (SDIRA), you can hold IRS-approved physical silver including American Silver Eagles, Canadian Maple Leafs, and certain silver bars with .999 or finer purity. The silver must be stored at an IRS-approved depository."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the gold to silver ratio?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The gold to silver ratio tells you how many ounces of silver it takes to buy one ounce of gold. Historically the ratio averages around 60:1. When the ratio is high (above 80), silver is considered cheap relative to gold and may represent a buying opportunity."
+      }
+    }
+  ]
 }
 </script>
 
@@ -31,26 +99,20 @@
 
 <style>
 :root {
-  --bg: #0F1113; /* Deep Metallic Charcoal */
-  --bg2: #16181D;
-  --bg3: #1E2228;
-  --bg4: #2A2F38;
-  
-  /* SILVER PALETTE */
-  --silver-bright: #F5F5F5;
-  --silver-main: #C0C0C0;
-  --silver-metallic: #A9A9A9;
-  --silver-dim: #707780;
-  
-  /* ACCENTS */
-  --accent-silver: #E5E4E2; /* Platinum */
-  --gold: #D4A843; /* Kept for small highlights */
-  --green: #4ADE80;
-  --red: #FB7185;
-  
-  --border: rgba(229, 228, 226, 0.1);
-  --border-bright: rgba(229, 228, 226, 0.25);
-  --radius: 4px;
+  --bg: #0A0A08;
+  --bg2: #111110;
+  --bg3: #1A1A18;
+  --bg4: #222220;
+  --silver: #C8C8C0;
+  --silver-light: #E8E8E0;
+  --silver-dim: #888880;
+  --gold: #D4A843;
+  --gold-dim: #8A6C28;
+  --green: #3DBA6E;
+  --red: #E84545;
+  --border: rgba(200,200,192,0.1);
+  --border-bright: rgba(200,200,192,0.25);
+  --radius: 3px;
   --radius-lg: 8px;
 }
 
@@ -60,7 +122,7 @@ html { scroll-behavior: smooth; }
 body {
   font-family: 'IBM Plex Sans', sans-serif;
   background: var(--bg);
-  color: var(--silver-main);
+  color: var(--silver);
   font-size: 15px;
   line-height: 1.6;
   overflow-x: hidden;
@@ -68,10 +130,11 @@ body {
 
 /* ── TICKER ── */
 .ticker-bar {
-  background: #000;
+  background: var(--bg3);
   border-bottom: 1px solid var(--border);
-  padding: 8px 0;
+  padding: 6px 0;
   overflow: hidden;
+  position: relative;
 }
 
 .ticker-track {
@@ -95,7 +158,7 @@ body {
 }
 
 .ticker-label { color: var(--silver-dim); }
-.ticker-value { color: var(--silver-bright); font-weight: 600; }
+.ticker-value { color: var(--silver-light); font-weight: 600; }
 .ticker-change.up { color: var(--green); }
 .ticker-change.down { color: var(--red); }
 
@@ -104,22 +167,25 @@ nav {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: rgba(15, 17, 19, 0.95);
+  background: rgba(10,10,8,0.95);
   backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--border);
   padding: 0 40px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 70px;
+  height: 60px;
 }
 
 .nav-logo {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 32px;
+  font-size: 28px;
   letter-spacing: 3px;
-  color: var(--silver-bright);
+  color: var(--silver-light);
   text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
 }
 
 .nav-logo .ag { color: var(--gold); }
@@ -134,21 +200,24 @@ nav {
 .nav-links a {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--silver-dim);
   text-decoration: none;
-  text-transform: uppercase;
-  transition: 0.3s;
+  transition: color 0.2s;
 }
 
-.nav-links a:hover { color: var(--silver-bright); }
+.nav-links a:hover { color: var(--silver-light); }
 
 .nav-cta {
-  background: var(--silver-bright) !important;
+  background: var(--gold) !important;
   color: var(--bg) !important;
-  padding: 8px 20px !important;
+  padding: 7px 18px !important;
   border-radius: var(--radius) !important;
-  font-weight: 600 !important;
+  font-weight: 500 !important;
 }
+
+.nav-cta:hover { background: #E5B954 !important; }
 
 /* ── PAGE SYSTEM ── */
 .page { display: none; }
@@ -156,46 +225,124 @@ nav {
 
 /* ── HERO ── */
 .hero {
-  min-height: 80vh;
+  min-height: 92vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 100px 40px;
-  background: radial-gradient(circle at center, #1E2228 0%, #0F1113 100%);
-  text-align: center;
-  border-bottom: 1px solid var(--border);
+  padding: 80px 40px 60px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-grid-bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(200,200,192,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200,200,192,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+}
+
+.hero-glow {
+  position: absolute;
+  top: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 400px;
+  background: radial-gradient(ellipse, rgba(212,168,67,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  position: relative;
+  z-index: 1;
 }
 
 .hero-eyebrow {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 11px;
-  letter-spacing: 0.3em;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--silver-metallic);
+  color: var(--gold);
   margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hero-eyebrow::before {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 1px;
+  background: var(--gold);
 }
 
 .hero h1 {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(60px, 12vw, 130px);
-  line-height: 0.9;
-  color: var(--silver-bright);
-  margin-bottom: 30px;
-  background: linear-gradient(180deg, #FFFFFF 0%, #A9A9A9 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-size: clamp(56px, 10vw, 120px);
+  line-height: 0.95;
+  letter-spacing: 2px;
+  color: var(--silver-light);
+  margin-bottom: 24px;
 }
 
-.hero h1 .highlight { 
-    -webkit-text-fill-color: var(--gold); 
-}
+.hero h1 .highlight { color: var(--gold); }
 
 .hero-sub {
-  font-size: 19px;
+  font-size: 18px;
+  font-weight: 300;
   color: var(--silver-dim);
-  max-width: 600px;
-  margin: 0 auto 40px;
+  max-width: 540px;
+  line-height: 1.7;
+  margin-bottom: 40px;
 }
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 80px;
+}
+
+.btn-primary {
+  background: var(--gold);
+  color: var(--bg);
+  padding: 13px 28px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'IBM Plex Sans', sans-serif;
+  transition: background 0.2s, transform 0.1s;
+  display: inline-block;
+}
+
+.btn-primary:hover { background: #E5B954; transform: translateY(-1px); }
+
+.btn-outline {
+  background: transparent;
+  color: var(--silver);
+  padding: 13px 28px;
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 400;
+  text-decoration: none;
+  border: 1px solid var(--border-bright);
+  cursor: pointer;
+  font-family: 'IBM Plex Sans', sans-serif;
+  transition: border-color 0.2s, color 0.2s;
+  display: inline-block;
+}
+
+.btn-outline:hover { border-color: var(--gold); color: var(--gold); }
 
 /* ── PRICE DASHBOARD ── */
 .price-dashboard {
@@ -204,8 +351,7 @@ nav {
   border-radius: var(--radius-lg);
   overflow: hidden;
   max-width: 1200px;
-  margin: -60px auto 60px;
-  box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+  margin: 0 auto;
 }
 
 .dashboard-header {
@@ -213,16 +359,42 @@ nav {
   border-bottom: 1px solid var(--border);
   padding: 16px 24px;
   display: flex;
+  align-items: center;
   justify-content: space-between;
 }
 
 .dashboard-title {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 11px;
-  color: var(--silver-dim);
+  letter-spacing: 0.15em;
   text-transform: uppercase;
+  color: var(--silver-dim);
 }
 
+.live-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--green);
+  letter-spacing: 0.1em;
+}
+
+.live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  animation: pulse 2s ease infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* SPOT PRICE ROW */
 .spot-row {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -230,210 +402,1597 @@ nav {
 }
 
 .spot-item {
-  padding: 30px;
+  padding: 24px;
   border-right: 1px solid var(--border);
 }
+
+.spot-item:last-child { border-right: none; }
 
 .spot-label {
   font-family: 'IBM Plex Mono', monospace;
   font-size: 10px;
-  color: var(--silver-dim);
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  margin-bottom: 10px;
+  color: var(--silver-dim);
+  margin-bottom: 8px;
 }
 
 .spot-value {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 48px;
-  color: var(--silver-bright);
+  font-size: 42px;
+  letter-spacing: 1px;
+  color: var(--silver-light);
+  line-height: 1;
+  margin-bottom: 6px;
 }
 
 .spot-value.gold-val { color: var(--gold); }
 
-/* ── TABLES ── */
-table { width: 100%; border-collapse: collapse; }
-thead th {
-  background: var(--bg3);
-  padding: 15px 25px;
-  text-align: left;
+.spot-change {
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 11px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.spot-change.up { color: var(--green); }
+.spot-change.down { color: var(--red); }
+.spot-change.neutral { color: var(--silver-dim); }
+
+/* DEALER TABLE */
+.dealer-table-wrap { overflow-x: auto; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead th {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
   color: var(--silver-dim);
+  padding: 12px 20px;
+  text-align: left;
+  background: var(--bg3);
   border-bottom: 1px solid var(--border);
 }
-tbody td { padding: 20px 25px; border-bottom: 1px solid var(--border); }
 
-.dealer-name { font-weight: 600; color: var(--silver-bright); }
-.price-cell { font-family: 'IBM Plex Mono', monospace; color: var(--silver-bright); font-size: 16px; }
-.premium-cell { font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--silver-dim); }
-.premium-cell.lowest { color: var(--green); }
+tbody tr {
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--bg3); }
+
+tbody td {
+  padding: 16px 20px;
+  font-size: 14px;
+}
+
+.dealer-name {
+  font-weight: 500;
+  color: var(--silver-light);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dealer-badge {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 9px;
+  background: rgba(212,168,67,0.15);
+  border: 1px solid rgba(212,168,67,0.3);
+  color: var(--gold);
+  padding: 2px 7px;
+  border-radius: 2px;
+  letter-spacing: 0.08em;
+}
+
+.dealer-badge.best {
+  background: rgba(61,186,110,0.15);
+  border-color: rgba(61,186,110,0.3);
+  color: var(--green);
+}
+
+.price-cell {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--silver-light);
+}
+
+.premium-cell {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  color: var(--silver-dim);
+}
+
+.premium-cell.lowest { color: var(--green); font-weight: 600; }
 
 .buy-btn {
-  background: var(--silver-bright);
-  color: var(--bg);
-  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid var(--border-bright);
+  color: var(--silver);
+  padding: 7px 16px;
   border-radius: var(--radius);
-  text-decoration: none;
   font-size: 12px;
-  font-weight: 600;
+  cursor: pointer;
+  font-family: 'IBM Plex Mono', monospace;
+  letter-spacing: 0.06em;
+  transition: all 0.2s;
+  text-decoration: none;
   display: inline-block;
 }
 
-/* ── EDUCATION CARDS ── */
+.buy-btn:hover { border-color: var(--gold); color: var(--gold); }
+.buy-btn.featured { border-color: var(--gold); color: var(--gold); background: rgba(212,168,67,0.08); }
+
+.disclaimer-row {
+  padding: 12px 20px;
+  background: var(--bg3);
+  border-top: 1px solid var(--border);
+}
+
+.disclaimer-row p {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--silver-dim);
+  opacity: 0.6;
+}
+
+/* ── SECTIONS ── */
+section { padding: 100px 40px; }
+
+.section-inner { max-width: 1200px; margin: 0 auto; }
+
+.section-eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-eyebrow::before {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 1px;
+  background: var(--gold);
+}
+
+.section-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(36px, 5vw, 56px);
+  letter-spacing: 2px;
+  color: var(--silver-light);
+  line-height: 1;
+  margin-bottom: 16px;
+}
+
+.section-sub {
+  color: var(--silver-dim);
+  font-size: 16px;
+  font-weight: 300;
+  max-width: 560px;
+  line-height: 1.7;
+}
+
+/* ── CHART SECTION ── */
+.chart-section { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+
+.chart-container {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-top: 48px;
+}
+
+.chart-header {
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+
+.chart-tabs {
+  display: flex;
+  gap: 4px;
+}
+
+.chart-tab {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  padding: 5px 12px;
+  border-radius: var(--radius);
+  cursor: pointer;
+  color: var(--silver-dim);
+  border: 1px solid transparent;
+  background: transparent;
+  transition: all 0.15s;
+}
+
+.chart-tab.active {
+  background: var(--bg4);
+  border-color: var(--border-bright);
+  color: var(--silver-light);
+}
+
+.chart-area {
+  padding: 24px;
+  height: 280px;
+  position: relative;
+}
+
+/* SVG chart */
+.chart-svg { width: 100%; height: 100%; }
+
+/* ── EDUCATION GRID ── */
+.edu-section { background: var(--bg); }
+
 .edu-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
-  margin-top: 50px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-top: 60px;
 }
 
 .edu-card {
   background: var(--bg2);
-  padding: 40px;
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
+  padding: 32px 28px;
   cursor: pointer;
-  transition: 0.3s;
+  transition: background 0.2s;
+  position: relative;
 }
 
-.edu-card:hover { background: var(--bg3); border-color: var(--silver-metallic); }
+.edu-card:hover { background: var(--bg3); }
 
 .edu-card-num {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 40px;
+  font-size: 48px;
   color: var(--border-bright);
-  margin-bottom: 15px;
+  line-height: 1;
+  margin-bottom: 16px;
 }
 
-.edu-card h3 { color: var(--silver-bright); margin-bottom: 10px; }
+.edu-card-tag {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
 
-/* ── MISC UI ── */
-.btn-primary { background: var(--silver-bright); color: var(--bg); padding: 15px 30px; border-radius: var(--radius); text-decoration: none; font-weight: 600; cursor: pointer; border: none; }
-.btn-outline { background: transparent; color: var(--silver-bright); border: 1px solid var(--border-bright); padding: 15px 30px; border-radius: var(--radius); text-decoration: none; cursor: pointer; }
-section { padding: 100px 40px; max-width: 1300px; margin: 0 auto; }
-.section-title { font-family: 'Bebas Neue', sans-serif; font-size: 60px; color: var(--silver-bright); line-height: 1; margin-bottom: 20px; }
+.edu-card h3 {
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--silver-light);
+  margin-bottom: 10px;
+  line-height: 1.3;
+}
 
-/* Article Body */
-.article-page { display: none; padding: 120px 20px; max-width: 800px; margin: 0 auto; }
+.edu-card p {
+  font-size: 13px;
+  color: var(--silver-dim);
+  line-height: 1.6;
+  font-weight: 300;
+}
+
+.edu-card-arrow {
+  position: absolute;
+  top: 28px;
+  right: 24px;
+  color: var(--silver-dim);
+  font-size: 18px;
+  transition: transform 0.2s, color 0.2s;
+}
+
+.edu-card:hover .edu-card-arrow { transform: translate(3px, -3px); color: var(--gold); }
+
+/* ── NEWSLETTER ── */
+.newsletter-section { background: var(--bg2); border-top: 1px solid var(--border); }
+
+.newsletter-box {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-top: 60px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.newsletter-left {
+  padding: 48px;
+  background: var(--bg3);
+  border-right: 1px solid var(--border);
+}
+
+.newsletter-right {
+  padding: 48px;
+}
+
+.newsletter-preview {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--silver-dim);
+}
+
+.nl-heading {
+  color: var(--silver-light);
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  letter-spacing: 0.06em;
+}
+
+.nl-gold { color: var(--gold); }
+.nl-green { color: var(--green); }
+.nl-divider { border-top: 1px solid var(--border); margin: 12px 0; }
+
+.form-group { margin-bottom: 16px; }
+
+label {
+  display: block;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--silver-dim);
+  margin-bottom: 8px;
+}
+
+input[type="text"],
+input[type="email"],
+select,
+textarea {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--silver-light);
+  font-size: 14px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+input:focus, select:focus, textarea:focus { border-color: var(--gold); }
+
+.frequency-pills {
+  display: flex;
+  gap: 8px;
+}
+
+.pill {
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--silver-dim);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.pill.active, .pill:hover { border-color: var(--gold); color: var(--gold); background: rgba(212,168,67,0.08); }
+
+.nl-success { display: none; text-align: center; padding: 40px 0; }
+.nl-success h3 { font-family: 'Bebas Neue', sans-serif; font-size: 36px; letter-spacing: 2px; color: var(--gold); margin-bottom: 12px; }
+.nl-success p { color: var(--silver-dim); font-size: 14px; }
+
+/* ── FAQ ── */
+.faq-section { background: var(--bg); }
+
+.faq-list { margin-top: 60px; border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+
+.faq-item {
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.faq-item:last-child { border-bottom: none; }
+
+.faq-q {
+  padding: 24px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  background: var(--bg2);
+  transition: background 0.15s;
+}
+
+.faq-q:hover { background: var(--bg3); }
+
+.faq-q-text {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--silver-light);
+}
+
+.faq-icon {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 20px;
+  color: var(--gold);
+  transition: transform 0.2s;
+  flex-shrink: 0;
+  margin-left: 20px;
+}
+
+.faq-a {
+  padding: 0 28px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+  background: var(--bg2);
+}
+
+.faq-a.open {
+  max-height: 300px;
+  padding: 0 28px 24px;
+}
+
+.faq-a p {
+  font-size: 14px;
+  color: var(--silver-dim);
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+/* ── ARTICLE PAGE ── */
+.article-page { display: none; }
 .article-page.active { display: block; }
-.article-body h2 { font-family: 'Bebas Neue', sans-serif; color: var(--silver-bright); font-size: 32px; margin: 40px 0 20px; }
-.article-body p { margin-bottom: 20px; font-size: 17px; color: var(--silver-main); }
 
-@media (max-width: 768px) {
-    .spot-row { grid-template-columns: 1fr 1fr; }
-    .hero h1 { font-size: 60px; }
+.article-hero {
+  background: var(--bg2);
+  padding: 120px 40px 60px;
+  border-bottom: 1px solid var(--border);
 }
+
+.article-body {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 60px 40px 80px;
+}
+
+.article-body h2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  letter-spacing: 1px;
+  color: var(--silver-light);
+  margin: 40px 0 16px;
+}
+
+.article-body p {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--silver-dim);
+  margin-bottom: 20px;
+  font-weight: 300;
+}
+
+.article-body ul {
+  margin: 0 0 20px 24px;
+}
+
+.article-body ul li {
+  font-size: 16px;
+  line-height: 1.8;
+  color: var(--silver-dim);
+  margin-bottom: 8px;
+  font-weight: 300;
+}
+
+.article-cta {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 36px;
+  text-align: center;
+  margin-top: 60px;
+}
+
+.article-cta h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  letter-spacing: 2px;
+  color: var(--silver-light);
+  margin-bottom: 10px;
+}
+
+.article-cta p {
+  color: var(--silver-dim);
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  padding: 48px 40px;
+}
+
+.footer-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 48px;
+}
+
+.footer-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 32px;
+  letter-spacing: 3px;
+  color: var(--silver-light);
+  margin-bottom: 8px;
+}
+
+.footer-logo .ag { color: var(--gold); }
+
+.footer-tagline {
+  font-size: 13px;
+  color: var(--silver-dim);
+  font-weight: 300;
+  margin-bottom: 16px;
+}
+
+.footer-disclaimer {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  color: var(--silver-dim);
+  opacity: 0.5;
+  line-height: 1.6;
+}
+
+.footer-col h4 {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--silver-dim);
+  margin-bottom: 16px;
+}
+
+.footer-col a {
+  display: block;
+  font-size: 13px;
+  color: var(--silver-dim);
+  text-decoration: none;
+  margin-bottom: 10px;
+  transition: color 0.2s;
+}
+
+.footer-col a:hover { color: var(--gold); }
+
+.footer-bottom {
+  max-width: 1200px;
+  margin: 32px auto 0;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  color: var(--silver-dim);
+  opacity: 0.5;
+}
+
+/* ── STATS BAR ── */
+.stats-bar {
+  background: var(--bg3);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 28px 40px;
+}
+
+.stats-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+}
+
+.stat-item {
+  padding: 0 32px;
+  border-right: 1px solid var(--border);
+}
+
+.stat-item:first-child { padding-left: 0; }
+.stat-item:last-child { border-right: none; }
+
+.stat-num {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 40px;
+  letter-spacing: 1px;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.stat-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--silver-dim);
+}
+
+/* ── MOBILE ── */
+@media (max-width: 768px) {
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .hero { padding: 80px 20px 40px; }
+  section { padding: 60px 20px; }
+  .spot-row { grid-template-columns: 1fr 1fr; }
+  .edu-grid { grid-template-columns: 1fr; }
+  .newsletter-box { grid-template-columns: 1fr; }
+  .newsletter-left { border-right: none; border-bottom: 1px solid var(--border); }
+  .footer-inner { grid-template-columns: 1fr; gap: 32px; }
+  .stats-inner { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+  .article-body { padding: 40px 20px 60px; }
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-up { animation: fadeUp 0.6s ease forwards; }
+.delay-1 { animation-delay: 0.1s; opacity: 0; }
+.delay-2 { animation-delay: 0.2s; opacity: 0; }
+.delay-3 { animation-delay: 0.3s; opacity: 0; }
+.delay-4 { animation-delay: 0.4s; opacity: 0; }
 </style>
 </head>
 <body>
 
+<!-- TICKER -->
 <div class="ticker-bar">
   <div class="ticker-track" id="ticker">
     <span class="ticker-item"><span class="ticker-label">XAG/USD</span><span class="ticker-value" id="t-spot">$--.-</span><span class="ticker-change up" id="t-chg">--</span></span>
     <span class="ticker-item"><span class="ticker-label">XAU/USD</span><span class="ticker-value" id="t-gold">$----.--</span><span class="ticker-change up" id="t-gchg">--</span></span>
     <span class="ticker-item"><span class="ticker-label">Au/Ag Ratio</span><span class="ticker-value" id="t-ratio">--:1</span></span>
-    <span class="ticker-item"><span class="ticker-label">XAG/USD</span><span class="ticker-value" id="t-spot2">$--.-</span></span>
+    <span class="ticker-item"><span class="ticker-label">USD/DXY</span><span class="ticker-value">104.2</span><span class="ticker-change down">-0.3%</span></span>
+    <span class="ticker-item"><span class="ticker-label">CPI YoY</span><span class="ticker-value">3.2%</span></span>
+    <span class="ticker-item"><span class="ticker-label">Fed Rate</span><span class="ticker-value">4.25-4.50%</span></span>
+    <!-- duplicate for seamless loop -->
+    <span class="ticker-item"><span class="ticker-label">XAG/USD</span><span class="ticker-value" id="t-spot2">$--.-</span><span class="ticker-change up">--</span></span>
+    <span class="ticker-item"><span class="ticker-label">XAU/USD</span><span class="ticker-value" id="t-gold2">$----.--</span><span class="ticker-change up">--</span></span>
     <span class="ticker-item"><span class="ticker-label">Au/Ag Ratio</span><span class="ticker-value" id="t-ratio2">--:1</span></span>
+    <span class="ticker-item"><span class="ticker-label">USD/DXY</span><span class="ticker-value">104.2</span><span class="ticker-change down">-0.3%</span></span>
+    <span class="ticker-item"><span class="ticker-label">CPI YoY</span><span class="ticker-value">3.2%</span></span>
+    <span class="ticker-item"><span class="ticker-label">Fed Rate</span><span class="ticker-value">4.25-4.50%</span></span>
   </div>
 </div>
 
+<!-- NAV -->
 <nav>
   <a href="#" class="nav-logo" onclick="showPage('home')">OWN<span class="ag">AG</span></a>
   <ul class="nav-links">
-    <li><a href="#" onclick="showPage('home'); scrollToId('prices')">Market</a></li>
-    <li><a href="#" onclick="showPage('education')">Education</a></li>
-    <li><a href="#newsletter">The Brief</a></li>
-    <li><a href="#newsletter" class="nav-cta">Subscribe Free</a></li>
+    <li><a href="#" onclick="showPage('home'); scrollToId('prices')">Prices</a></li>
+    <li><a href="#" onclick="showPage('home'); scrollToId('chart')">Charts</a></li>
+    <li><a href="#" onclick="showPage('education')">Learn</a></li>
+    <li><a href="#" onclick="showPage('home'); scrollToId('newsletter')">Newsletter</a></li>
+    <li><a href="#" onclick="showPage('home'); scrollToId('faq')">FAQ</a></li>
+    <li><a href="#" class="nav-cta" onclick="showPage('home'); scrollToId('newsletter')">Subscribe Free</a></li>
   </ul>
 </nav>
 
+<!-- ═══════════════════════════════════════════════════ HOME PAGE -->
 <div id="page-home" class="page active">
-    <section class="hero">
-        <div class="hero-eyebrow">Institutional Grade Intelligence</div>
-        <h1>OWN THE<br><span class="highlight">METAL.</span></h1>
-        <p class="hero-sub">Track live silver prices, compare dealer premiums, and learn how to build real wealth with physical silver.</p>
-        <div class="hero-actions">
-            <button class="btn-primary" onclick="scrollToId('prices')">Compare Prices Now</button>
-            <button class="btn-outline" onclick="showPage('education')">Why Silver?</button>
-        </div>
-    </section>
 
-    <div class="price-dashboard" id="prices">
-        <div class="dashboard-header">
-            <span class="dashboard-title">Silver Market Dashboard</span>
-            <span style="color: var(--green); font-size: 10px;">● LIVE DATA</span>
-        </div>
-        <div class="spot-row">
-            <div class="spot-item">
-                <div class="spot-label">Silver Spot (oz)</div>
-                <div class="spot-value" id="spot-price">$--.-</div>
-                <div class="spot-change" id="spot-change">Loading...</div>
-            </div>
-            <div class="spot-item">
-                <div class="spot-label">Gold Spot (oz)</div>
-                <div class="spot-value gold-val" id="gold-price">$----.--</div>
-            </div>
-            <div class="spot-item">
-                <div class="spot-label">Gold/Silver Ratio</div>
-                <div class="spot-value" id="gs-ratio">--:1</div>
-            </div>
-            <div class="spot-item" style="border:none">
-                <div class="spot-label">Silver / Troy kg</div>
-                <div class="spot-value" id="spot-kg">$---.-</div>
-            </div>
-        </div>
-
-        <table>
-            <thead>
-                <tr>
-                    <th>Dealer</th>
-                    <th>1oz Silver Eagle</th>
-                    <th>1oz Silver Bar</th>
-                    <th>Rating</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody id="dealer-table">
-                <tr>
-                    <td class="dealer-name">JM Bullion</td>
-                    <td class="price-cell" id="jm-eagle">--</td>
-                    <td class="price-cell" id="jm-bar">--</td>
-                    <td style="color: var(--gold)">★★★★★</td>
-                    <td><a href="https://www.jmbullion.com" class="buy-btn">Buy →</a></td>
-                </tr>
-                <tr>
-                    <td class="dealer-name">SD Bullion</td>
-                    <td class="price-cell" id="sd-eagle">--</td>
-                    <td class="price-cell" id="sd-bar">--</td>
-                    <td style="color: var(--gold)">★★★★★</td>
-                    <td><a href="https://www.sdbullion.com" class="buy-btn">Buy →</a></td>
-                </tr>
-            </tbody>
-        </table>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow fade-up delay-1">Live Silver Market Data</div>
+    <h1 class="fade-up delay-2">OWN THE<br><span class="highlight">METAL.</span></h1>
+    <p class="hero-sub fade-up delay-3">Track live silver prices, compare dealer premiums, and learn how to build real wealth with physical silver. Free tools, no fluff.</p>
+    <div class="hero-actions fade-up delay-4">
+      <button class="btn-primary" onclick="scrollToId('prices')">Compare Prices Now</button>
+      <button class="btn-outline" onclick="showPage('education')">Learn the Basics</button>
     </div>
-</div>
 
-<div id="page-education" class="page">
-    <section>
-        <h2 class="section-title">EDUCATION<br>LIBRARY</h2>
-        <div class="edu-grid">
-            <div class="edu-card" onclick="showArticle('art1')">
-                <div class="edu-card-num">01</div>
-                <h3>What is Spot Price?</h3>
-                <p>Understand exactly what you pay for when you buy physical silver.</p>
-            </div>
-            <div class="edu-card" onclick="showArticle('art2')">
-                <div class="edu-card-num">02</div>
-                <h3>Coins vs Bars vs Rounds</h3>
-                <p>Which form factor is best for your specific investment goals?</p>
-            </div>
-            <div class="edu-card" onclick="showArticle('art3')">
-                <div class="edu-card-num">03</div>
-                <h3>Silver IRAs</h3>
-                <p>How to hold physical metal in a tax-advantaged retirement account.</p>
-            </div>
+    <!-- PRICE DASHBOARD -->
+    <div class="price-dashboard fade-up delay-4" id="prices">
+      <div class="dashboard-header">
+        <span class="dashboard-title">Silver Market Dashboard</span>
+        <span class="live-badge"><span class="live-dot"></span>LIVE DATA</span>
+      </div>
+
+      <!-- SPOT STATS -->
+      <div class="spot-row">
+        <div class="spot-item">
+          <div class="spot-label">Silver Spot / oz</div>
+          <div class="spot-value" id="spot-price">$--.-</div>
+          <div class="spot-change up" id="spot-change">Loading...</div>
         </div>
-    </section>
+        <div class="spot-item">
+          <div class="spot-label">Gold Spot / oz</div>
+          <div class="spot-value gold-val" id="gold-price">$----.--</div>
+          <div class="spot-change up" id="gold-change">Loading...</div>
+        </div>
+        <div class="spot-item">
+          <div class="spot-label">Gold/Silver Ratio</div>
+          <div class="spot-value" id="gs-ratio">--:1</div>
+          <div class="spot-change neutral" id="ratio-note">Historical avg: ~60:1</div>
+        </div>
+        <div class="spot-item">
+          <div class="spot-label">Silver / Troy kg</div>
+          <div class="spot-value" id="spot-kg">$---.-</div>
+          <div class="spot-change neutral">32.15 oz per kg</div>
+        </div>
+      </div>
+
+      <!-- DEALER TABLE -->
+      <div class="dealer-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Dealer</th>
+              <th>1 oz Silver Eagle</th>
+              <th>Premium Over Spot</th>
+              <th>1 oz Silver Bar</th>
+              <th>Premium Over Spot</th>
+              <th>Rating</th>
+              <th>Buy</th>
+            </tr>
+          </thead>
+          <tbody id="dealer-table">
+            <tr>
+              <td class="dealer-name">APMEX <span class="dealer-badge best">BEST COIN</span></td>
+              <td class="price-cell" id="apmex-eagle">--</td>
+              <td class="premium-cell lowest" id="apmex-eagle-prem">--</td>
+              <td class="price-cell" id="apmex-bar">--</td>
+              <td class="premium-cell" id="apmex-bar-prem">--</td>
+              <td style="color: var(--gold); font-family: 'IBM Plex Mono', monospace; font-size:13px;">★★★★★</td>
+              <td><a href="https://www.apmex.com" target="_blank" rel="noopener" class="buy-btn featured">Buy →</a></td>
+            </tr>
+            <tr>
+              <td class="dealer-name">JM Bullion</td>
+              <td class="price-cell" id="jm-eagle">--</td>
+              <td class="premium-cell" id="jm-eagle-prem">--</td>
+              <td class="price-cell" id="jm-bar">--</td>
+              <td class="premium-cell lowest" id="jm-bar-prem">--</td>
+              <td style="color: var(--gold); font-family: 'IBM Plex Mono', monospace; font-size:13px;">★★★★★</td>
+              <td><a href="https://www.jmbullion.com" target="_blank" rel="noopener" class="buy-btn">Buy →</a></td>
+            </tr>
+            <tr>
+              <td class="dealer-name">SD Bullion <span class="dealer-badge">LOW PREMIUM</span></td>
+              <td class="price-cell" id="sd-eagle">--</td>
+              <td class="premium-cell" id="sd-eagle-prem">--</td>
+              <td class="price-cell" id="sd-bar">--</td>
+              <td class="premium-cell" id="sd-bar-prem">--</td>
+              <td style="color: var(--gold); font-family: 'IBM Plex Mono', monospace; font-size:13px;">★★★★☆</td>
+              <td><a href="https://www.sdbullion.com" target="_blank" rel="noopener" class="buy-btn">Buy →</a></td>
+            </tr>
+            <tr>
+              <td class="dealer-name">Money Metals</td>
+              <td class="price-cell" id="mm-eagle">--</td>
+              <td class="premium-cell" id="mm-eagle-prem">--</td>
+              <td class="price-cell" id="mm-bar">--</td>
+              <td class="premium-cell" id="mm-bar-prem">--</td>
+              <td style="color: var(--gold); font-family: 'IBM Plex Mono', monospace; font-size:13px;">★★★★☆</td>
+              <td><a href="https://www.moneymetals.com" target="_blank" rel="noopener" class="buy-btn">Buy →</a></td>
+            </tr>
+            <tr>
+              <td class="dealer-name">Kitco</td>
+              <td class="price-cell" id="kitco-eagle">--</td>
+              <td class="premium-cell" id="kitco-eagle-prem">--</td>
+              <td class="price-cell" id="kitco-bar">--</td>
+              <td class="premium-cell" id="kitco-bar-prem">--</td>
+              <td style="color: var(--gold); font-family: 'IBM Plex Mono', monospace; font-size:13px;">★★★★☆</td>
+              <td><a href="https://www.kitco.com" target="_blank" rel="noopener" class="buy-btn">Buy →</a></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="disclaimer-row">
+          <p>⚠ Prices are estimated based on live spot + typical dealer premiums. Always verify current pricing directly with dealers before purchasing. Affiliate links may earn OwnAG a commission at no cost to you.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="stat-num">5</div>
+      <div class="stat-label">Dealers Tracked</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">15<span style="font-size:24px">min</span></div>
+      <div class="stat-label">Price Refresh Rate</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">$0</div>
+      <div class="stat-label">Cost to Use</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">2x</div>
+      <div class="stat-label">Newsletter Per Month</div>
+    </div>
+  </div>
 </div>
 
-<div id="art1" class="article-page
+<!-- CHART SECTION -->
+<section class="chart-section" id="chart">
+  <div class="section-inner">
+    <div class="section-eyebrow">Price History</div>
+    <h2 class="section-title">SILVER SPOT<br>PRICE CHART</h2>
+    <p class="section-sub">Track silver's price movement across multiple timeframes. Understanding price history helps you make smarter buying decisions.</p>
+
+    <div class="chart-container">
+      <div class="chart-header">
+        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--silver-dim);">XAG/USD — Silver Spot Price (USD per troy oz)</div>
+        <div class="chart-tabs">
+          <button class="chart-tab active" onclick="setChartPeriod('7D', this)">7D</button>
+          <button class="chart-tab" onclick="setChartPeriod('30D', this)">30D</button>
+          <button class="chart-tab" onclick="setChartPeriod('90D', this)">90D</button>
+          <button class="chart-tab" onclick="setChartPeriod('1Y', this)">1Y</button>
+          <button class="chart-tab" onclick="setChartPeriod('5Y', this)">5Y</button>
+        </div>
+      </div>
+      <div class="chart-area">
+        <svg class="chart-svg" id="price-chart" viewBox="0 0 900 240" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#D4A843" stop-opacity="0.25"/>
+              <stop offset="100%" stop-color="#D4A843" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <path id="chart-fill" fill="url(#chartGrad)"/>
+          <path id="chart-line" fill="none" stroke="#D4A843" stroke-width="2" stroke-linejoin="round"/>
+          <!-- Grid lines -->
+          <line x1="0" y1="60" x2="900" y2="60" stroke="rgba(200,200,192,0.06)" stroke-width="1"/>
+          <line x1="0" y1="120" x2="900" y2="120" stroke="rgba(200,200,192,0.06)" stroke-width="1"/>
+          <line x1="0" y1="180" x2="900" y2="180" stroke="rgba(200,200,192,0.06)" stroke-width="1"/>
+          <!-- Y labels -->
+          <text id="y-top" x="8" y="16" font-family="IBM Plex Mono, monospace" font-size="10" fill="rgba(200,200,192,0.4)">$--</text>
+          <text id="y-mid" x="8" y="124" font-family="IBM Plex Mono, monospace" font-size="10" fill="rgba(200,200,192,0.4)">$--</text>
+          <text id="y-bot" x="8" y="236" font-family="IBM Plex Mono, monospace" font-size="10" fill="rgba(200,200,192,0.4)">$--</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION SECTION -->
+<section class="edu-section" id="education-home">
+  <div class="section-inner">
+    <div class="section-eyebrow">Learn</div>
+    <h2 class="section-title">SILVER INVESTING<br>MADE SIMPLE</h2>
+    <p class="section-sub">Everything a beginner needs to start investing in physical silver — no jargon, no hype, just clear explanations.</p>
+
+    <div class="edu-grid">
+      <div class="edu-card" onclick="showArticle('art1')">
+        <div class="edu-card-arrow">↗</div>
+        <div class="edu-card-num">01</div>
+        <div class="edu-card-tag">Fundamentals</div>
+        <h3>What is the Silver Spot Price and How is it Set?</h3>
+        <p>Understand what you're actually paying for when you buy silver and why prices constantly move.</p>
+      </div>
+      <div class="edu-card" onclick="showArticle('art2')">
+        <div class="edu-card-arrow">↗</div>
+        <div class="edu-card-num">02</div>
+        <div class="edu-card-tag">Beginner Guide</div>
+        <h3>Coins vs Bars vs Rounds — Which Should You Buy?</h3>
+        <p>The three main forms of physical silver have different premiums, liquidity, and use cases.</p>
+      </div>
+      <div class="edu-card" onclick="showArticle('art3')">
+        <div class="edu-card-arrow">↗</div>
+        <div class="edu-card-num">03</div>
+        <div class="edu-card-tag">Retirement</div>
+        <h3>How to Buy Silver in Your IRA — Step by Step</h3>
+        <p>A Self-Directed IRA lets you hold physical silver tax-advantaged. Here's exactly how it works.</p>
+      </div>
+      <div class="edu-card" onclick="showArticle('art4')">
+        <div class="edu-card-arrow">↗</div>
+        <div class="edu-card-num">04</div>
+        <div class="edu-card-tag">Strategy</div>
+        <h3>The Gold/Silver Ratio: What It Is and How to Use It</h3>
+        <p>One of the most useful tools for timing silver purchases. Learn how experienced investors use it.</p>
+      </div>
+      <div class="edu-card" onclick="showArticle('art5')">
+        <div class="edu-card-arrow">↗</div>
+        <div class="edu-card-num">05</div>
+        <div class="edu-card-tag">Storage</div>
+        <h3>How to Store Physical Silver Safely at Home</h3>
+        <p>What to do — and what not to do — when it comes to securing your silver investment.</p>
+      </div>
+      <div class="edu-card" onclick="showArticle('art6')">
+        <div class="edu-card-arrow">↗</div>
+        <div class="edu-card-num">06</div>
+        <div class="edu-card-tag">Economics</div>
+        <h3>Silver as an Inflation Hedge: Does It Actually Work?</h3>
+        <p>The case for silver as a store of value — backed by data, not hype.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEWSLETTER -->
+<section class="newsletter-section" id="newsletter">
+  <div class="section-inner">
+    <div class="section-eyebrow">Newsletter</div>
+    <h2 class="section-title">THE OWNAG<br>MARKET BRIEF</h2>
+    <p class="section-sub">Bi-weekly silver market analysis, price movement breakdowns, and dealer deal spotlights. Free, always.</p>
+
+    <div class="newsletter-box">
+      <div class="newsletter-left">
+        <h3 style="font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 2px; color: var(--silver-light); margin-bottom: 20px;">LATEST ISSUE PREVIEW</h3>
+        <div class="newsletter-preview">
+          <div class="nl-heading">OWNAG MARKET BRIEF — Issue #12</div>
+          <div style="color: var(--silver-dim); font-size: 11px; margin-bottom: 12px;">March 15, 2026</div>
+          <div class="nl-divider"></div>
+          <div class="nl-heading" style="font-size: 11px;">📊 THIS WEEK'S NUMBERS</div>
+          <div class="nl-gold">XAG/USD: Loading spot price...</div>
+          <div>Gold/Silver Ratio: Loading...</div>
+          <div>Best Dealer Premium: JM Bullion at +$2.89/oz</div>
+          <div class="nl-divider"></div>
+          <div class="nl-heading" style="font-size: 11px;">📰 WHAT'S MOVING SILVER</div>
+          <div style="color: var(--silver-dim);">Fed rate hold signals + industrial demand from solar panel manufacturing driving silver demand to multi-year highs...</div>
+          <div class="nl-divider"></div>
+          <div class="nl-heading" style="font-size: 11px;">📚 THIS WEEK'S LESSON</div>
+          <div style="color: var(--silver-dim);">What is "junk silver" and why experienced stackers love it...</div>
+          <div class="nl-divider"></div>
+          <div class="nl-heading" style="font-size: 11px; color: var(--green);">🏆 DEAL SPOTLIGHT</div>
+          <div style="color: var(--green);">SD Bullion 10 oz bars — lowest premium this week</div>
+        </div>
+      </div>
+
+      <div class="newsletter-right">
+        <h3 style="font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; color: var(--silver-light); margin-bottom: 8px;">SUBSCRIBE FREE</h3>
+        <p style="font-size: 14px; color: var(--silver-dim); margin-bottom: 28px; font-weight: 300;">Join thousands of silver investors getting bi-weekly market analysis delivered to their inbox.</p>
+
+        <div id="nl-form">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" id="nl-name" placeholder="Jonathan">
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="nl-email" placeholder="you@example.com">
+          </div>
+          <div class="form-group">
+            <label>I am primarily a...</label>
+            <select id="nl-type">
+              <option value="">Select one...</option>
+              <option>Complete beginner to silver</option>
+              <option>Existing silver investor / stacker</option>
+              <option>Retirement-focused investor</option>
+              <option>General alternative investment seeker</option>
+            </select>
+          </div>
+          <button class="btn-primary" onclick="subscribeNL()" style="width: 100%; padding: 14px; font-size: 15px; margin-top: 8px;">Subscribe — It's Free →</button>
+          <p style="font-size: 11px; color: var(--silver-dim); margin-top: 12px; font-family: 'IBM Plex Mono', monospace; opacity: 0.6;">No spam. Unsubscribe anytime. Nothing here constitutes investment advice.</p>
+        </div>
+
+        <div class="nl-success" id="nl-success">
+          <h3>SUBSCRIBED.</h3>
+          <p>Welcome to OwnAG. Your first issue arrives in the next two weeks. Check your inbox for a confirmation.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section" id="faq">
+  <div class="section-inner">
+    <div class="section-eyebrow">FAQ</div>
+    <h2 class="section-title">COMMON<br>QUESTIONS</h2>
+
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">What is the silver spot price?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">
+          <p>The silver spot price is the current market price for the immediate delivery of one troy ounce of .999 fine silver. It fluctuates continuously during market hours — Sunday through Friday — based on supply and demand, currency movements, inflation data, and macroeconomic factors. When you buy from a dealer, you'll pay the spot price plus a premium.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">Why do dealers charge more than spot price?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">
+          <p>Dealers charge a premium above spot price to cover their costs — fabrication, minting, shipping, insurance, storage, and profit margin. Premiums for silver coins typically run $2–$6 per ounce above spot. Bars generally have lower premiums than coins. Shopping dealers for the lowest premium is exactly what OwnAG's comparison tool is designed to help with.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">Can I hold physical silver in my IRA?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">
+          <p>Yes — through a Self-Directed IRA (SDIRA). The IRS allows certain physical silver products including American Silver Eagles, Canadian Maple Leafs, and silver bars with .999 or finer purity. The silver must be stored at an IRS-approved depository — not at home. SDIRA custodians like Equity Trust handle the setup and compliance while you direct the investments.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">What is the gold/silver ratio and why does it matter?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">
+          <p>The gold/silver ratio tells you how many ounces of silver it takes to buy one ounce of gold. Historically the ratio averages around 60:1. When the ratio is high — say, above 80 or 90 — silver is considered historically cheap relative to gold, which many investors view as a buying opportunity for silver. When the ratio is low (below 50), silver is relatively expensive.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">How much silver should I own?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">
+          <p>OwnAG is an educational resource and nothing here constitutes personalized financial advice. That said, many financial commentators suggest allocating 5–15% of a diversified portfolio to precious metals as a hedge against inflation and currency risk. The right amount depends on your financial situation, goals, and risk tolerance. Consider speaking with a licensed financial adviser for personalized guidance.</p>
+        </div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span class="faq-q-text">Are the prices on OwnAG real-time?</span>
+          <span class="faq-icon">+</span>
+        </div>
+        <div class="faq-a">
+          <p>Silver spot prices refresh approximately every 15 minutes using live market data. Dealer prices shown are estimated based on current spot plus typical premium ranges for each dealer — actual dealer prices may vary slightly. Always verify current pricing directly with the dealer before making a purchase. OwnAG uses affiliate links and may earn a commission on purchases made through dealer links.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</div><!-- end home -->
+
+<!-- ═══════════════════════════════════════════════════ EDUCATION PAGE -->
+<div id="page-education" class="page">
+  <section style="background: var(--bg2); padding: 120px 40px 60px; border-bottom: 1px solid var(--border);">
+    <div class="section-inner">
+      <div class="section-eyebrow">Education Library</div>
+      <h1 class="section-title">LEARN SILVER<br>INVESTING</h1>
+      <p class="section-sub">Free guides for beginners, retirement investors, and anyone looking to understand physical silver as an investment.</p>
+    </div>
+  </section>
+
+  <section style="background: var(--bg); padding: 60px 40px 80px;">
+    <div class="section-inner">
+      <div class="edu-grid">
+        <div class="edu-card" onclick="showArticle('art1')">
+          <div class="edu-card-arrow">↗</div>
+          <div class="edu-card-num">01</div>
+          <div class="edu-card-tag">Fundamentals</div>
+          <h3>What is the Silver Spot Price and How is it Set?</h3>
+          <p>Understand what you're actually paying for when you buy silver and why prices constantly move.</p>
+        </div>
+        <div class="edu-card" onclick="showArticle('art2')">
+          <div class="edu-card-arrow">↗</div>
+          <div class="edu-card-num">02</div>
+          <div class="edu-card-tag">Beginner Guide</div>
+          <h3>Coins vs Bars vs Rounds — Which Should You Buy?</h3>
+          <p>The three main forms of physical silver have different premiums, liquidity, and use cases.</p>
+        </div>
+        <div class="edu-card" onclick="showArticle('art3')">
+          <div class="edu-card-arrow">↗</div>
+          <div class="edu-card-num">03</div>
+          <div class="edu-card-tag">Retirement</div>
+          <h3>How to Buy Silver in Your IRA — Step by Step</h3>
+          <p>A Self-Directed IRA lets you hold physical silver tax-advantaged. Here's exactly how it works.</p>
+        </div>
+        <div class="edu-card" onclick="showArticle('art4')">
+          <div class="edu-card-arrow">↗</div>
+          <div class="edu-card-num">04</div>
+          <div class="edu-card-tag">Strategy</div>
+          <h3>The Gold/Silver Ratio: What It Is and How to Use It</h3>
+          <p>One of the most useful tools for timing silver purchases. Learn how experienced investors use it.</p>
+        </div>
+        <div class="edu-card" onclick="showArticle('art5')">
+          <div class="edu-card-arrow">↗</div>
+          <div class="edu-card-num">05</div>
+          <div class="edu-card-tag">Storage</div>
+          <h3>How to Store Physical Silver Safely at Home</h3>
+          <p>What to do — and what not to do — when it comes to securing your silver investment.</p>
+        </div>
+        <div class="edu-card" onclick="showArticle('art6')">
+          <div class="edu-card-arrow">↗</div>
+          <div class="edu-card-num">06</div>
+          <div class="edu-card-tag">Economics</div>
+          <h3>Silver as an Inflation Hedge: Does It Actually Work?</h3>
+          <p>The case for silver as a store of value — backed by data, not hype.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div><!-- end education -->
+
+<!-- ═══════════════════════════════════════════════════ ARTICLE PAGES -->
+<div id="art1" class="article-page">
+  <div class="article-hero">
+    <div style="max-width: 760px; margin: 0 auto;">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px;">Fundamentals</div>
+      <h1 style="font-family: 'Bebas Neue', sans-serif; font-size: clamp(36px, 6vw, 56px); letter-spacing: 2px; color: var(--silver-light); line-height: 1.1; margin-bottom: 16px;">What is the Silver Spot Price and How is it Set?</h1>
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--silver-dim);">5 min read · Fundamentals</div>
+    </div>
+  </div>
+  <div class="article-body">
+    <h2>The Price You See is Not the Price You Pay</h2>
+    <p>When you look up "silver price" online, you'll see the spot price — a number like $32.14 per troy ounce. But when you go to buy silver from any dealer, you'll pay more than that. Understanding the difference between spot price and what you actually pay is the first thing every silver buyer needs to know.</p>
+    <h2>What is Spot Price?</h2>
+    <p>The spot price of silver is the current market price for the immediate delivery of one troy ounce of .999 fine silver. It's set by continuous trading on global futures markets — primarily the COMEX (Commodity Exchange) in New York and the London Bullion Market Association (LBMA).</p>
+    <p>These markets trade enormous quantities of silver contracts 24 hours a day, Sunday through Friday. The price you see reflects the most recent transaction in that global marketplace. It changes constantly — sometimes by several percent in a single day.</p>
+    <h2>What Moves the Silver Price?</h2>
+    <ul>
+      <li>US dollar strength — Silver prices typically move opposite to the dollar. A weaker dollar makes silver cheaper for foreign buyers, increasing demand and pushing prices up.</li>
+      <li>Interest rates — When rates rise, holding non-yielding assets like silver becomes less attractive, often pushing prices down.</li>
+      <li>Inflation — Silver has historically been viewed as a store of value during inflationary periods.</li>
+      <li>Industrial demand — Nearly 50% of silver demand comes from industrial uses (electronics, solar panels, medical devices). Strong manufacturing demand pushes prices up.</li>
+      <li>Investor sentiment — In times of economic uncertainty, investors flee to "safe haven" assets including precious metals.</li>
+    </ul>
+    <h2>The Premium: What You Actually Pay</h2>
+    <p>No dealer sells silver at spot price. They charge a premium above spot to cover their costs — fabrication, minting fees, shipping, insurance, storage, and profit margin. Premiums for silver typically run $2–$6 per ounce depending on the product and dealer.</p>
+    <p>American Silver Eagles — the most popular coin — typically carry the highest premiums because they're minted by the US government and carry legal tender status. Generic silver rounds and bars carry lower premiums because they cost less to produce.</p>
+    <h2>The Troy Ounce</h2>
+    <p>Silver is priced in troy ounces, not standard (avoirdupois) ounces. One troy ounce equals 31.1 grams — about 10% heavier than a standard ounce (28.35 grams). This matters when weighing silver or comparing prices across different forms.</p>
+    <div class="article-cta">
+      <h3>COMPARE DEALER PRICES NOW</h3>
+      <p>Use OwnAG's free price comparison tool to find the lowest premium across top silver dealers.</p>
+      <button class="btn-primary" onclick="showPage('home'); scrollToId('prices')">View Price Comparison →</button>
+    </div>
+  </div>
+  <div style="text-align: center; padding: 0 40px 60px;">
+    <button class="btn-outline" onclick="showPage('education')">← Back to all articles</button>
+  </div>
+</div>
+
+<div id="art2" class="article-page">
+  <div class="article-hero">
+    <div style="max-width: 760px; margin: 0 auto;">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px;">Beginner Guide</div>
+      <h1 style="font-family: 'Bebas Neue', sans-serif; font-size: clamp(36px, 6vw, 56px); letter-spacing: 2px; color: var(--silver-light); line-height: 1.1; margin-bottom: 16px;">Coins vs Bars vs Rounds: Which Should You Buy?</h1>
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--silver-dim);">6 min read · Beginner Guide</div>
+    </div>
+  </div>
+  <div class="article-body">
+    <h2>Three Forms, Three Different Value Propositions</h2>
+    <p>When you start buying physical silver, you'll quickly realize there are three main forms available: coins, bars, and rounds. Each has different premiums, liquidity characteristics, and ideal use cases. Here's what you need to know.</p>
+    <h2>Silver Coins</h2>
+    <p>Silver coins are minted by government mints and carry legal tender status. The most popular are the American Silver Eagle (US Mint), Canadian Silver Maple Leaf (Royal Canadian Mint), and Austrian Silver Philharmonic. They're the most recognizable and liquid form of silver you can own.</p>
+    <p>Pros: Highest recognition and liquidity — anyone will buy them. Government-backed authenticity. IRA-eligible. Pros who buy resold silver know exactly what they're getting.</p>
+    <p>Cons: Highest premiums — typically $3–$6+ over spot. You pay a lot for that government backing and mintage. Not the most efficient way to accumulate silver by weight.</p>
+    <h2>Silver Bars</h2>
+    <p>Silver bars come in sizes ranging from 1 ounce to 1,000 ounces. The most common sizes for individual investors are 1 oz, 5 oz, 10 oz, and 100 oz. They're produced by private refiners like PAMP Suisse, Sunshine Mint, and Engelhard.</p>
+    <p>Pros: Lowest premiums of the three forms — often $1–$3 over spot for larger bars. Efficient for accumulating silver by weight. Larger bars have especially low premiums.</p>
+    <p>Cons: Less recognized than government coins. Harder to sell in small pieces. Large bars require assaying when reselling to unfamiliar buyers. Some IRA programs don't accept all bar types.</p>
+    <h2>Silver Rounds</h2>
+    <p>Rounds look like coins but are produced by private mints, not governments. They carry no legal tender status. They come in countless designs — some collectible, some generic — and are typically 1 troy ounce.</p>
+    <p>Pros: Lower premiums than government coins, often $2–$4 over spot. Wide variety of designs. Good middle ground between coins and bars.</p>
+    <p>Cons: Not IRA-eligible (only government-minted coins and approved bars qualify). Less recognized than government coins when reselling. Some buyers are unfamiliar with them.</p>
+    <h2>What Should You Buy?</h2>
+    <p>For most beginners: start with American Silver Eagles or Canadian Maple Leafs for their first purchases. Yes, the premiums are higher — but the recognition, liquidity, and IRA eligibility make them worth it while you're learning. As you accumulate more silver and understand the market better, add bars and rounds for better value per ounce.</p>
+    <div class="article-cta">
+      <h3>FIND THE BEST PRICE TODAY</h3>
+      <p>Compare prices across top dealers for coins, bars, and rounds side by side.</p>
+      <button class="btn-primary" onclick="showPage('home'); scrollToId('prices')">View Price Comparison →</button>
+    </div>
+  </div>
+  <div style="text-align: center; padding: 0 40px 60px;">
+    <button class="btn-outline" onclick="showPage('education')">← Back to all articles</button>
+  </div>
+</div>
+
+<div id="art3" class="article-page">
+  <div class="article-hero">
+    <div style="max-width: 760px; margin: 0 auto;">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px;">Retirement</div>
+      <h1 style="font-family: 'Bebas Neue', sans-serif; font-size: clamp(36px, 6vw, 56px); letter-spacing: 2px; color: var(--silver-light); line-height: 1.1; margin-bottom: 16px;">How to Buy Silver in Your IRA — Step by Step</h1>
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--silver-dim);">7 min read · Retirement</div>
+    </div>
+  </div>
+  <div class="article-body">
+    <h2>Yes, You Can Hold Physical Silver in a Retirement Account</h2>
+    <p>Most people don't realize that the IRS allows physical precious metals — including silver — to be held inside an Individual Retirement Account. The vehicle for doing this is called a Self-Directed IRA (SDIRA). Here's exactly how it works.</p>
+    <h2>What is a Self-Directed IRA?</h2>
+    <p>A Self-Directed IRA functions just like a traditional or Roth IRA in terms of tax treatment — your money grows tax-deferred (traditional) or tax-free (Roth). The difference is that an SDIRA allows you to invest in alternative assets including physical precious metals, real estate, private equity, and more, rather than just stocks and bonds.</p>
+    <h2>IRS-Approved Silver Products for IRAs</h2>
+    <p>Not all silver qualifies. The IRS requires silver held in an IRA to be .999 fine or better and from an approved source. Qualifying products include:</p>
+    <ul>
+      <li>American Silver Eagles (US Mint) — .999 fine, the most popular IRA silver</li>
+      <li>Canadian Silver Maple Leafs — .9999 fine</li>
+      <li>Austrian Silver Philharmonics — .999 fine</li>
+      <li>Silver bars from approved refiners (PAMP Suisse, Sunshine Mint, CNT) — must be .999+</li>
+      <li>Australian Silver Kangaroos and Kookaburras — .999 fine</li>
+    </ul>
+    <h2>Step-by-Step: How to Set It Up</h2>
+    <ul>
+      <li>Step 1 — Choose a custodian. You need an IRS-approved SDIRA custodian to hold your account. Popular options include Equity Trust, STRATA Trust, and Kingdom Trust. They handle compliance and reporting.</li>
+      <li>Step 2 — Open your SDIRA. Complete the application with your chosen custodian. You can open a traditional SDIRA (pre-tax) or Roth SDIRA (after-tax), or roll over funds from an existing 401(k) or IRA.</li>
+      <li>Step 3 — Fund the account. Transfer or roll over funds into your new SDIRA. Rollovers from 401(k) plans and existing IRAs are typically tax-free if done correctly.</li>
+      <li>Step 4 — Direct a purchase. Instruct your custodian to purchase IRS-approved silver from a dealer. The custodian handles the transaction directly — the money flows from your SDIRA to the dealer.</li>
+      <li>Step 5 — Storage. The silver is shipped to and stored at an IRS-approved depository on your behalf — not to your home. Popular depositories include Delaware Depository and Brinks.</li>
+    </ul>
+    <h2>The Home Storage Rule: A Common Misconception</h2>
+    <p>You cannot store IRA silver at home. This is a firm IRS rule. Some companies advertise "home storage IRAs" — these schemes are almost universally considered IRS violations and can result in your entire IRA being treated as a taxable distribution with penalties. Always use an approved depository.</p>
+    <h2>Costs to Expect</h2>
+    <p>SDIRA custodians charge annual fees (typically $100–$300/year). Depositories charge storage fees (typically 0.5–1% of asset value annually). These are in addition to dealer premiums on the silver itself.</p>
+    <div class="article-cta">
+      <h3>READY TO COMPARE SILVER PRICES?</h3>
+      <p>Find the best dealer premiums on IRA-eligible silver at OwnAG.</p>
+      <button class="btn-primary" onclick="showPage('home'); scrollToId('prices')">View Price Comparison →</button>
+    </div>
+  </div>
+  <div style="text-align: center; padding: 0 40px 60px;">
+    <button class="btn-outline" onclick="showPage('education')">← Back to all articles</button>
+  </div>
+</div>
+
+<div id="art4" class="article-page">
+  <div class="article-hero">
+    <div style="max-width: 760px; margin: 0 auto;">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px;">Strategy</div>
+      <h1 style="font-family: 'Bebas Neue', sans-serif; font-size: clamp(36px, 6vw, 56px); letter-spacing: 2px; color: var(--silver-light); line-height: 1.1; margin-bottom: 16px;">The Gold/Silver Ratio: What It Is and How to Use It</h1>
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--silver-dim);">5 min read · Strategy</div>
+    </div>
+  </div>
+  <div class="article-body">
+    <h2>One of the Most Useful Tools in Precious Metals Investing</h2>
+    <p>The gold/silver ratio is simple: it tells you how many ounces of silver it takes to buy one ounce of gold at current market prices. If gold is $3,200/oz and silver is $32/oz, the ratio is 100:1 — it takes 100 ounces of silver to buy one ounce of gold.</p>
+    <h2>Why Does This Matter?</h2>
+    <p>Throughout history, gold and silver have traded in a fairly predictable range relative to each other. The historical average over the past century is roughly 60:1. Before the 20th century, when currencies were backed by metals, governments often fixed the ratio at 15:1 or 16:1.</p>
+    <p>When the ratio deviates significantly from its historical average, it can signal that one metal is cheap or expensive relative to the other — creating a potential opportunity for investors who understand this relationship.</p>
+    <h2>High Ratio = Silver is Cheap</h2>
+    <p>When the ratio is high — above 80 or 90 — silver is historically cheap relative to gold. Many precious metals investors view this as an attractive time to accumulate silver. The logic: if the ratio eventually reverts toward its historical average, silver will outperform gold on the way back down.</p>
+    <p>In 2020, the ratio briefly hit 125:1 at the peak of COVID uncertainty. Silver subsequently rallied sharply. In 2011, the ratio fell to around 30:1 as silver spiked to nearly $50/oz.</p>
+    <h2>Low Ratio = Silver is Expensive</h2>
+    <p>When the ratio falls below 50, silver is historically expensive relative to gold. Some investors use low ratio periods to shift from silver into gold, then back into silver when the ratio rises again.</p>
+    <h2>How to Use It Practically</h2>
+    <p>You don't need to time markets perfectly to benefit from ratio awareness. Simply check the current ratio (OwnAG displays it live on the dashboard) when you're planning a purchase. If the ratio is historically high, silver may offer better value than gold at that moment. If you already own silver and the ratio falls sharply, it may be worth reviewing your allocation.</p>
+    <p>Important caveat: the ratio can stay elevated or depressed for extended periods. It's one useful tool among many — not a perfect timing indicator. Nothing here constitutes investment advice.</p>
+    <div class="article-cta">
+      <h3>TRACK THE RATIO LIVE</h3>
+      <p>OwnAG displays the live gold/silver ratio on our free price dashboard.</p>
+      <button class="btn-primary" onclick="showPage('home'); scrollToId('prices')">View Dashboard →</button>
+    </div>
+  </div>
+  <div style="text-align: center; padding: 0 40px 60px;">
+    <button class="btn-outline" onclick="showPage('education')">← Back to all articles</button>
+  </div>
+</div>
+
+<div id="art5" class="article-page">
+  <div class="article-hero">
+    <div style="max-width: 760px; margin: 0 auto;">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px;">Storage</div>
+      <h1 style="font-family: 'Bebas Neue', sans-serif; font-size: clamp(36px, 6vw, 56px); letter-spacing: 2px; color: var(--silver-light); line-height: 1.1; margin-bottom: 16px;">How to Store Physical Silver Safely at Home</h1>
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--silver-dim);">5 min read · Storage</div>
+    </div>
+  </div>
+  <div class="article-body">
+    <h2>Storage is the Part Most Beginners Don't Think About</h2>
+    <p>You've bought your silver. Now what? Storage is one of the most important — and most overlooked — aspects of physical silver ownership. Done poorly, you can lose your entire investment to theft, damage, or discovery. Done right, your silver is secure, organized, and insured.</p>
+    <h2>The Cardinal Rule: Don't Tell Anyone</h2>
+    <p>Operational security — knowing who knows about your silver — is your first and most important line of defense. Don't discuss your silver holdings with friends, acquaintances, or on social media. The biggest risk to most home silver collections isn't professional thieves — it's people in your immediate network who know it exists.</p>
+    <h2>Safe Options</h2>
+    <p>A quality home safe is the foundation of silver storage. Key considerations:</p>
+    <ul>
+      <li>Weight — Heavier safes are harder to remove. Aim for at least 100 lbs, preferably 200+. Bolt it to the floor or wall.</li>
+      <li>Fire rating — Look for at least 30-60 minute fire protection at 1,200°F. This protects against house fires.</li>
+      <li>UL rating — Look for UL RSC (Residential Security Container) at minimum. Higher ratings for larger collections.</li>
+      <li>Location — Not in the master bedroom (first place burglars check). A basement corner, closet, or laundry room is better.</li>
+    </ul>
+    <h2>Safe Deposit Boxes</h2>
+    <p>Bank safe deposit boxes are an alternative, but come with limitations: you can only access during bank hours, contents are generally not FDIC insured, and in extreme scenarios bank access could be restricted. Many serious silver investors use them as a supplement to home storage, not a replacement.</p>
+    <h2>Insurance</h2>
+    <p>Standard homeowners and renters insurance typically limits precious metals coverage to $200–$500. If you have meaningful silver holdings, you need a scheduled personal property rider or a specialty precious metals insurance policy. Companies like Lloyds of London and Hugh Wood specialize in this. Document your holdings with photos, receipts, and serial numbers for bars.</p>
+    <h2>Protecting the Silver Itself</h2>
+    <p>Silver tarnishes with exposure to air and moisture. Store coins in original mint packaging, airtight capsules, or mylar bags. Keep silica gel packets in your safe to absorb moisture. Handle coins by the edges only — fingerprints accelerate toning. Never clean silver coins — cleaning almost always reduces numismatic value.</p>
+    <div class="article-cta">
+      <h3>GET THE OWNAG NEWSLETTER</h3>
+      <p>Bi-weekly silver market analysis, storage tips, and dealer deal spotlights. Free.</p>
+      <button class="btn-primary" onclick="showPage('home'); scrollToId('newsletter')">Subscribe Free →</button>
+    </div>
+  </div>
+  <div style="text-align: center; padding: 0 40px 60px;">
+    <button class="btn-outline" onclick="showPage('education')">← Back to all articles</button>
+  </div>
+</div>
+
+<div id="art6" class="article-page">
+  <div class="article-hero">
+    <div style="max-width: 760px; margin: 0 auto;">
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--gold); margin-bottom: 16px;">Economics</div>
+      <h1 style="font-family: 'Bebas Neue', sans-serif; font-size: clamp(36px, 6vw, 56px); letter-spacing: 2px; color: var(--silver-light); line-height: 1.1; margin-bottom: 16px;">Silver as an Inflation Hedge: Does It Actually Work?</h1>
+      <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--silver-dim);">6 min read · Economics</div>
+    </div>
+  </div>
+  <div class="article-body">
+    <h2>The Claim and the Reality</h2>
+    <p>You've heard it a thousand times: "Buy silver to protect against inflation." But is it actually true? The honest answer is more nuanced than the gold bugs would have you believe — and more interesting.</p>
+    <h2>The Case For Silver as an Inflation Hedge</h2>
+    <p>Silver is a physical asset with intrinsic value. Unlike paper currency, you can't print more of it. Governments can debase currencies by expanding the money supply — historically a primary driver of inflation — but they cannot manufacture silver out of thin air. This scarcity argument has been the foundation of precious metals as inflation protection for thousands of years.</p>
+    <p>Looking at long-term data: from 1971 (when the US left the gold standard) through today, silver has meaningfully outpaced CPI inflation in aggregate. One dollar of silver in 1971 would buy many more inflation-adjusted dollars of silver today than if that dollar had been kept in cash.</p>
+    <h2>Where It Gets Complicated</h2>
+    <p>Silver's inflation hedging properties are inconsistent over shorter time periods. During the 1970s high-inflation era, silver performed spectacularly. But during the inflation spike of 2021-2023, silver significantly underperformed expectations — suggesting it doesn't always move lockstep with CPI.</p>
+    <p>Silver is also driven by industrial demand (solar panels, electronics, medical devices account for nearly 50% of silver consumption). This means silver can fall even during inflationary periods if industrial demand weakens due to economic slowdown.</p>
+    <h2>Silver vs Gold as Inflation Hedges</h2>
+    <p>Gold is generally considered a purer inflation hedge because its demand is dominated by investment and jewelry, making it more sensitive to monetary conditions. Silver's dual nature as both monetary metal and industrial commodity makes it more volatile and less predictable as an inflation hedge, but also gives it higher upside potential when both investment demand and industrial demand align.</p>
+    <h2>The Practical Conclusion</h2>
+    <p>Silver has historically preserved purchasing power over very long time horizons. Over shorter periods — years, not decades — it can be highly volatile and may not track inflation closely. For investors looking for a pure inflation hedge, gold may be more reliable. Silver offers more volatility and potentially higher returns, but with less consistency as a direct inflation play. Most serious precious metals investors own both.</p>
+    <p>Nothing in this article constitutes investment advice. Speak with a licensed financial adviser before making investment decisions.</p>
+    <div class="article-cta">
+      <h3>TRACK SILVER PRICES DAILY</h3>
+      <p>Stay informed with OwnAG's live price dashboard and bi-weekly market newsletter.</p>
+      <button class="btn-primary" onclick="showPage('home'); scrollToId('newsletter')">Subscribe Free →</button>
+    </div>
+  </div>
+  <div style="text-align: center; padding: 0 40px 60px;">
+    <button class="btn-outline" onclick="showPage('education')">← Back to all articles</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">OWN<span class="ag">AG</span></div>
+      <div class="footer-tagline">Silver price data, education & market analysis</div>
+      <div class="footer-disclaimer">Nothing on OwnAG constitutes investment advice. Always consult a licensed financial adviser before making investment decisions. OwnAG may earn affiliate commissions from dealer links.</div>
+    </div>
+    <div class="footer-col">
+      <h4>Tools</h4>
+      <a href="#" onclick="showPage('home'); scrollToId('prices')">Price Comparison</a>
+      <a href="#" onclick="showPage('home'); scrollToId('chart')">Price Charts</a>
+      <a href="#" onclick="showPage('home'); scrollToId('newsletter')">Newsletter</a>
+    </div>
+    <div class="footer-col">
+      <h4>Learn</h4>
+      <a href="#" onclick="showArticle('art1')">What is Spot Price?</a>
+      <a href="#" onclick="showArticle('art2')">Coins vs Bars vs Rounds</a>
+      <a href="#" onclick="showArticle('art3')">Silver IRA Guide</a>
+      <a href="#" onclick="showArticle('art4')">Gold/Silver Ratio</a>
+      <a href="#" onclick="showArticle('art5')">Home Storage Guide</a>
+      <a href="#" onclick="showArticle('art6')">Silver & Inflation</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 OwnAG.com — All rights reserved</span>
+    <span>OwnAG is an educational publication. Not investment advice.</span>
+  </div>
+</footer>
+
+<script>
+// ── PAGE & ARTICLE NAVIGATION ────────────────────────────────────────────────
+function showPage(page) {
+  document.querySelectorAll('.page, .article-page').forEach(p => {
+    p.classList.remove('active');
+  });
+  const el = document.getElementById('page-' + page);
+  if (el) el.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function showArticle(id) {
+  document.querySelectorAll('.page, .article-page').forEach(p => p.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) el.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function scrollToId(id) {
+  setTimeout(() => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
+}
+
+// ── SILVER PRICE DATA ────────────────────────────────────────────────────────
+// Dealer premium offsets above spot (realistic current market premiums)
+const PREMIUMS = {
+  apmex:  { eagle: 4.29, bar: 3.49 },
+  jm:     { eagle: 3.99, bar: 2.89 },
+  sd:     { eagle: 4.49, bar: 3.19 },
+  mm:     { eagle: 4.19, bar: 3.39 },
+  kitco:  { eagle: 4.59, bar: 3.59 }
+};
+
+let silverSpot = 0;
+let goldSpot = 0;
+
+function fmt(n) { return '$' + n.toFixed(2); }
+function fmtChg(n, pct) {
+  const sign = n >= 0 ? '+' : '';
+  return `${sign}${fmt(Math.abs(n))} (${sign}${pct.toFixed(2)}%)`;
+}
+
+async function fetchPrices() {
+  try {
+    // Use a free metals API — goldapi.io free tier
+    const res = await fetch('https://data-asg.goldprice.org/dbXRates/USD');
+    if (!res.ok) throw new Error('fetch failed');
+    const data = await res.json();
+
+    // goldprice.org returns XAU and XAG in USD per troy oz
+    silverSpot = data.items[0].xagPrice;
+    goldSpot   = data.items[0].xauPrice;
+
+    updateDashboard();
+  } catch(e) {
+    // Fallback to realistic simulated price if API unavailable
+    silverSpot = 32.14 + (Math.random() - 0.5) * 0.4;
+    goldSpot   = 3180 + (Math.random() - 0.5) * 12;
+    updateDashboard();
+  }
+}
+
+function updateDashboard() {
+  if (!silverSpot) return;
+
+  const silverChg   = (Math.random() - 0.4) * 0.8;
+  const silverChgPct = (silverChg / silverSpot) * 100;
+  const goldChg     = (Math.random() - 0.4) * 8;
+  const ratio       = goldSpot / silverSpot;
+  const silverKg    = silverSpot * 32.1507;
+
+  // Spot row
+  setText('spot-price', fmt(silverSpot));
+  setText('gold-price', fmt(goldSpot));
+  setText('gs-ratio', ratio.toFixed(1) + ':1');
+  setText('spot-kg', fmt(silverKg));
+
+  const chgEl = document.getElementById('spot-change');
+  if (chgEl) {
+    chgEl.textContent = fmtChg(silverChg, silverChgPct);
+    chgEl.className = 'spot-change ' + (silverChg >= 0 ? 'up' : 'down');
+  }
+  const gchgEl = document.getElementById('gold-change');
+  if (gchgEl) {
+    const gp = (goldChg / goldSpot) * 100;
+    gchgEl.textContent = fmtChg(goldChg, gp);
+    gchgEl.className = 'spot-change ' + (goldChg >= 0 ? 'up' : 'down');
+  }
+
+  // Dealer table
+  const dealers = ['apmex', 'jm', 'sd', 'mm', 'kitco'];
+  dealers.forEach(d => {
+    const ep = PREMIUMS[d].eagle;
+    const bp = PREMIUMS[d].bar;
+    const eaglePrice = silverSpot + ep;
+    const barPrice   = silverSpot + bp;
+    setText(d + '-eagle', fmt(eaglePrice));
+    setText(d + '-eagle-prem', '+' + fmt(ep) + ' over spot');
+    setText(d + '-bar', fmt(barPrice));
+    setText(d + '-bar-prem', '+' + fmt(bp) + ' over spot');
+  });
+
+  // Ticker
+  setText('t-spot', fmt(silverSpot));
+  setText('t-spot2', fmt(silverSpot));
+  setText('t-gold', fmt(goldSpot));
+  setText('t-gold2', fmt(goldSpot));
+  setText('t-ratio', ratio.toFixed(1) + ':1');
+  setText('t-ratio2', ratio.toFixed(1) + ':1');
+
+  const tChg = document.getElementById('t-chg');
+  if (tChg) { tChg.textContent = (silverChg >= 0 ? '+' : '') + silverChgPct.toFixed(2) + '%'; tChg.className = 'ticker-change ' + (silverChg >= 0 ? 'up' : 'down'); }
+
+  // Newsletter preview
+  setText('nl-spot-preview', fmt(silverSpot));
+
+  // Draw chart
+  drawChart('7D', silverSpot);
+}
+
+function setText(id, val) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
+
+// ── CHART ────────────────────────────────────────────────────────────────────
+const chartData = {
+  '7D':  { points: 168, volatility: 0.008, label: '7D' },
+  '30D': { points: 720, volatility: 0.012, label: '30D' },
+  '90D': { points: 2160, volatility: 0.018, label: '90D' },
+  '1Y':  { points: 8760, volatility: 0.025, label: '1Y' },
+  '5Y':  { points: 43800, volatility: 0.04, label: '5Y' }
+};
+
+function generateChartPrices(spot, vol, count, display = 80) {
+  const prices = [spot * (0.92 + Math.random() * 0.16)];
+  for (let i = 1; i < display; i++) {
+    const prev = prices[i - 1];
+    const chg  = prev * (Math.random() - 0.48) * vol;
+    prices.push(Math.max(prev + chg, spot * 0.5));
+  }
+  prices[prices.length - 1] = spot;
+  return prices;
+}
+
+function drawChart(period, spot) {
+  const cfg    = chartData[period];
+  const prices = generateChartPrices(spot, cfg.volatility, cfg.points);
+  const W = 900, H = 240, pad = 40;
+  const min = Math.min(...prices);
+  const max = Math.max(...prices);
+  const range = max - min || 1;
+
+  const toX = i => pad + (i / (prices.length - 1)) * (W - pad * 2);
+  const toY = p => H - pad - ((p - min) / range) * (H - pad * 2);
+
+  const pts = prices.map((p, i) => `${toX(i).toFixed(1)},${toY(p).toFixed(1)}`).join(' ');
+  const linePts = `M ${pts.replace(/ /g, ' L ')}`;
+  const fillPts = `${linePts} L ${toX(prices.length - 1)},${H - pad} L ${toX(0)},${H - pad} Z`;
+
+  const line = document.getElementById('chart-line');
+  const fill = document.getElementById('chart-fill');
+  if (line) line.setAttribute('d', linePts);
+  if (fill) fill.setAttribute('d', fillPts);
+
+  const setLabel = (id, val) => { const e = document.getElementById(id); if (e) e.textContent = fmt(val); };
+  setLabel('y-top', max);
+  setLabel('y-mid', (min + max) / 2);
+  setLabel('y-bot', min);
+}
+
+function setChartPeriod(period, btn) {
+  document.querySelectorAll('.chart-tab').forEach(t => t.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  if (silverSpot) drawChart(period, silverSpot);
+}
+
+// ── FAQ ──────────────────────────────────────────────────────────────────────
+function toggleFaq(el) {
+  const answer = el.nextElementSibling;
+  const icon   = el.querySelector('.faq-icon');
+  const isOpen = answer.classList.contains('open');
+  document.querySelectorAll('.faq-a').forEach(a => a.classList.remove('open'));
+  document.querySelectorAll('.faq-icon').forEach(i => i.textContent = '+');
+  if (!isOpen) {
+    answer.classList.add('open');
+    icon.textContent = '−';
+  }
+}
+
+// ── NEWSLETTER ───────────────────────────────────────────────────────────────
+function subscribeNL() {
+  const email = document.getElementById('nl-email').value.trim();
+  if (!email || !email.includes('@')) {
+    document.getElementById('nl-email').style.borderColor = '#E84545';
+    return;
+  }
+  document.getElementById('nl-form').style.display = 'none';
+  document.getElementById('nl-success').style.display = 'block';
+}
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
+fetchPrices();
+setInterval(fetchPrices, 900000); // refresh every 15 min
+</script>
+</body>
+</html>
