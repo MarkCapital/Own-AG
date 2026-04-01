@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://ownag.com/sitemap.xml
+
+# Block any admin or private paths (none currently but good practice)
+Disallow: /admin/
+Disallow: /private/
