@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5107541459828122"
-     crossorigin="anonymous"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <!-- Primary SEO -->
 <title>OwnAG — Silver Price Tracker, Dealer Comparison & Investment Education</title>
 <meta name="description" content="Track live silver spot prices, compare dealer premiums, and learn how to invest in physical silver. OwnAG is your free resource for silver price comparison, SDIRA education, and precious metals market analysis.">
-<meta name="keywords" content="silver price today, silver spot price, buy silver online, silver dealer comparison, silver price comparison, silver IRA, physical silver investment, silver price per ounce, cheapest silver dealer, silver spot price chart, silver investment for beginners, own silver, AG silver price">
+<meta name="keywords" content="silver price today, silver spot price, buy silver online, silver dealer comparison, silver price comparison, silver IRA, physical silver investment, silver price per ounce, cheapest silver dealer, silver spot price chart, silver investment for beginners, own silver, AG silver price, junk silver calculator, silver melt value calculator, silver value calculator, silver premium calculator, dollar cost average silver, silver portfolio tracker">
 <meta name="author" content="OwnAG">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://ownag.com">
@@ -96,6 +94,10 @@
   ]
 }
 </script>
+
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5107541459828122"
+     crossorigin="anonymous"></script>
 
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 
@@ -929,6 +931,218 @@ input:focus, select:focus, textarea:focus { border-color: var(--gold); }
   font-size: 14px;
 }
 
+/* ── CALCULATORS ── */
+.calc-tabs {
+  display: flex;
+  gap: 0;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 4px;
+  margin-bottom: 32px;
+  flex-wrap: wrap;
+}
+
+.calc-tab {
+  flex: 1;
+  padding: 10px 16px;
+  border-radius: var(--radius);
+  border: none;
+  background: transparent;
+  color: var(--silver-dim);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.calc-tab.active {
+  background: var(--bg);
+  color: var(--silver-light);
+  border: 1px solid var(--border-bright);
+}
+
+.calc-panel { display: none; }
+.calc-panel.active { display: block; }
+
+.calc-box {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.calc-header {
+  background: var(--bg3);
+  border-bottom: 1px solid var(--border);
+  padding: 20px 28px;
+}
+
+.calc-header h3 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 24px;
+  letter-spacing: 2px;
+  color: var(--silver-light);
+  margin-bottom: 4px;
+}
+
+.calc-header p {
+  font-size: 13px;
+  color: var(--silver-dim);
+  font-weight: 300;
+}
+
+.calc-body {
+  padding: 28px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+.calc-inputs { display: flex; flex-direction: column; gap: 16px; }
+
+.calc-input-group { display: flex; flex-direction: column; gap: 6px; }
+
+.calc-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--silver-dim);
+}
+
+.calc-input {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--silver-light);
+  font-size: 16px;
+  font-family: 'IBM Plex Mono', monospace;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.calc-input:focus { border-color: var(--silver); }
+
+.calc-select {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--silver-light);
+  font-size: 14px;
+  font-family: 'IBM Plex Sans', sans-serif;
+  outline: none;
+  cursor: pointer;
+}
+
+.calc-btn {
+  width: 100%;
+  padding: 13px;
+  background: var(--silver);
+  color: var(--bg);
+  border: none;
+  border-radius: var(--radius);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 8px;
+}
+
+.calc-btn:hover { background: var(--silver-light); }
+
+.calc-results {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  min-height: 200px;
+}
+
+.calc-result-title {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--silver-dim);
+  margin-bottom: 20px;
+}
+
+.calc-result-main {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 52px;
+  letter-spacing: 1px;
+  color: var(--silver-light);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.calc-result-sub {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  color: var(--silver-dim);
+  margin-bottom: 20px;
+}
+
+.calc-result-rows { border-top: 1px solid var(--border); padding-top: 16px; }
+
+.calc-result-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+
+.calc-result-row:last-child { border-bottom: none; }
+
+.calc-result-row-label { color: var(--silver-dim); font-weight: 300; }
+.calc-result-row-value { font-family: 'IBM Plex Mono', monospace; color: var(--silver-light); font-weight: 500; }
+.calc-result-row-value.positive { color: var(--green); }
+.calc-result-row-value.negative { color: var(--red); }
+.calc-result-row-value.neutral { color: var(--silver-dim); }
+
+.calc-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 160px;
+  gap: 8px;
+}
+
+.calc-empty-icon { font-size: 32px; opacity: 0.3; }
+.calc-empty-text { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--silver-dim); letter-spacing: 0.1em; text-transform: uppercase; }
+
+.dca-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 12px; }
+.dca-table th { font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--silver-dim); padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+.dca-table td { padding: 8px 12px; border-bottom: 1px solid var(--border); color: var(--silver-light); font-family: 'IBM Plex Mono', monospace; }
+.dca-table tr:last-child td { border-bottom: none; }
+.dca-table tr:hover td { background: var(--bg4); }
+
+.junk-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.junk-coin-row { display: flex; align-items: center; gap: 10px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 10px 12px; }
+.junk-coin-label { font-size: 12px; color: var(--silver-dim); flex: 1; }
+.junk-coin-input { width: 80px; padding: 6px 10px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); color: var(--silver-light); font-family: 'IBM Plex Mono', monospace; font-size: 13px; outline: none; text-align: right; }
+
+@media (max-width: 768px) {
+  .calc-body { grid-template-columns: 1fr; }
+  .calc-tab { font-size: 10px; padding: 8px 10px; }
+  .junk-grid { grid-template-columns: 1fr; }
+}
+
 /* ── FOOTER ── */
 footer {
   background: var(--bg2);
@@ -1101,8 +1315,8 @@ footer {
     <li><a href="#" onclick="showPage('home'); scrollToId('prices')">Prices</a></li>
     <li><a href="#" onclick="showPage('home'); scrollToId('chart')">Charts</a></li>
     <li><a href="#" onclick="showPage('education')">Learn</a></li>
+    <li><a href="#" onclick="showPage('calculators')">Calculators</a></li>
     <li><a href="#" onclick="showPage('home'); scrollToId('newsletter')">Newsletter</a></li>
-    <li><a href="#" onclick="showPage('home'); scrollToId('faq')">FAQ</a></li>
     <li><a href="#" class="nav-cta" onclick="showPage('home'); scrollToId('newsletter')">Subscribe Free</a></li>
   </ul>
 </nav>
@@ -1759,6 +1973,277 @@ footer {
   </div>
 </div>
 
+<!-- ═══════════════════════════════════════════════════ CALCULATORS PAGE -->
+<div id="page-calculators" class="page">
+
+  <section style="background: var(--bg2); padding: 120px 40px 60px; border-bottom: 1px solid var(--border);">
+    <div class="section-inner">
+      <div class="section-eyebrow">Free Tools</div>
+      <h1 class="section-title">SILVER<br>CALCULATORS</h1>
+      <p class="section-sub">Four free calculators for silver investors — from melt value to junk silver to portfolio tracking. All use live spot prices.</p>
+    </div>
+  </section>
+
+  <section style="background: var(--bg); padding: 60px 40px 100px;">
+    <div class="section-inner">
+
+      <!-- CALCULATOR TABS -->
+      <div class="calc-tabs">
+        <button class="calc-tab active" onclick="switchCalc('value', this)">Silver Value</button>
+        <button class="calc-tab" onclick="switchCalc('premium', this)">Break-Even</button>
+        <button class="calc-tab" onclick="switchCalc('junk', this)">Junk Silver</button>
+        <button class="calc-tab" onclick="switchCalc('dca', this)">DCA Tracker</button>
+      </div>
+
+      <!-- ── CALC 1: SILVER VALUE CALCULATOR ── -->
+      <div id="calc-value" class="calc-panel active">
+        <div class="calc-box">
+          <div class="calc-header">
+            <h3>Silver Value Calculator</h3>
+            <p>Find out what your silver is worth at today's live spot price.</p>
+          </div>
+          <div class="calc-body">
+            <div class="calc-inputs">
+              <div class="calc-input-group">
+                <label class="calc-label">Quantity</label>
+                <input class="calc-input" type="number" id="val-qty" placeholder="10" min="0" step="0.01" oninput="calcValue()">
+              </div>
+              <div class="calc-input-group">
+                <label class="calc-label">Unit</label>
+                <select class="calc-select" id="val-unit" onchange="calcValue()">
+                  <option value="1">Troy Ounces (oz)</option>
+                  <option value="0.032151">Grams</option>
+                  <option value="32.151">Kilograms</option>
+                  <option value="0.911458">Troy Pounds</option>
+                </select>
+              </div>
+              <div class="calc-input-group">
+                <label class="calc-label">Purity</label>
+                <select class="calc-select" id="val-purity" onchange="calcValue()">
+                  <option value="0.9999">.9999 Fine (Maple Leaf)</option>
+                  <option value="0.999" selected>.999 Fine (Eagles, most bullion)</option>
+                  <option value="0.9584">.9584 Britannia</option>
+                  <option value="0.925">.925 Sterling Silver</option>
+                  <option value="0.900">.900 (US Junk Silver)</option>
+                  <option value="0.800">.800 Silver</option>
+                  <option value="1">Pure (1.000)</option>
+                </select>
+              </div>
+              <div class="calc-input-group">
+                <label class="calc-label">Spot Price Override (leave blank for live)</label>
+                <input class="calc-input" type="number" id="val-spot" placeholder="Auto (live spot)" min="0" step="0.01" oninput="calcValue()">
+              </div>
+              <button class="calc-btn" onclick="calcValue()">Calculate Value</button>
+            </div>
+
+            <div class="calc-results" id="val-results">
+              <div class="calc-empty">
+                <div class="calc-empty-icon">⬡</div>
+                <div class="calc-empty-text">Enter quantity above</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 20px; padding: 16px 20px; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-lg);">
+          <p style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--silver-dim); opacity: 0.7;">Results are based on silver melt value at spot price. Actual resale value may differ depending on coin type, dealer, and market conditions. Not investment advice.</p>
+        </div>
+      </div>
+
+      <!-- ── CALC 2: BREAK-EVEN / PREMIUM CALCULATOR ── -->
+      <div id="calc-premium" class="calc-panel">
+        <div class="calc-box">
+          <div class="calc-header">
+            <h3>Break-Even Price Calculator</h3>
+            <p>Find out what spot price you need to break even or profit on silver you already own.</p>
+          </div>
+          <div class="calc-body">
+            <div class="calc-inputs">
+              <div class="calc-input-group">
+                <label class="calc-label">What you paid per oz (all-in)</label>
+                <input class="calc-input" type="number" id="pe-paid" placeholder="82.50" min="0" step="0.01" oninput="calcPremium()">
+              </div>
+              <div class="calc-input-group">
+                <label class="calc-label">Number of ounces</label>
+                <input class="calc-input" type="number" id="pe-qty" placeholder="10" min="0" step="0.01" oninput="calcPremium()">
+              </div>
+              <div class="calc-input-group">
+                <label class="calc-label">Expected sell premium over spot (est. $)</label>
+                <input class="calc-input" type="number" id="pe-sellprem" placeholder="2.00" min="0" step="0.01" oninput="calcPremium()">
+              </div>
+              <div class="calc-input-group">
+                <label class="calc-label">Target profit per oz ($)</label>
+                <input class="calc-input" type="number" id="pe-target" placeholder="5.00" min="0" step="0.01" oninput="calcPremium()">
+              </div>
+              <button class="calc-btn" onclick="calcPremium()">Calculate Break-Even</button>
+            </div>
+
+            <div class="calc-results" id="pe-results">
+              <div class="calc-empty">
+                <div class="calc-empty-icon">⬡</div>
+                <div class="calc-empty-text">Enter your purchase price above</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 20px; padding: 16px 20px; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-lg);">
+          <p style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--silver-dim); opacity: 0.7;">This calculator does not account for taxes on capital gains. Consult a tax professional regarding your specific situation. Not investment advice.</p>
+        </div>
+      </div>
+
+      <!-- ── CALC 3: JUNK SILVER CALCULATOR ── -->
+      <div id="calc-junk" class="calc-panel">
+        <div class="calc-box">
+          <div class="calc-header">
+            <h3>Junk Silver Calculator</h3>
+            <p>Calculate the silver melt value of pre-1965 US coins. Enter quantities of each coin type below.</p>
+          </div>
+          <div class="calc-body">
+            <div class="calc-inputs">
+              <div class="calc-input-group">
+                <label class="calc-label">Spot Price Override (leave blank for live)</label>
+                <input class="calc-input" type="number" id="junk-spot" placeholder="Auto (live spot)" min="0" step="0.01" oninput="calcJunk()">
+              </div>
+              <div class="calc-input-group">
+                <label class="calc-label">Face Value ($) — Enter total face value of all coins</label>
+                <input class="calc-input" type="number" id="junk-face" placeholder="10.00" min="0" step="0.01" oninput="calcJunk()">
+              </div>
+
+              <div style="margin: 8px 0; border-top: 1px solid var(--border); padding-top: 16px;">
+                <div class="calc-label" style="margin-bottom: 12px;">— OR enter individual coin counts —</div>
+                <div class="junk-grid">
+                  <div class="junk-coin-row">
+                    <span class="junk-coin-label">Morgan/Peace Dollars</span>
+                    <input class="junk-coin-input" type="number" id="j-dollar" placeholder="0" min="0" oninput="calcJunkCoins()">
+                  </div>
+                  <div class="junk-coin-row">
+                    <span class="junk-coin-label">Half Dollars (pre-65)</span>
+                    <input class="junk-coin-input" type="number" id="j-half" placeholder="0" min="0" oninput="calcJunkCoins()">
+                  </div>
+                  <div class="junk-coin-row">
+                    <span class="junk-coin-label">Quarters (pre-65)</span>
+                    <input class="junk-coin-input" type="number" id="j-quarter" placeholder="0" min="0" oninput="calcJunkCoins()">
+                  </div>
+                  <div class="junk-coin-row">
+                    <span class="junk-coin-label">Dimes (pre-65)</span>
+                    <input class="junk-coin-input" type="number" id="j-dime" placeholder="0" min="0" oninput="calcJunkCoins()">
+                  </div>
+                  <div class="junk-coin-row">
+                    <span class="junk-coin-label">War Nickels (1942-45)</span>
+                    <input class="junk-coin-input" type="number" id="j-nickel" placeholder="0" min="0" oninput="calcJunkCoins()">
+                  </div>
+                  <div class="junk-coin-row">
+                    <span class="junk-coin-label">40% Halves (1965-70)</span>
+                    <input class="junk-coin-input" type="number" id="j-half40" placeholder="0" min="0" oninput="calcJunkCoins()">
+                  </div>
+                </div>
+              </div>
+              <button class="calc-btn" onclick="calcJunk()">Calculate Melt Value</button>
+            </div>
+
+            <div class="calc-results" id="junk-results">
+              <div class="calc-empty">
+                <div class="calc-empty-icon">🪙</div>
+                <div class="calc-empty-text">Enter coin quantities above</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 20px; padding: 16px 20px; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-lg);">
+          <p style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--silver-dim); opacity: 0.7;">Melt values are theoretical based on silver content. Actual coin values may be higher due to numismatic premiums. Junk silver is often sold at a percentage above or below melt value depending on market conditions.</p>
+        </div>
+      </div>
+
+      <!-- ── CALC 4: DCA TRACKER ── -->
+      <div id="calc-dca" class="calc-panel">
+        <div class="calc-box">
+          <div class="calc-header">
+            <h3>Dollar Cost Average Tracker</h3>
+            <p>Log your silver purchases to track your blended cost basis, total ounces, and current gain or loss.</p>
+          </div>
+          <div style="padding: 28px; border-bottom: 1px solid var(--border);">
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr auto; gap: 12px; align-items: end;">
+              <div class="calc-input-group">
+                <label class="calc-label">Date</label>
+                <input class="calc-input" type="date" id="dca-date" style="font-size:14px;">
+              </div>
+              <div class="calc-input-group">
+                <label class="calc-label">Ounces purchased</label>
+                <input class="calc-input" type="number" id="dca-oz" placeholder="10" min="0" step="0.001">
+              </div>
+              <div class="calc-input-group">
+                <label class="calc-label">Price paid per oz ($)</label>
+                <input class="calc-input" type="number" id="dca-price" placeholder="80.50" min="0" step="0.01">
+              </div>
+              <button class="calc-btn" style="margin-top:0; width:auto; padding: 13px 20px;" onclick="addDcaEntry()">+ Add</button>
+            </div>
+          </div>
+
+          <div style="padding: 28px;">
+            <!-- Summary row -->
+            <div id="dca-summary" style="display:none; margin-bottom: 24px;">
+              <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px;">
+                <div style="background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px;">
+                  <div class="calc-label" style="margin-bottom:6px;">Total oz</div>
+                  <div style="font-family:'Bebas Neue',sans-serif; font-size:32px; color:var(--silver-light);" id="dca-total-oz">0</div>
+                </div>
+                <div style="background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px;">
+                  <div class="calc-label" style="margin-bottom:6px;">Avg cost / oz</div>
+                  <div style="font-family:'Bebas Neue',sans-serif; font-size:32px; color:var(--silver-light);" id="dca-avg-cost">$0</div>
+                </div>
+                <div style="background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px;">
+                  <div class="calc-label" style="margin-bottom:6px;">Current value</div>
+                  <div style="font-family:'Bebas Neue',sans-serif; font-size:32px; color:var(--silver-light);" id="dca-cur-val">$0</div>
+                </div>
+                <div style="background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px;">
+                  <div class="calc-label" style="margin-bottom:6px;">Total gain/loss</div>
+                  <div style="font-family:'Bebas Neue',sans-serif; font-size:32px;" id="dca-gl">$0</div>
+                </div>
+              </div>
+
+              <table class="dca-table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Ounces</th>
+                    <th>Price Paid/oz</th>
+                    <th>Total Paid</th>
+                    <th>Current Value</th>
+                    <th>Gain/Loss</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody id="dca-tbody"></tbody>
+              </table>
+            </div>
+
+            <div id="dca-empty" style="text-align:center; padding: 40px 0;">
+              <div style="font-size:32px; opacity:0.2; margin-bottom:8px;">📈</div>
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--silver-dim); letter-spacing:0.1em; text-transform:uppercase;">Add your first purchase above to start tracking</div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 20px; padding: 16px 20px; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-lg); display:flex; justify-content:space-between; align-items:center;">
+          <p style="font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--silver-dim); opacity: 0.7;">Data is stored in your browser only and is not saved to any server. Clearing your browser data will reset the tracker.</p>
+          <button onclick="clearDca()" style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--red); background:transparent; border:1px solid rgba(232,69,69,0.3); border-radius:var(--radius); padding:6px 12px; cursor:pointer; letter-spacing:0.08em; text-transform:uppercase;">Clear All</button>
+        </div>
+      </div>
+
+      <!-- AFFILIATE CALLOUT -->
+      <div style="margin-top: 48px; background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 32px; display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap;">
+        <div>
+          <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.15em; text-transform:uppercase; color:var(--silver-dim); margin-bottom:8px;">Ready to Buy?</div>
+          <h3 style="font-family:'Bebas Neue',sans-serif; font-size:24px; letter-spacing:2px; color:var(--silver-light); margin-bottom:6px;">Compare Dealer Prices Before You Buy</h3>
+          <p style="font-size:13px; color:var(--silver-dim); font-weight:300;">Use OwnAG's live price comparison to find the lowest premium across top silver dealers.</p>
+        </div>
+        <button class="btn-primary" onclick="showPage('home'); scrollToId('prices')" style="white-space:nowrap; flex-shrink:0;">Compare Prices Now →</button>
+      </div>
+
+    </div>
+  </section>
+
+</div><!-- end calculators -->
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-inner">
@@ -1771,6 +2256,9 @@ footer {
       <h4>Tools</h4>
       <a href="#" onclick="showPage('home'); scrollToId('prices')">Price Comparison</a>
       <a href="#" onclick="showPage('home'); scrollToId('chart')">Price Charts</a>
+      <a href="#" onclick="showPage('calculators')">Silver Value Calculator</a>
+      <a href="#" onclick="showPage('calculators'); switchCalc('junk', null)">Junk Silver Calculator</a>
+      <a href="#" onclick="showPage('calculators'); switchCalc('dca', null)">DCA Tracker</a>
       <a href="#" onclick="showPage('home'); scrollToId('newsletter')">Newsletter</a>
     </div>
     <div class="footer-col">
@@ -2003,6 +2491,264 @@ function subscribeNL() {
   document.getElementById('nl-form').style.display = 'none';
   document.getElementById('nl-success').style.display = 'block';
 }
+
+// ── CALCULATOR TAB SWITCHER ──────────────────────────────────────────────────
+function switchCalc(name, btn) {
+  document.querySelectorAll('.calc-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.calc-panel').forEach(p => p.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const panel = document.getElementById('calc-' + name);
+  if (panel) panel.classList.add('active');
+}
+
+// ── CALC 1: SILVER VALUE ─────────────────────────────────────────────────────
+function calcValue() {
+  const qty     = parseFloat(document.getElementById('val-qty').value);
+  const unit    = parseFloat(document.getElementById('val-unit').value);
+  const purity  = parseFloat(document.getElementById('val-purity').value);
+  const spotOvr = parseFloat(document.getElementById('val-spot').value);
+  const spot    = (!isNaN(spotOvr) && spotOvr > 0) ? spotOvr : (silverSpot || 74.57);
+  const el      = document.getElementById('val-results');
+
+  if (isNaN(qty) || qty <= 0) {
+    el.innerHTML = `<div class="calc-empty"><div class="calc-empty-icon">⬡</div><div class="calc-empty-text">Enter quantity above</div></div>`;
+    return;
+  }
+
+  const totalOz    = qty * unit;
+  const pureOz     = totalOz * purity;
+  const meltValue  = pureOz * spot;
+  const spotUsed   = spot;
+
+  el.innerHTML = `
+    <div class="calc-result-title">Melt Value at $${spotUsed.toFixed(2)}/oz spot</div>
+    <div class="calc-result-main">$${meltValue.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}</div>
+    <div class="calc-result-sub">Total melt value</div>
+    <div class="calc-result-rows">
+      <div class="calc-result-row"><span class="calc-result-row-label">Total troy ounces</span><span class="calc-result-row-value">${totalOz.toFixed(4)} oz</span></div>
+      <div class="calc-result-row"><span class="calc-result-row-label">Pure silver oz</span><span class="calc-result-row-value">${pureOz.toFixed(4)} oz</span></div>
+      <div class="calc-result-row"><span class="calc-result-row-label">Purity</span><span class="calc-result-row-value">${(purity * 1000).toFixed(1)} fineness</span></div>
+      <div class="calc-result-row"><span class="calc-result-row-label">Spot used</span><span class="calc-result-row-value">$${spotUsed.toFixed(2)}/oz</span></div>
+      <div class="calc-result-row"><span class="calc-result-row-label">Value per oz (pure)</span><span class="calc-result-row-value">$${(spot * purity).toFixed(2)}</span></div>
+    </div>`;
+}
+
+// ── CALC 2: BREAK-EVEN ───────────────────────────────────────────────────────
+function calcPremium() {
+  const paid      = parseFloat(document.getElementById('pe-paid').value);
+  const qty       = parseFloat(document.getElementById('pe-qty').value) || 1;
+  const sellPrem  = parseFloat(document.getElementById('pe-sellprem').value) || 0;
+  const target    = parseFloat(document.getElementById('pe-target').value) || 0;
+  const spot      = silverSpot || 74.57;
+  const el        = document.getElementById('pe-results');
+
+  if (isNaN(paid) || paid <= 0) {
+    el.innerHTML = `<div class="calc-empty"><div class="calc-empty-icon">⬡</div><div class="calc-empty-text">Enter your purchase price above</div></div>`;
+    return;
+  }
+
+  // Break-even spot = paid - sell premium
+  const breakEven     = paid - sellPrem;
+  const targetSpot    = paid + target - sellPrem;
+  const totalPaid     = paid * qty;
+  const currentValue  = (spot + sellPrem) * qty;
+  const currentGL     = currentValue - totalPaid;
+  const currentGLPct  = (currentGL / totalPaid) * 100;
+  const isUp          = currentGL >= 0;
+
+  el.innerHTML = `
+    <div class="calc-result-title">Break-even spot price needed</div>
+    <div class="calc-result-main">$${breakEven.toFixed(2)}</div>
+    <div class="calc-result-sub">spot needed to break even</div>
+    <div class="calc-result-rows">
+      <div class="calc-result-row"><span class="calc-result-row-label">Current spot</span><span class="calc-result-row-value">$${spot.toFixed(2)}/oz</span></div>
+      <div class="calc-result-row"><span class="calc-result-row-label">vs break-even</span><span class="calc-result-row-value ${spot >= breakEven ? 'positive' : 'negative'}">${spot >= breakEven ? '+' : ''}$${(spot - breakEven).toFixed(2)}</span></div>
+      <div class="calc-result-row"><span class="calc-result-row-label">Total paid (${qty} oz)</span><span class="calc-result-row-value">$${totalPaid.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}</span></div>
+      <div class="calc-result-row"><span class="calc-result-row-label">Current value</span><span class="calc-result-row-value">$${currentValue.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}</span></div>
+      <div class="calc-result-row"><span class="calc-result-row-label">Current gain/loss</span><span class="calc-result-row-value ${isUp ? 'positive' : 'negative'}">${isUp ? '+' : ''}$${currentGL.toFixed(2)} (${currentGLPct.toFixed(1)}%)</span></div>
+      ${target > 0 ? `<div class="calc-result-row"><span class="calc-result-row-label">Spot for $${target}/oz target</span><span class="calc-result-row-value neutral">$${targetSpot.toFixed(2)}/oz</span></div>` : ''}
+    </div>`;
+}
+
+// ── CALC 3: JUNK SILVER ──────────────────────────────────────────────────────
+// Silver content per coin in troy oz
+const JUNK_OZ = {
+  dollar:  0.77344,   // Morgan/Peace dollar 90%
+  half:    0.36169,   // Walking Liberty/Franklin/Kennedy pre-65 half 90%
+  quarter: 0.18084,   // Washington quarter 90%
+  dime:    0.07234,   // Roosevelt/Mercury dime 90%
+  nickel:  0.05626,   // War Nickel 35% silver
+  half40:  0.14792    // Kennedy 40% half 1965-70
+};
+
+function calcJunkCoins() {
+  // Sync individual coins to face value field
+  const dollar  = parseFloat(document.getElementById('j-dollar').value)  || 0;
+  const half    = parseFloat(document.getElementById('j-half').value)    || 0;
+  const quarter = parseFloat(document.getElementById('j-quarter').value) || 0;
+  const dime    = parseFloat(document.getElementById('j-dime').value)    || 0;
+  const nickel  = parseFloat(document.getElementById('j-nickel').value)  || 0;
+  const half40  = parseFloat(document.getElementById('j-half40').value)  || 0;
+
+  // Calculate face value
+  const face = dollar * 1 + half * 0.5 + quarter * 0.25 + dime * 0.10 + nickel * 0.05 + half40 * 0.5;
+  if (face > 0) document.getElementById('junk-face').value = face.toFixed(2);
+
+  calcJunk();
+}
+
+function calcJunk() {
+  const spotOvr = parseFloat(document.getElementById('junk-spot').value);
+  const spot    = (!isNaN(spotOvr) && spotOvr > 0) ? spotOvr : (silverSpot || 74.57);
+  const el      = document.getElementById('junk-results');
+
+  const dollar  = parseFloat(document.getElementById('j-dollar').value)  || 0;
+  const half    = parseFloat(document.getElementById('j-half').value)    || 0;
+  const quarter = parseFloat(document.getElementById('j-quarter').value) || 0;
+  const dime    = parseFloat(document.getElementById('j-dime').value)    || 0;
+  const nickel  = parseFloat(document.getElementById('j-nickel').value)  || 0;
+  const half40  = parseFloat(document.getElementById('j-half40').value)  || 0;
+  const faceIn  = parseFloat(document.getElementById('junk-face').value) || 0;
+
+  // Check if using coin counts or face value
+  const usingCoins = (dollar + half + quarter + dime + nickel + half40) > 0;
+
+  let totalOz = 0;
+  let faceVal = 0;
+  let rows    = '';
+
+  if (usingCoins) {
+    const coins = [
+      { label: 'Morgan/Peace Dollars', qty: dollar, oz: JUNK_OZ.dollar, face: 1.00 },
+      { label: 'Pre-65 Half Dollars', qty: half, oz: JUNK_OZ.half, face: 0.50 },
+      { label: 'Pre-65 Quarters', qty: quarter, oz: JUNK_OZ.quarter, face: 0.25 },
+      { label: 'Pre-65 Dimes', qty: dime, oz: JUNK_OZ.dime, face: 0.10 },
+      { label: 'War Nickels', qty: nickel, oz: JUNK_OZ.nickel, face: 0.05 },
+      { label: '40% Kennedy Halves', qty: half40, oz: JUNK_OZ.half40, face: 0.50 }
+    ];
+    coins.forEach(c => {
+      if (c.qty > 0) {
+        const oz  = c.qty * c.oz;
+        const val = oz * spot;
+        totalOz  += oz;
+        faceVal  += c.qty * c.face;
+        rows += `<div class="calc-result-row"><span class="calc-result-row-label">${c.qty}x ${c.label}</span><span class="calc-result-row-value">$${val.toFixed(2)} (${oz.toFixed(4)} oz)</span></div>`;
+      }
+    });
+  } else if (faceIn > 0) {
+    // Face value method: $1 face = 0.715 oz for 90% silver coins
+    totalOz = faceIn * 0.715;
+    faceVal = faceIn;
+    rows = `<div class="calc-result-row"><span class="calc-result-row-label">Face value entered</span><span class="calc-result-row-value">$${faceIn.toFixed(2)}</span></div>
+            <div class="calc-result-row"><span class="calc-result-row-label">Silver oz (×0.715)</span><span class="calc-result-row-value">${totalOz.toFixed(4)} oz</span></div>`;
+  } else {
+    el.innerHTML = `<div class="calc-empty"><div class="calc-empty-icon">🪙</div><div class="calc-empty-text">Enter coin quantities above</div></div>`;
+    return;
+  }
+
+  const meltValue  = totalOz * spot;
+  const multiplier = faceVal > 0 ? (meltValue / faceVal).toFixed(1) : '--';
+
+  el.innerHTML = `
+    <div class="calc-result-title">Melt value at $${spot.toFixed(2)}/oz</div>
+    <div class="calc-result-main">$${meltValue.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2})}</div>
+    <div class="calc-result-sub">total silver melt value</div>
+    <div class="calc-result-rows">
+      ${rows}
+      <div class="calc-result-row"><span class="calc-result-row-label">Total silver oz</span><span class="calc-result-row-value">${totalOz.toFixed(4)} oz</span></div>
+      <div class="calc-result-row"><span class="calc-result-row-label">Face value</span><span class="calc-result-row-value">$${faceVal.toFixed(2)}</span></div>
+      <div class="calc-result-row"><span class="calc-result-row-label">Melt-to-face ratio</span><span class="calc-result-row-value">${multiplier}×</span></div>
+    </div>`;
+}
+
+// ── CALC 4: DCA TRACKER ──────────────────────────────────────────────────────
+let dcaEntries = JSON.parse(localStorage.getItem('ownag-dca') || '[]');
+
+function addDcaEntry() {
+  const date  = document.getElementById('dca-date').value;
+  const oz    = parseFloat(document.getElementById('dca-oz').value);
+  const price = parseFloat(document.getElementById('dca-price').value);
+
+  if (!date || isNaN(oz) || oz <= 0 || isNaN(price) || price <= 0) {
+    alert('Please fill in date, ounces, and price per oz.');
+    return;
+  }
+
+  dcaEntries.push({ date, oz, price });
+  dcaEntries.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+  try { localStorage.setItem('ownag-dca', JSON.stringify(dcaEntries)); } catch(e) {}
+
+  document.getElementById('dca-oz').value    = '';
+  document.getElementById('dca-price').value = '';
+  renderDca();
+}
+
+function removeDcaEntry(idx) {
+  dcaEntries.splice(idx, 1);
+  try { localStorage.setItem('ownag-dca', JSON.stringify(dcaEntries)); } catch(e) {}
+  renderDca();
+}
+
+function clearDca() {
+  if (!confirm('Clear all entries?')) return;
+  dcaEntries = [];
+  try { localStorage.removeItem('ownag-dca'); } catch(e) {}
+  renderDca();
+}
+
+function renderDca() {
+  const spot   = silverSpot || 74.57;
+  const empty  = document.getElementById('dca-empty');
+  const sumDiv = document.getElementById('dca-summary');
+  const tbody  = document.getElementById('dca-tbody');
+
+  if (!dcaEntries.length) {
+    empty.style.display  = 'block';
+    sumDiv.style.display = 'none';
+    return;
+  }
+
+  empty.style.display  = 'none';
+  sumDiv.style.display = 'block';
+
+  let totalOz   = 0;
+  let totalPaid = 0;
+  dcaEntries.forEach(e => { totalOz += e.oz; totalPaid += e.oz * e.price; });
+
+  const avgCost  = totalPaid / totalOz;
+  const curValue = totalOz * spot;
+  const gl       = curValue - totalPaid;
+  const glPct    = (gl / totalPaid) * 100;
+  const isUp     = gl >= 0;
+
+  document.getElementById('dca-total-oz').textContent = totalOz.toFixed(3) + ' oz';
+  document.getElementById('dca-avg-cost').textContent = '$' + avgCost.toFixed(2);
+  document.getElementById('dca-cur-val').textContent  = '$' + curValue.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+
+  const glEl = document.getElementById('dca-gl');
+  glEl.textContent = (isUp ? '+' : '') + '$' + gl.toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}) + ' (' + glPct.toFixed(1) + '%)';
+  glEl.style.color = isUp ? 'var(--green)' : 'var(--red)';
+
+  tbody.innerHTML = dcaEntries.map((e, i) => {
+    const paid  = e.oz * e.price;
+    const val   = e.oz * spot;
+    const egl   = val - paid;
+    const up    = egl >= 0;
+    return `<tr>
+      <td>${e.date}</td>
+      <td>${e.oz.toFixed(3)}</td>
+      <td>$${e.price.toFixed(2)}</td>
+      <td>$${paid.toFixed(2)}</td>
+      <td>$${val.toFixed(2)}</td>
+      <td style="color:${up ? 'var(--green)' : 'var(--red)'}">${up ? '+' : ''}$${egl.toFixed(2)}</td>
+      <td><button onclick="removeDcaEntry(${i})" style="background:transparent;border:none;color:var(--red);cursor:pointer;font-size:16px;">×</button></td>
+    </tr>`;
+  }).join('');
+}
+
+// Init DCA on load
+renderDca();
 
 // ── INIT ─────────────────────────────────────────────────────────────────────
 fetchPrices();
