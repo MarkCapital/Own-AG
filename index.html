@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta name="fo-verify" content="c5ce35a9-9dbc-45ee-abbc-92fd4b6f5942" />  
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -50,7 +49,8 @@
   "url": "https://ownag.com",
   "description": "Silver price comparison and investment education platform. Compare dealer premiums, track spot prices, and learn how to invest in physical silver and silver IRAs.",
   "areaServed": "United States",
-  "serviceType": ["Investment Education", "Price Comparison", "Market Data", "Newsletter"]
+  "serviceType": ["Investment Education", "Price Comparison", "Market Data", "Silver Calculators"],
+  "email": "ownagsupport@gmail.com",
 }
 </script>
 
@@ -1317,8 +1317,8 @@ footer {
     <li><a href="#" onclick="showPage('home'); scrollToId('chart')">Charts</a></li>
     <li><a href="#" onclick="showPage('education')">Learn</a></li>
     <li><a href="#" onclick="showPage('calculators')">Calculators</a></li>
-    <li><a href="#" onclick="showPage('home'); scrollToId('newsletter')">Newsletter</a></li>
-    <li><a href="#" class="nav-cta" onclick="showPage('home'); scrollToId('newsletter')">Subscribe Free</a></li>
+    <li><a href="#" onclick="showPage('home'); scrollToId('faq')">FAQ</a></li>
+    <li><a href="mailto:ownagsupport@gmail.com" class="nav-cta">Contact Us</a></li>
   </ul>
 </nav>
 
@@ -1385,7 +1385,7 @@ footer {
           </thead>
           <tbody id="dealer-table">
             <tr>
-              <td class="dealer-name">APMEX <span class="dealer-badge best">BEST COIN</span></td>
+              <td class="dealer-name">APMEX</td>
               <td class="price-cell" id="apmex-eagle">--</td>
               <td class="premium-cell lowest" id="apmex-eagle-prem">--</td>
               <td class="price-cell" id="apmex-bar">--</td>
@@ -1403,7 +1403,7 @@ footer {
               <td><a href="https://www.jmbullion.com" target="_blank" rel="noopener" class="buy-btn">Buy →</a></td>
             </tr>
             <tr>
-              <td class="dealer-name">SD Bullion <span class="dealer-badge">LOW PREMIUM</span></td>
+              <td class="dealer-name">SD Bullion</td>
               <td class="price-cell" id="sd-eagle">--</td>
               <td class="premium-cell" id="sd-eagle-prem">--</td>
               <td class="price-cell" id="sd-bar">--</td>
@@ -1455,8 +1455,8 @@ footer {
       <div class="stat-label">Cost to Use</div>
     </div>
     <div class="stat-item">
-      <div class="stat-num">2x</div>
-      <div class="stat-label">Newsletter Per Month</div>
+      <div class="stat-num">Free</div>
+      <div class="stat-label">Always & Forever</div>
     </div>
   </div>
 </div>
@@ -1570,72 +1570,6 @@ footer {
         <a href="https://equitytrustcompany380f9.referralrock.com/l/JONATHANST01/" target="_blank" rel="noopener" class="btn-primary" style="display:block; margin-bottom:10px; padding:14px 32px; font-size:15px; white-space:nowrap;">Open a Silver IRA →</a>
         <button class="btn-outline" onclick="showArticle('art3')" style="color:var(--silver-dim); border-color:var(--border); font-size:12px; padding:8px 20px; white-space:nowrap;">How it works</button>
         <p style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--silver-dim); opacity:0.5; margin-top:10px; max-width:200px;">OwnAG may earn a referral fee.<br>Not investment advice.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- NEWSLETTER -->
-<section class="newsletter-section" id="newsletter">
-  <div class="section-inner">
-    <div class="section-eyebrow">Newsletter</div>
-    <h2 class="section-title">THE OWNAG<br>MARKET BRIEF</h2>
-    <p class="section-sub">Bi-weekly silver market analysis, price movement breakdowns, and dealer deal spotlights. Free, always.</p>
-
-    <div class="newsletter-box">
-      <div class="newsletter-left">
-        <h3 style="font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 2px; color: var(--silver-light); margin-bottom: 20px;">LATEST ISSUE PREVIEW</h3>
-        <div class="newsletter-preview">
-          <div class="nl-heading">OWNAG MARKET BRIEF — Issue #12</div>
-          <div style="color: var(--silver-dim); font-size: 11px; margin-bottom: 12px;">March 15, 2026</div>
-          <div class="nl-divider"></div>
-          <div class="nl-heading" style="font-size: 11px;">📊 THIS WEEK'S NUMBERS</div>
-          <div class="nl-gold">XAG/USD: Loading spot price...</div>
-          <div>Gold/Silver Ratio: Loading...</div>
-          <div>Best Dealer Premium: JM Bullion at +$2.89/oz</div>
-          <div class="nl-divider"></div>
-          <div class="nl-heading" style="font-size: 11px;">📰 WHAT'S MOVING SILVER</div>
-          <div style="color: var(--silver-dim);">Fed rate hold signals + industrial demand from solar panel manufacturing driving silver demand to multi-year highs...</div>
-          <div class="nl-divider"></div>
-          <div class="nl-heading" style="font-size: 11px;">📚 THIS WEEK'S LESSON</div>
-          <div style="color: var(--silver-dim);">What is "junk silver" and why experienced stackers love it...</div>
-          <div class="nl-divider"></div>
-          <div class="nl-heading" style="font-size: 11px; color: var(--green);">🏆 DEAL SPOTLIGHT</div>
-          <div style="color: var(--green);">SD Bullion 10 oz bars — lowest premium this week</div>
-        </div>
-      </div>
-
-      <div class="newsletter-right">
-        <h3 style="font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 2px; color: var(--silver-light); margin-bottom: 8px;">SUBSCRIBE FREE</h3>
-        <p style="font-size: 14px; color: var(--silver-dim); margin-bottom: 28px; font-weight: 300;">Join thousands of silver investors getting bi-weekly market analysis delivered to their inbox.</p>
-
-        <div id="nl-form">
-          <div class="form-group">
-            <label>First Name</label>
-            <input type="text" id="nl-name" placeholder="Jonathan">
-          </div>
-          <div class="form-group">
-            <label>Email Address</label>
-            <input type="email" id="nl-email" placeholder="you@example.com">
-          </div>
-          <div class="form-group">
-            <label>I am primarily a...</label>
-            <select id="nl-type">
-              <option value="">Select one...</option>
-              <option>Complete beginner to silver</option>
-              <option>Existing silver investor / stacker</option>
-              <option>Retirement-focused investor</option>
-              <option>General alternative investment seeker</option>
-            </select>
-          </div>
-          <button class="btn-primary" onclick="subscribeNL()" style="width: 100%; padding: 14px; font-size: 15px; margin-top: 8px;">Subscribe — It's Free →</button>
-          <p style="font-size: 11px; color: var(--silver-dim); margin-top: 12px; font-family: 'IBM Plex Mono', monospace; opacity: 0.6;">No spam. Unsubscribe anytime. Nothing here constitutes investment advice.</p>
-        </div>
-
-        <div class="nl-success" id="nl-success">
-          <h3>SUBSCRIBED.</h3>
-          <p>Welcome to OwnAG. Your first issue arrives in the next two weeks. Check your inbox for a confirmation.</p>
-        </div>
       </div>
     </div>
   </div>
@@ -1952,9 +1886,9 @@ footer {
     <h2>Protecting the Silver Itself</h2>
     <p>Silver tarnishes with exposure to air and moisture. Store coins in original mint packaging, airtight capsules, or mylar bags. Keep silica gel packets in your safe to absorb moisture. Handle coins by the edges only — fingerprints accelerate toning. Never clean silver coins — cleaning almost always reduces numismatic value.</p>
     <div class="article-cta">
-      <h3>GET THE OWNAG NEWSLETTER</h3>
-      <p>Bi-weekly silver market analysis, storage tips, and dealer deal spotlights. Free.</p>
-      <button class="btn-primary" onclick="showPage('home'); scrollToId('newsletter')">Subscribe Free →</button>
+      <h3>HAVE A QUESTION?</h3>
+      <p>Reach out anytime — we're happy to help with silver storage, buying questions, or anything else.</p>
+      <a href="mailto:ownagsupport@gmail.com" class="btn-primary" style="display:inline-block;">Email Us →</a>
     </div>
   </div>
   <div style="text-align: center; padding: 0 40px 60px;">
@@ -1986,8 +1920,8 @@ footer {
     <p>Nothing in this article constitutes investment advice. Speak with a licensed financial adviser before making investment decisions.</p>
     <div class="article-cta">
       <h3>TRACK SILVER PRICES DAILY</h3>
-      <p>Stay informed with OwnAG's live price dashboard and bi-weekly market newsletter.</p>
-      <button class="btn-primary" onclick="showPage('home'); scrollToId('newsletter')">Subscribe Free →</button>
+      <p>Stay informed with OwnAG's live price dashboard and dealer comparison tool. Questions? Reach us at ownagsupport@gmail.com.</p>
+      <button class="btn-primary" onclick="showPage('home'); scrollToId('prices')">View Price Dashboard →</button>
     </div>
   </div>
   <div style="text-align: center; padding: 0 40px 60px;">
@@ -2272,6 +2206,7 @@ footer {
     <div>
       <div class="footer-logo">OWN<span class="ag">AG</span></div>
       <div class="footer-tagline">Silver price data, education & market analysis</div>
+      <div style="margin: 12px 0;"><a href="mailto:ownagsupport@gmail.com" style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--silver); text-decoration:none;">ownagsupport@gmail.com</a></div>
       <div class="footer-disclaimer">Nothing on OwnAG constitutes investment advice. Always consult a licensed financial adviser before making investment decisions. OwnAG may earn affiliate commissions from dealer links.</div>
     </div>
     <div class="footer-col">
@@ -2281,7 +2216,7 @@ footer {
       <a href="#" onclick="showPage('calculators')">Silver Value Calculator</a>
       <a href="#" onclick="showPage('calculators'); switchCalc('junk', null)">Junk Silver Calculator</a>
       <a href="#" onclick="showPage('calculators'); switchCalc('dca', null)">DCA Tracker</a>
-      <a href="#" onclick="showPage('home'); scrollToId('newsletter')">Newsletter</a>
+      <a href="mailto:ownagsupport@gmail.com">Contact Us</a>
     </div>
     <div class="footer-col">
       <h4>Learn</h4>
@@ -2502,17 +2437,6 @@ function toggleFaq(el) {
     answer.classList.add('open');
     icon.textContent = '−';
   }
-}
-
-// ── NEWSLETTER ───────────────────────────────────────────────────────────────
-function subscribeNL() {
-  const email = document.getElementById('nl-email').value.trim();
-  if (!email || !email.includes('@')) {
-    document.getElementById('nl-email').style.borderColor = '#E84545';
-    return;
-  }
-  document.getElementById('nl-form').style.display = 'none';
-  document.getElementById('nl-success').style.display = 'block';
 }
 
 // ── CALCULATOR TAB SWITCHER ──────────────────────────────────────────────────
