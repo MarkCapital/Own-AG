@@ -1318,6 +1318,7 @@ footer {
     <li><a href="#" onclick="showPage('home'); scrollToId('chart')">Charts</a></li>
     <li><a href="#" onclick="showPage('education')">Learn</a></li>
     <li><a href="#" onclick="showPage('calculators')">Calculators</a></li>
+    <li><a href="#" onclick="showPage('beginner')">Beginner Guide</a></li>
     <li><a href="#" onclick="showPage('home'); scrollToId('faq')">FAQ</a></li>
     <li><a href="mailto:ownagsupport@gmail.com" class="nav-cta">Contact Us</a></li>
   </ul>
@@ -1349,6 +1350,13 @@ footer {
         </div>
       </div>
 
+      <!-- BEST DEAL BANNER -->
+      <div id="best-deal-banner" style="background:rgba(61,186,110,0.08); border-bottom:1px solid rgba(61,186,110,0.2); padding:10px 24px; display:flex; align-items:center; gap:12px;">
+        <span style="color:var(--green); font-size:14px;">🏆</span>
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--silver-dim); letter-spacing:0.08em; text-transform:uppercase;">Best Deal Right Now</span>
+        <span id="best-deal-text" style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--green); font-weight:600;">Loading...</span>
+      </div>
+
       <!-- SPOT STATS -->
       <div class="spot-row">
         <div class="spot-item">
@@ -1371,6 +1379,19 @@ footer {
           <div class="spot-value" id="spot-kg">$---.-</div>
           <div class="spot-change neutral">32.15 oz per kg</div>
         </div>
+      </div>
+
+      <!-- QUICK SILVER WORTH WIDGET -->
+      <div style="background:var(--bg3); border-bottom:1px solid var(--border); padding:20px 24px; display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
+        <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--silver-dim); flex-shrink:0;">⚡ Quick Value</span>
+        <div style="display:flex; align-items:center; gap:8px; flex:1; min-width:200px;">
+          <input type="number" id="quick-oz" placeholder="How many oz?" min="0" step="0.01"
+            style="width:160px; padding:8px 12px; background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); color:var(--silver-light); font-family:'IBM Plex Mono',monospace; font-size:13px; outline:none;"
+            oninput="calcQuickValue()">
+          <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--silver-dim);">oz of .999 silver =</span>
+          <span id="quick-result" style="font-family:'Bebas Neue',sans-serif; font-size:28px; color:var(--silver-light); letter-spacing:1px;">$--</span>
+        </div>
+        <button class="btn-outline" onclick="showPage('calculators')" style="font-size:11px; padding:7px 14px; white-space:nowrap;">Full Calculators →</button>
       </div>
 
       <!-- DEALER TABLE -->
@@ -1557,6 +1578,175 @@ footer {
         <h3>Silver as an Inflation Hedge: Does It Actually Work?</h3>
         <p>The case for silver as a store of value — backed by data, not hype.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- JUNK SILVER FACE VALUE TABLE -->
+<section style="background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:80px 40px;">
+  <div class="section-inner">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:start;">
+      <div>
+        <div class="section-eyebrow">Quick Reference</div>
+        <h2 class="section-title">JUNK SILVER<br>FACE VALUE TABLE</h2>
+        <p class="section-sub">Pre-1965 US coins contain 90% silver. This table shows exactly how much silver you get per coin and per dollar of face value at today's live spot price.</p>
+        <div style="margin-top:24px; padding:16px 20px; background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius); font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--silver-dim);">
+          <div style="color:var(--silver-light); margin-bottom:4px;">$1 face value of 90% silver coins</div>
+          <div>= 0.715 troy oz of silver</div>
+          <div>= <span id="junk-dollar-val" style="color:var(--silver-light); font-weight:600;">$--</span> at current spot</div>
+        </div>
+      </div>
+      <div>
+        <table style="width:100%; border-collapse:collapse; font-size:13px;">
+          <thead>
+            <tr style="background:var(--bg3); border-bottom:1px solid var(--border);">
+              <th style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--silver-dim); padding:10px 14px; text-align:left;">Coin</th>
+              <th style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--silver-dim); padding:10px 14px; text-align:right;">Silver oz</th>
+              <th style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--silver-dim); padding:10px 14px; text-align:right;">Melt Value</th>
+            </tr>
+          </thead>
+          <tbody id="junk-table-body">
+            <tr style="border-bottom:1px solid var(--border);"><td style="padding:10px 14px; color:var(--silver-light);">Loading...</td><td></td><td></td></tr>
+          </tbody>
+        </table>
+        <p style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--silver-dim); margin-top:12px; opacity:0.6;">Values update with live spot price. War Nickels (1942–45) are 35% silver. 40% Kennedy Halves (1965–70) listed separately.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SILVER VS ALTERNATIVES -->
+<section style="background:var(--bg); padding:80px 40px;">
+  <div class="section-inner">
+    <div class="section-eyebrow">Asset Comparison</div>
+    <h2 class="section-title">SILVER VS GOLD<br>VS BITCOIN</h2>
+    <p class="section-sub">How does physical silver stack up against other popular alternative assets? A side-by-side breakdown for investors weighing their options.</p>
+
+    <div style="margin-top:48px; display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden;">
+
+      <!-- Silver -->
+      <div style="background:var(--bg2); padding:32px 28px;">
+        <div style="font-family:'Bebas Neue',sans-serif; font-size:32px; letter-spacing:2px; color:var(--silver-light); margin-bottom:4px;">SILVER</div>
+        <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; color:var(--silver-dim); margin-bottom:24px; text-transform:uppercase;">Physical Metal · Ag · Element 47</div>
+        <div style="display:flex; flex-direction:column; gap:14px;">
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding-bottom:10px;">
+            <span style="font-size:13px; color:var(--silver-dim);">Volatility</span>
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--silver-light);">Medium-High</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding-bottom:10px;">
+            <span style="font-size:13px; color:var(--silver-dim);">Inflation hedge</span>
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--green);">Strong ✓</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding-bottom:10px;">
+            <span style="font-size:13px; color:var(--silver-dim);">Industrial demand</span>
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--green);">Yes — 50% ✓</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding-bottom:10px;">
+            <span style="font-size:13px; color:var(--silver-dim);">IRA eligible</span>
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--green);">Yes ✓</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding-bottom:10px;">
+            <span style="font-size:13px; color:var(--silver-dim);">Storage needed</span>
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--silver-dim);">Physical safe</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding-bottom:10px;">
+            <span style="font-size:13px; color:var(--silver-dim);">Counterparty risk</span>
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--green);">None ✓</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding-bottom:10px;">
+            <span style="font-size:13px; color:var(--silver-dim);">Entry price (1 unit)</span>
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--green);" id="sv-entry">$-- / oz</span>
+          </div>
+          <div style="display:flex; justify-content:space-between;">
+            <span style="font-size:13px; color:var(--silver-dim);">Confiscation history</span>
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--silver-dim);">Rare</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gold -->
+      <div style="background:var(--bg2); padding:32px 28px; border-left:1px solid var(--border);">
+        <div style="font-family:'Bebas Neue',sans-serif; font-size:32px; letter-spacing:2px; color:#C8A84B; margin-bottom:4px;">GOLD</div>
+        <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; color:var(--silver-dim); margin-bottom:24px; text-transform:uppercase;">Physical Metal · Au · Element 79</div>
+        <div style="display:flex; flex-direction:column; gap:14px;">
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding-bottom:10px;">
+            <span style="font-size:13px; color:var(--silver-dim);">Volatility</span>
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--silver-light);">Medium</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding-bottom:10px;">
+            <span style="font-size:13px; color:var(--silver-dim);">Inflation hedge</span>
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--green);">Very Strong ✓</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding-bottom:10px;">
+            <span style="font-size:13px; color:var(--silver-dim);">Industrial demand</span>
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--silver-dim);">Minimal (~10%)</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding-bottom:10px;">
+            <span style="font-size:13px; color:var(--silver-dim);">IRA eligible</span>
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--green);">Yes ✓</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding-bottom:10px;">
+            <span style="font-size:13px; color:var(--silver-dim);">Storage needed</span>
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--silver-dim);">Physical safe</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding-bottom:10px;">
+            <span style="font-size:13px; color:var(--silver-dim);">Counterparty risk</span>
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--green);">None ✓</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding-bottom:10px;">
+            <span style="font-size:13px; color:var(--silver-dim);">Entry price (1 unit)</span>
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--red);" id="gd-entry">$-- / oz</span>
+          </div>
+          <div style="display:flex; justify-content:space-between;">
+            <span style="font-size:13px; color:var(--silver-dim);">Confiscation history</span>
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--red);">1933 EO 6102</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bitcoin -->
+      <div style="background:var(--bg2); padding:32px 28px; border-left:1px solid var(--border);">
+        <div style="font-family:'Bebas Neue',sans-serif; font-size:32px; letter-spacing:2px; color:#F7931A; margin-bottom:4px;">BITCOIN</div>
+        <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; color:var(--silver-dim); margin-bottom:24px; text-transform:uppercase;">Digital Asset · BTC · Decentralized</div>
+        <div style="display:flex; flex-direction:column; gap:14px;">
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding-bottom:10px;">
+            <span style="font-size:13px; color:var(--silver-dim);">Volatility</span>
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--red);">Very High</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding-bottom:10px;">
+            <span style="font-size:13px; color:var(--silver-dim);">Inflation hedge</span>
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--silver-dim);">Unproven</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding-bottom:10px;">
+            <span style="font-size:13px; color:var(--silver-dim);">Industrial demand</span>
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--red);">None ✗</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding-bottom:10px;">
+            <span style="font-size:13px; color:var(--silver-dim);">IRA eligible</span>
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--silver-dim);">Limited (SDIRA)</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding-bottom:10px;">
+            <span style="font-size:13px; color:var(--silver-dim);">Storage needed</span>
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--silver-dim);">Cold wallet</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding-bottom:10px;">
+            <span style="font-size:13px; color:var(--silver-dim);">Counterparty risk</span>
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--silver-dim);">Exchange risk</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; border-bottom:1px solid var(--border); padding-bottom:10px;">
+            <span style="font-size:13px; color:var(--silver-dim);">Entry price (1 unit)</span>
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--red);">$85,000+</span>
+          </div>
+          <div style="display:flex; justify-content:space-between;">
+            <span style="font-size:13px; color:var(--silver-dim);">Confiscation history</span>
+            <span style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--silver-dim);">Regulatory risk</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:20px; padding:16px 20px; background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius-lg);">
+      <p style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--silver-dim); opacity:0.6;">This comparison is for educational purposes only and does not constitute investment advice. All investments carry risk. Consult a licensed financial adviser before making investment decisions.</p>
     </div>
   </div>
 </section>
@@ -2204,6 +2394,146 @@ footer {
 
 </div><!-- end calculators -->
 
+<!-- ═══════════════════════════════════════════════════ BEGINNER GUIDE PAGE -->
+<div id="page-beginner" class="page">
+
+  <section style="background: var(--bg2); padding: 120px 40px 60px; border-bottom: 1px solid var(--border);">
+    <div class="section-inner">
+      <div class="section-eyebrow">Start Here</div>
+      <h1 class="section-title">YOUR FIRST<br>SILVER PURCHASE</h1>
+      <p class="section-sub">A plain-English walkthrough for complete beginners — no jargon, no pressure. Here's exactly what to do from start to finish.</p>
+    </div>
+  </section>
+
+  <section style="background: var(--bg); padding: 60px 40px 100px;">
+    <div style="max-width: 820px; margin: 0 auto;">
+
+      <!-- Step 1 -->
+      <div style="display:flex; gap:32px; margin-bottom:56px; align-items:flex-start;">
+        <div style="flex-shrink:0; width:56px; height:56px; border:2px solid var(--silver); border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',sans-serif; font-size:24px; color:var(--silver-light);">1</div>
+        <div>
+          <h2 style="font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:2px; color:var(--silver-light); margin-bottom:12px;">Decide How Much to Start With</h2>
+          <p style="font-size:15px; color:var(--silver-dim); line-height:1.8; margin-bottom:12px; font-weight:300;">Most beginners start with $200–$500. There's no minimum — you can buy a single 1 oz coin. The goal of your first purchase is to learn the process, not to go all-in.</p>
+          <p style="font-size:15px; color:var(--silver-dim); line-height:1.8; font-weight:300;">A common approach is dollar-cost averaging — buying a fixed dollar amount every month regardless of price. This removes the stress of trying to time the market perfectly.</p>
+          <div style="margin-top:16px; padding:14px 18px; background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius); font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--silver-dim);">
+            💡 Rule of thumb: many investors keep 5–15% of their portfolio in precious metals. Nothing here is investment advice — this is just a commonly cited range.
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div style="display:flex; gap:32px; margin-bottom:56px; align-items:flex-start;">
+        <div style="flex-shrink:0; width:56px; height:56px; border:2px solid var(--silver); border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',sans-serif; font-size:24px; color:var(--silver-light);">2</div>
+        <div>
+          <h2 style="font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:2px; color:var(--silver-light); margin-bottom:12px;">Choose Your Form of Silver</h2>
+          <p style="font-size:15px; color:var(--silver-dim); line-height:1.8; margin-bottom:16px; font-weight:300;">For your first purchase, we recommend <strong style="color:var(--silver-light);">American Silver Eagles</strong>. They're minted by the US government, universally recognized, and easy to resell. Yes, the premium is slightly higher than generic rounds or bars — but the peace of mind and liquidity are worth it while you're learning.</p>
+          <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;">
+            <div style="background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius); padding:16px;">
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--silver-dim); margin-bottom:8px;">Best For Beginners</div>
+              <div style="font-size:14px; color:var(--silver-light); font-weight:500; margin-bottom:6px;">Government Coins</div>
+              <div style="font-size:12px; color:var(--silver-dim);">Eagles, Maple Leafs — highest recognition, easiest to sell</div>
+            </div>
+            <div style="background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius); padding:16px;">
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--silver-dim); margin-bottom:8px;">Best Value</div>
+              <div style="font-size:14px; color:var(--silver-light); font-weight:500; margin-bottom:6px;">Silver Bars</div>
+              <div style="font-size:12px; color:var(--silver-dim);">Lower premium per oz, especially 10oz+ bars</div>
+            </div>
+            <div style="background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius); padding:16px;">
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.1em; text-transform:uppercase; color:var(--silver-dim); margin-bottom:8px;">Budget-Friendly</div>
+              <div style="font-size:14px; color:var(--silver-light); font-weight:500; margin-bottom:6px;">Junk Silver</div>
+              <div style="font-size:12px; color:var(--silver-dim);">Pre-1965 US coins, 90% silver, buy by face value</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 -->
+      <div style="display:flex; gap:32px; margin-bottom:56px; align-items:flex-start;">
+        <div style="flex-shrink:0; width:56px; height:56px; border:2px solid var(--silver); border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',sans-serif; font-size:24px; color:var(--silver-light);">3</div>
+        <div>
+          <h2 style="font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:2px; color:var(--silver-light); margin-bottom:12px;">Pick a Reputable Dealer</h2>
+          <p style="font-size:15px; color:var(--silver-dim); line-height:1.8; margin-bottom:16px; font-weight:300;">Always buy from an established, reputable dealer — not eBay, Facebook Marketplace, or pawn shops for your first purchase. The dealers below have been in business for years and have strong track records:</p>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius);">
+              <div>
+                <span style="font-size:14px; color:var(--silver-light); font-weight:500;">APMEX</span>
+                <span style="font-size:12px; color:var(--silver-dim); margin-left:12px;">Largest selection, great for beginners</span>
+              </div>
+              <a href="https://www.apmex.com" target="_blank" rel="noopener" class="buy-btn">Shop →</a>
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius);">
+              <div>
+                <span style="font-size:14px; color:var(--silver-light); font-weight:500;">JM Bullion</span>
+                <span style="font-size:12px; color:var(--silver-dim); margin-left:12px;">Competitive premiums, fast shipping</span>
+              </div>
+              <a href="https://www.jmbullion.com" target="_blank" rel="noopener" class="buy-btn">Shop →</a>
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius);">
+              <div>
+                <span style="font-size:14px; color:var(--silver-light); font-weight:500;">Money Metals</span>
+                <span style="font-size:12px; color:var(--silver-dim); margin-left:12px;">Low premiums, great for bars and junk silver</span>
+              </div>
+              <a href="https://www.awin1.com/cread.php?awinmid=88985&awinaffid=2837494" target="_blank" rel="noopener" class="buy-btn">Shop →</a>
+            </div>
+          </div>
+          <p style="font-size:12px; color:var(--silver-dim); margin-top:12px; font-family:'IBM Plex Mono',monospace; opacity:0.6;">OwnAG may earn a small commission if you purchase through these links, at no cost to you.</p>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div style="display:flex; gap:32px; margin-bottom:56px; align-items:flex-start;">
+        <div style="flex-shrink:0; width:56px; height:56px; border:2px solid var(--silver); border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',sans-serif; font-size:24px; color:var(--silver-light);">4</div>
+        <div>
+          <h2 style="font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:2px; color:var(--silver-light); margin-bottom:12px;">Compare Premiums Before You Buy</h2>
+          <p style="font-size:15px; color:var(--silver-dim); line-height:1.8; margin-bottom:16px; font-weight:300;">The spot price is the same everywhere — what varies is the dealer's <strong style="color:var(--silver-light);">premium</strong>. This is the markup above spot that covers their costs and profit. Even a $1–$2 difference per ounce adds up significantly over time.</p>
+          <p style="font-size:15px; color:var(--silver-dim); line-height:1.8; margin-bottom:16px; font-weight:300;">Use OwnAG's price comparison dashboard to see which dealer has the lowest premium right now before placing your order.</p>
+          <button class="btn-primary" onclick="showPage('home'); scrollToId('prices')">Compare Dealer Prices Now →</button>
+        </div>
+      </div>
+
+      <!-- Step 5 -->
+      <div style="display:flex; gap:32px; margin-bottom:56px; align-items:flex-start;">
+        <div style="flex-shrink:0; width:56px; height:56px; border:2px solid var(--silver); border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',sans-serif; font-size:24px; color:var(--silver-light);">5</div>
+        <div>
+          <h2 style="font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:2px; color:var(--silver-light); margin-bottom:12px;">Pay and Wait for Delivery</h2>
+          <p style="font-size:15px; color:var(--silver-dim); line-height:1.8; margin-bottom:12px; font-weight:300;">Most dealers accept credit cards, debit cards, checks, and bank wire transfers. <strong style="color:var(--silver-light);">Important:</strong> paying by check or bank wire usually gets you a 3–4% discount because dealers save on credit card processing fees. Worth it for larger purchases.</p>
+          <p style="font-size:15px; color:var(--silver-dim); line-height:1.8; font-weight:300;">Shipping typically takes 5–10 business days. Your order will arrive in discreet packaging — no external markings indicating the contents. All reputable dealers insure shipments.</p>
+        </div>
+      </div>
+
+      <!-- Step 6 -->
+      <div style="display:flex; gap:32px; margin-bottom:56px; align-items:flex-start;">
+        <div style="flex-shrink:0; width:56px; height:56px; border:2px solid var(--silver); border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',sans-serif; font-size:24px; color:var(--silver-light);">6</div>
+        <div>
+          <h2 style="font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:2px; color:var(--silver-light); margin-bottom:12px;">Store It Safely</h2>
+          <p style="font-size:15px; color:var(--silver-dim); line-height:1.8; margin-bottom:12px; font-weight:300;">When your silver arrives, store it securely. A basic home safe bolted to the floor is the standard starting point. Keep coins in their original packaging or airtight capsules to prevent tarnishing.</p>
+          <p style="font-size:15px; color:var(--silver-dim); line-height:1.8; font-weight:300;"><strong style="color:var(--silver-light);">Most important rule:</strong> don't tell people you own silver. Operational security is your best protection. Read our full storage guide for detailed recommendations.</p>
+          <button class="btn-outline" onclick="showArticle('art5')" style="margin-top:16px;">Read the Storage Guide →</button>
+        </div>
+      </div>
+
+      <!-- Step 7 -->
+      <div style="display:flex; gap:32px; margin-bottom:56px; align-items:flex-start;">
+        <div style="flex-shrink:0; width:56px; height:56px; border:2px solid var(--silver); border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Bebas Neue',sans-serif; font-size:24px; color:var(--silver-light);">7</div>
+        <div>
+          <h2 style="font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:2px; color:var(--silver-light); margin-bottom:12px;">Track Your Stack</h2>
+          <p style="font-size:15px; color:var(--silver-dim); line-height:1.8; margin-bottom:16px; font-weight:300;">Log each purchase in OwnAG's free DCA Tracker to see your blended cost basis, total ounces owned, and current gain or loss at live spot price. Takes 30 seconds per purchase and gives you a clear picture of your overall position.</p>
+          <button class="btn-primary" onclick="showPage('calculators'); switchCalc('dca', null)">Open DCA Tracker →</button>
+        </div>
+      </div>
+
+      <!-- Final CTA -->
+      <div style="background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius-lg); padding:40px; text-align:center; margin-top:24px;">
+        <h3 style="font-family:'Bebas Neue',sans-serif; font-size:32px; letter-spacing:2px; color:var(--silver-light); margin-bottom:12px;">READY TO BUY?</h3>
+        <p style="color:var(--silver-dim); font-size:15px; margin-bottom:24px; font-weight:300;">Start by comparing dealer premiums on OwnAG's live price dashboard — find the best deal before you place your first order.</p>
+        <button class="btn-primary" onclick="showPage('home'); scrollToId('prices')" style="font-size:15px; padding:14px 32px;">Compare Silver Prices Now →</button>
+        <p style="font-size:11px; color:var(--silver-dim); margin-top:16px; font-family:'IBM Plex Mono',monospace; opacity:0.6;">Questions? Email us at ownagsupport@gmail.com</p>
+      </div>
+
+    </div>
+  </section>
+</div><!-- end beginner -->
+
 <!-- FOOTER -->
 <footer>
   <div class="footer-inner">
@@ -2230,6 +2560,7 @@ footer {
       <a href="#" onclick="showArticle('art4')">Gold/Silver Ratio</a>
       <a href="#" onclick="showArticle('art5')">Home Storage Guide</a>
       <a href="#" onclick="showArticle('art6')">Silver & Inflation</a>
+      <a href="#" onclick="showPage('beginner')">Beginner's First Purchase</a>
       <a href="https://equitytrustcompany380f9.referralrock.com/l/JONATHANST01/" target="_blank" rel="noopener">Open a Silver IRA ↗</a>
     </div>
   </div>
@@ -2248,6 +2579,87 @@ function showPage(page) {
   const el = document.getElementById('page-' + page);
   if (el) el.classList.add('active');
   window.scrollTo(0, 0);
+}
+
+// ── QUICK SILVER VALUE WIDGET ─────────────────────────────────────────────────
+function calcQuickValue() {
+  const oz  = parseFloat(document.getElementById('quick-oz').value);
+  const el  = document.getElementById('quick-result');
+  const spot = silverSpot || 74.57;
+  if (isNaN(oz) || oz <= 0) { el.textContent = '$--'; return; }
+  const val = (oz * spot * 0.999).toLocaleString('en-US', { style:'currency', currency:'USD', minimumFractionDigits:2 });
+  el.textContent = val;
+}
+
+// ── BEST DEAL BANNER ──────────────────────────────────────────────────────────
+function updateBestDeal() {
+  if (!silverSpot) return;
+  const spot = silverSpot;
+
+  const eaglePremiums = {
+    'APMEX':        PREMIUMS.apmex.eagle,
+    'JM Bullion':   PREMIUMS.jm.eagle,
+    'SD Bullion':   PREMIUMS.sd.eagle,
+    'Money Metals': PREMIUMS.mm.eagle,
+    'Kitco':        PREMIUMS.kitco.eagle
+  };
+  const barPremiums = {
+    'APMEX':        PREMIUMS.apmex.bar,
+    'JM Bullion':   PREMIUMS.jm.bar,
+    'SD Bullion':   PREMIUMS.sd.bar,
+    'Money Metals': PREMIUMS.mm.bar,
+    'Kitco':        PREMIUMS.kitco.bar
+  };
+
+  // Find lowest eagle premium
+  let bestEagleDealer = '', bestEaglePrem = Infinity;
+  Object.entries(eaglePremiums).forEach(([d, p]) => { if (p < bestEaglePrem) { bestEaglePrem = p; bestEagleDealer = d; } });
+
+  // Find lowest bar premium
+  let bestBarDealer = '', bestBarPrem = Infinity;
+  Object.entries(barPremiums).forEach(([d, p]) => { if (p < bestBarPrem) { bestBarPrem = p; bestBarDealer = d; } });
+
+  const el = document.getElementById('best-deal-text');
+  if (el) {
+    el.textContent = `${bestEagleDealer} 1oz Eagle at +$${bestEaglePrem.toFixed(2)}/oz  ·  ${bestBarDealer} 1oz Bar at +$${bestBarPrem.toFixed(2)}/oz`;
+  }
+}
+
+// ── JUNK SILVER FACE VALUE TABLE ──────────────────────────────────────────────
+function updateJunkTable() {
+  const spot = silverSpot || 74.57;
+  const coins = [
+    { name: 'Morgan/Peace Dollar (90%)', oz: 0.77344, face: '$1.00' },
+    { name: 'Walking Liberty Half (90%)', oz: 0.36169, face: '$0.50' },
+    { name: 'Washington Quarter (90%)', oz: 0.18084, face: '$0.25' },
+    { name: 'Roosevelt/Mercury Dime (90%)', oz: 0.07234, face: '$0.10' },
+    { name: 'War Nickel (35%)', oz: 0.05626, face: '$0.05' },
+    { name: 'Kennedy Half 1965-70 (40%)', oz: 0.14792, face: '$0.50' },
+    { name: '$1 face value (90% coins)', oz: 0.715, face: '$1.00 face' }
+  ];
+
+  const tbody = document.getElementById('junk-table-body');
+  if (!tbody) return;
+
+  tbody.innerHTML = coins.map((c, i) => {
+    const val = (c.oz * spot).toFixed(2);
+    const isLast = i === coins.length - 1;
+    return `<tr style="border-bottom:${isLast ? 'none' : '1px solid var(--border)'}; background:${isLast ? 'rgba(184,190,200,0.05)' : 'transparent'};">
+      <td style="padding:10px 14px; color:${isLast ? 'var(--silver-light)' : 'var(--silver-dim)'}; font-size:13px; ${isLast ? 'font-weight:500;' : ''}">${c.name}</td>
+      <td style="padding:10px 14px; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--silver-dim);">${c.oz.toFixed(5)} oz</td>
+      <td style="padding:10px 14px; text-align:right; font-family:'IBM Plex Mono',monospace; font-size:12px; color:${isLast ? 'var(--silver-light)' : 'var(--green)'}; font-weight:${isLast ? '600' : '400'};">$${val}</td>
+    </tr>`;
+  }).join('');
+
+  // Update the dollar face value callout
+  const jdv = document.getElementById('junk-dollar-val');
+  if (jdv) jdv.textContent = '$' + (0.715 * spot).toFixed(2);
+
+  // Update comparison entry prices
+  const svel = document.getElementById('sv-entry');
+  const gdel = document.getElementById('gd-entry');
+  if (svel) svel.textContent = '$' + spot.toFixed(2) + '/oz';
+  if (gdel) gdel.textContent = '$' + (goldSpot || 4674).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2}) + '/oz';
 }
 
 function showArticle(id) {
@@ -2444,6 +2856,11 @@ function updateDashboard() {
 
   // Draw chart
   drawChart('7D', silverSpot);
+
+  // Update new features
+  updateBestDeal();
+  updateJunkTable();
+  calcQuickValue();
 }
 
 function setText(id, val) {
