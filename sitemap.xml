@@ -96,5 +96,28 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <!-- Beginner Guide -->
+  <url>
+    <loc>https://ownag.com/#beginner</loc>
+    <lastmod>2026-04-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Silver vs Gold vs Bitcoin -->
+  <url>
+    <loc>https://ownag.com/#compare</loc>
+    <lastmod>2026-04-02</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Junk Silver Table -->
+  <url>
+    <loc>https://ownag.com/#junk-silver</loc>
+    <lastmod>2026-04-02</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
 
 </urlset>
