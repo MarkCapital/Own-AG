@@ -1343,7 +1343,10 @@ footer {
     <div class="price-dashboard fade-up delay-4" id="prices">
       <div class="dashboard-header">
         <span class="dashboard-title">Silver Market Dashboard</span>
-        <span class="live-badge"><span class="live-dot"></span>LIVE DATA</span>
+        <div style="display:flex; align-items:center; gap:16px;">
+          <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--silver-dim);" id="last-updated">Fetching prices...</span>
+          <span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE DATA</span>
+        </div>
       </div>
 
       <!-- SPOT STATS -->
@@ -2280,35 +2283,108 @@ function fmtChg(n, pct) {
   return `${sign}${fmt(Math.abs(n))} (${sign}${pct.toFixed(2)}%)`;
 }
 
+let isFirstLoad = true;
+
 async function fetchPrices() {
-  try {
-    // Primary: goldprice.org live feed
-    const res = await fetch('https://data-asg.goldprice.org/dbXRates/USD');
-    if (!res.ok) throw new Error('primary failed');
-    const data = await res.json();
-    const ag = data.items[0].xagPrice;
-    const au = data.items[0].xauPrice;
-    if (!ag || ag < 10 || ag > 500) throw new Error('bad data');
-    silverSpot = ag;
-    goldSpot   = au;
-    updateDashboard();
-  } catch(e) {
+
+  // ── FIRST LOAD: use gold-api.com key for accurate initial price ───────────
+  if (isFirstLoad) {
+    isFirstLoad = false;
     try {
-      // Secondary: metals-api compatible open endpoint
-      const res2 = await fetch('https://api.metalpriceapi.com/v1/latest?api_key=demo&base=USD&currencies=XAG,XAU');
-      if (!res2.ok) throw new Error('secondary failed');
-      const d2 = await res2.json();
-      // metalpriceapi returns price per unit of base — invert for oz
-      silverSpot = 1 / d2.rates.XAG;
-      goldSpot   = 1 / d2.rates.XAU;
-      if (!silverSpot || silverSpot < 10) throw new Error('bad data 2');
-      updateDashboard();
-    } catch(e2) {
-      // Final fallback — current real-world prices as of March 2026
-      silverSpot = 74.57 + (Math.random() - 0.5) * 1.5;
-      goldSpot   = 4674 + (Math.random() - 0.5) * 30;
-      updateDashboard();
+      const [rAg, rAu] = await Promise.all([
+        fetch('https://www.goldapi.io/api/XAG/USD', {
+          headers: { 'x-access-token': '07b438cbf469505af51d8acf3ac78de9c91be3735dbc456a2831dc97817ae242', 'Content-Type': 'application/json' }
+        }),
+        fetch('https://www.goldapi.io/api/XAU/USD', {
+          headers: { 'x-access-token': '07b438cbf469505af51d8acf3ac78de9c91be3735dbc456a2831dc97817ae242', 'Content-Type': 'application/json' }
+        })
+      ]);
+      if (!rAg.ok || !rAu.ok) throw new Error('goldapi failed');
+      const dAg = await rAg.json();
+      const dAu = await rAu.json();
+      if (dAg.price && dAg.price > 20 && dAg.price < 500) {
+        silverSpot = dAg.price;
+        goldSpot   = dAu.price;
+        setLiveStatus(true);
+        updateDashboard();
+        return;
+      }
+      throw new Error('bad data');
+    } catch(e) {
+      // fall through to free sources below
     }
+  }
+
+  // ── SUBSEQUENT REFRESHES: free sources only (preserves API quota) ─────────
+
+  // Source A: goldprice.org
+  try {
+    const r = await fetch('https://data-asg.goldprice.org/dbXRates/USD');
+    if (!r.ok) throw new Error('goldprice failed');
+    const d = await r.json();
+    const ag = d.items[0].xagPrice;
+    const au = d.items[0].xauPrice;
+    if (ag && ag > 20 && ag < 500) {
+      silverSpot = ag;
+      goldSpot   = au;
+      setLiveStatus(true);
+      updateDashboard();
+      return;
+    }
+    throw new Error('bad data');
+  } catch(eA) {}
+
+  // Source B: frankfurter.app
+  try {
+    const r = await fetch('https://api.frankfurter.app/latest?from=XAG&to=USD');
+    if (!r.ok) throw new Error('frankfurter failed');
+    const d = await r.json();
+    if (d.rates && d.rates.USD && d.rates.USD > 20) {
+      silverSpot = d.rates.USD;
+      try {
+        const rg = await fetch('https://api.frankfurter.app/latest?from=XAU&to=USD');
+        if (rg.ok) { const dg = await rg.json(); if (dg.rates?.USD > 500) goldSpot = dg.rates.USD; }
+      } catch(eg) {}
+      setLiveStatus(true);
+      updateDashboard();
+      return;
+    }
+    throw new Error('bad data');
+  } catch(eB) {}
+
+  // Source C: open.er-api.com
+  try {
+    const r = await fetch('https://open.er-api.com/v6/latest/XAG');
+    if (!r.ok) throw new Error('er-api failed');
+    const d = await r.json();
+    if (d.rates && d.rates.USD && d.rates.USD > 20) {
+      silverSpot = d.rates.USD;
+      setLiveStatus(true);
+      updateDashboard();
+      return;
+    }
+    throw new Error('bad data');
+  } catch(eC) {}
+
+  // ── FALLBACK: estimated prices ────────────────────────────────────────────
+  if (!silverSpot) silverSpot = 74.57;
+  if (!goldSpot)   goldSpot   = 4674;
+  silverSpot += (Math.random() - 0.5) * 0.5;
+  setLiveStatus(false);
+  updateDashboard();
+}
+
+function setLiveStatus(isLive) {
+  const badge  = document.getElementById('live-badge');
+  const lastUp = document.getElementById('last-updated');
+  const now    = new Date();
+  const time   = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+  if (lastUp) lastUp.textContent = `Updated ${time}${!isLive ? ' (est.)' : ''}`;
+  if (badge) {
+    badge.innerHTML = isLive
+      ? `<span class="live-dot"></span>LIVE`
+      : `<span class="live-dot" style="background:var(--silver-dim)"></span>ESTIMATED`;
   }
 }
 
@@ -2700,7 +2776,7 @@ renderDca();
 
 // ── INIT ─────────────────────────────────────────────────────────────────────
 fetchPrices();
-setInterval(fetchPrices, 900000); // refresh every 15 min
+setInterval(fetchPrices, 15 * 60 * 1000); // refresh every 15 minutes
 </script>
 </body>
 </html>
