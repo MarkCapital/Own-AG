@@ -1495,17 +1495,20 @@ footer {
 
     <div class="chart-container">
       <div class="chart-header">
-        <div style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--silver-dim);">XAG/USD — Silver Spot Price (USD per troy oz)</div>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <span style="font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--silver-dim);">XAG/USD — Silver Spot Price (USD per troy oz)</span>
+          <span id="chart-status" style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--silver-dim); opacity:0.6;"></span>
+        </div>
         <div class="chart-tabs">
           <button class="chart-tab active" onclick="setChartPeriod('7D', this)">7D</button>
           <button class="chart-tab" onclick="setChartPeriod('30D', this)">30D</button>
           <button class="chart-tab" onclick="setChartPeriod('90D', this)">90D</button>
           <button class="chart-tab" onclick="setChartPeriod('1Y', this)">1Y</button>
-          <button class="chart-tab" onclick="setChartPeriod('5Y', this)">5Y</button>
         </div>
       </div>
-      <div class="chart-area">
-        <svg class="chart-svg" id="price-chart" viewBox="0 0 900 240" preserveAspectRatio="none">
+      <div class="chart-area" style="position:relative;">
+        <div id="chart-loading" style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--silver-dim); letter-spacing:0.1em; text-transform:uppercase;">Loading historical data...</div>
+        <svg class="chart-svg" id="price-chart" viewBox="0 0 900 240" preserveAspectRatio="none" style="opacity:0; transition:opacity 0.4s;">
           <defs>
             <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stop-color="#B8BEC8" stop-opacity="0.25"/>
@@ -1514,15 +1517,35 @@ footer {
           </defs>
           <path id="chart-fill" fill="url(#chartGrad)"/>
           <path id="chart-line" fill="none" stroke="#B8BEC8" stroke-width="2" stroke-linejoin="round"/>
-          <!-- Grid lines -->
           <line x1="0" y1="60" x2="900" y2="60" stroke="rgba(200,200,192,0.06)" stroke-width="1"/>
           <line x1="0" y1="120" x2="900" y2="120" stroke="rgba(200,200,192,0.06)" stroke-width="1"/>
           <line x1="0" y1="180" x2="900" y2="180" stroke="rgba(200,200,192,0.06)" stroke-width="1"/>
-          <!-- Y labels -->
           <text id="y-top" x="8" y="16" font-family="IBM Plex Mono, monospace" font-size="10" fill="rgba(200,200,192,0.4)">$--</text>
           <text id="y-mid" x="8" y="124" font-family="IBM Plex Mono, monospace" font-size="10" fill="rgba(200,200,192,0.4)">$--</text>
           <text id="y-bot" x="8" y="236" font-family="IBM Plex Mono, monospace" font-size="10" fill="rgba(200,200,192,0.4)">$--</text>
+          <text id="x-start" x="50" y="236" font-family="IBM Plex Mono, monospace" font-size="9" fill="rgba(200,200,192,0.3)"></text>
+          <text id="x-mid"   x="450" y="236" font-family="IBM Plex Mono, monospace" font-size="9" fill="rgba(200,200,192,0.3)" text-anchor="middle"></text>
+          <text id="x-end"   x="860" y="236" font-family="IBM Plex Mono, monospace" font-size="9" fill="rgba(200,200,192,0.3)" text-anchor="end"></text>
         </svg>
+      </div>
+      <!-- Change summary bar -->
+      <div id="chart-summary" style="background:var(--bg3); border-top:1px solid var(--border); padding:12px 24px; display:flex; gap:32px; align-items:center; display:none;">
+        <div>
+          <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--silver-dim); text-transform:uppercase; letter-spacing:0.1em;">Period Open</span>
+          <span id="chart-open" style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--silver-light); margin-left:8px;"></span>
+        </div>
+        <div>
+          <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--silver-dim); text-transform:uppercase; letter-spacing:0.1em;">Period High</span>
+          <span id="chart-high" style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--green); margin-left:8px;"></span>
+        </div>
+        <div>
+          <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--silver-dim); text-transform:uppercase; letter-spacing:0.1em;">Period Low</span>
+          <span id="chart-low" style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--red); margin-left:8px;"></span>
+        </div>
+        <div>
+          <span style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--silver-dim); text-transform:uppercase; letter-spacing:0.1em;">Change</span>
+          <span id="chart-chg" style="font-family:'IBM Plex Mono',monospace; font-size:13px; margin-left:8px;"></span>
+        </div>
       </div>
     </div>
   </div>
@@ -2854,13 +2877,13 @@ function updateDashboard() {
   // Newsletter preview
   setText('nl-spot-preview', fmt(silverSpot));
 
-  // Draw chart
-  drawChart('7D', silverSpot);
-
   // Update new features
   updateBestDeal();
   updateJunkTable();
   calcQuickValue();
+
+  // Load chart on first price fetch only
+  if (!chartCache[currentPeriod]) fetchHistoricalChart(currentPeriod);
 }
 
 function setText(id, val) {
@@ -2868,56 +2891,177 @@ function setText(id, val) {
   if (el) el.textContent = val;
 }
 
-// ── CHART ────────────────────────────────────────────────────────────────────
-const chartData = {
-  '7D':  { points: 168, volatility: 0.008, label: '7D' },
-  '30D': { points: 720, volatility: 0.012, label: '30D' },
-  '90D': { points: 2160, volatility: 0.018, label: '90D' },
-  '1Y':  { points: 8760, volatility: 0.025, label: '1Y' },
-  '5Y':  { points: 43800, volatility: 0.04, label: '5Y' }
+// ── CHART — REAL HISTORICAL DATA ─────────────────────────────────────────────
+const GOLDAPI_KEY = '07b438cbf469505af51d8acf3ac78de9c91be3735dbc456a2831dc97817ae242';
+let chartCache = {}; // cache fetched data to avoid redundant API calls
+let currentPeriod = '7D';
+
+const PERIOD_CONFIG = {
+  '7D':  { days: 7,   label: '7 Days',   fmt: (d) => d.toLocaleDateString('en-US', {month:'short', day:'numeric'}) },
+  '30D': { days: 30,  label: '30 Days',  fmt: (d) => d.toLocaleDateString('en-US', {month:'short', day:'numeric'}) },
+  '90D': { days: 90,  label: '90 Days',  fmt: (d) => d.toLocaleDateString('en-US', {month:'short', year:'numeric'}) },
+  '1Y':  { days: 365, label: '1 Year',   fmt: (d) => d.toLocaleDateString('en-US', {month:'short', year:'numeric'}) },
 };
 
-function generateChartPrices(spot, vol, count, display = 80) {
-  const prices = [spot * (0.92 + Math.random() * 0.16)];
-  for (let i = 1; i < display; i++) {
-    const prev = prices[i - 1];
-    const chg  = prev * (Math.random() - 0.48) * vol;
-    prices.push(Math.max(prev + chg, spot * 0.5));
+async function fetchHistoricalChart(period) {
+  if (chartCache[period]) { renderChart(chartCache[period], period); return; }
+
+  const cfg  = PERIOD_CONFIG[period];
+  const dates = [];
+  const today = new Date();
+  for (let i = cfg.days; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(today.getDate() - i);
+    if (d.getDay() !== 0 && d.getDay() !== 6) { // skip weekends
+      dates.push(d);
+    }
   }
-  prices[prices.length - 1] = spot;
-  return prices;
+
+  // Sample dates to stay within API limits — max 30 data points
+  const step    = Math.max(1, Math.floor(dates.length / 30));
+  const sampled = dates.filter((_, i) => i % step === 0);
+  // Always include today
+  if (sampled[sampled.length - 1]?.toDateString() !== today.toDateString()) {
+    sampled.push(today);
+  }
+
+  setChartStatus('Loading...');
+
+  try {
+    // Fetch each date — gold-api.com historical endpoint
+    const results = await Promise.all(
+      sampled.map(async d => {
+        const ds = d.toISOString().slice(0, 10).replace(/-/g, '');
+        try {
+          const r = await fetch(`https://www.goldapi.io/api/XAG/USD/${ds}`, {
+            headers: { 'x-access-token': GOLDAPI_KEY, 'Content-Type': 'application/json' }
+          });
+          if (!r.ok) return null;
+          const j = await r.json();
+          return { date: d, price: j.price || j.close || null };
+        } catch { return null; }
+      })
+    );
+
+    const valid = results.filter(r => r && r.price && r.price > 10);
+    if (valid.length < 3) throw new Error('insufficient data');
+
+    chartCache[period] = { points: valid, period };
+    renderChart(chartCache[period], period);
+    setChartStatus('HISTORICAL DATA');
+
+  } catch(e) {
+    // Fallback: generate realistic simulated data anchored to current spot
+    console.warn('Chart API failed, using estimated data:', e);
+    const fallback = generateFallbackHistory(sampled, silverSpot || 74.57, period);
+    chartCache[period] = { points: fallback, period, estimated: true };
+    renderChart(chartCache[period], period);
+    setChartStatus('ESTIMATED');
+  }
 }
 
-function drawChart(period, spot) {
-  const cfg    = chartData[period];
-  const prices = generateChartPrices(spot, cfg.volatility, cfg.points);
+function generateFallbackHistory(dates, currentSpot, period) {
+  const vols = { '7D': 0.008, '30D': 0.012, '90D': 0.022, '1Y': 0.035 };
+  const vol  = vols[period] || 0.015;
+  const prices = [currentSpot * (0.88 + Math.random() * 0.08)];
+  for (let i = 1; i < dates.length - 1; i++) {
+    const prev = prices[i - 1];
+    prices.push(Math.max(prev + prev * (Math.random() - 0.47) * vol, currentSpot * 0.5));
+  }
+  prices.push(currentSpot);
+  return dates.map((d, i) => ({ date: d, price: prices[i] }));
+}
+
+function setChartStatus(msg) {
+  const el = document.getElementById('chart-status');
+  if (el) el.textContent = msg;
+}
+
+function renderChart(data, period) {
+  const { points, estimated } = data;
+  if (!points || points.length < 2) return;
+
+  const prices = points.map(p => p.price);
+  const dates  = points.map(p => p.date);
+  const cfg    = PERIOD_CONFIG[period];
+
   const W = 900, H = 240, pad = 40;
-  const min = Math.min(...prices);
-  const max = Math.max(...prices);
+  const min   = Math.min(...prices);
+  const max   = Math.max(...prices);
   const range = max - min || 1;
+  const open  = prices[0];
+  const close = prices[prices.length - 1];
+  const high  = max;
+  const low   = min;
+  const chg   = close - open;
+  const chgPct = (chg / open) * 100;
+  const isUp  = chg >= 0;
 
   const toX = i => pad + (i / (prices.length - 1)) * (W - pad * 2);
-  const toY = p => H - pad - ((p - min) / range) * (H - pad * 2);
+  const toY = p => H - pad - ((p - min) / range) * (H - pad * 2 - 20);
 
-  const pts = prices.map((p, i) => `${toX(i).toFixed(1)},${toY(p).toFixed(1)}`).join(' ');
+  const pts     = prices.map((p, i) => `${toX(i).toFixed(1)},${toY(p).toFixed(1)}`).join(' ');
   const linePts = `M ${pts.replace(/ /g, ' L ')}`;
   const fillPts = `${linePts} L ${toX(prices.length - 1)},${H - pad} L ${toX(0)},${H - pad} Z`;
 
-  const line = document.getElementById('chart-line');
-  const fill = document.getElementById('chart-fill');
-  if (line) line.setAttribute('d', linePts);
-  if (fill) fill.setAttribute('d', fillPts);
+  const lineEl = document.getElementById('chart-line');
+  const fillEl = document.getElementById('chart-fill');
+  const svgEl  = document.getElementById('price-chart');
+  const loadEl = document.getElementById('chart-loading');
 
-  const setLabel = (id, val) => { const e = document.getElementById(id); if (e) e.textContent = fmt(val); };
-  setLabel('y-top', max);
-  setLabel('y-mid', (min + max) / 2);
-  setLabel('y-bot', min);
+  if (lineEl) { lineEl.setAttribute('d', linePts); lineEl.setAttribute('stroke', isUp ? '#3DBA6E' : '#E84545'); }
+  if (fillEl) fillEl.setAttribute('d', fillPts);
+  if (svgEl)  svgEl.style.opacity = '1';
+  if (loadEl) loadEl.style.display = 'none';
+
+  // Update gradient color to match direction
+  const grad0 = document.querySelector('#chartGrad stop:first-child');
+  const grad1 = document.querySelector('#chartGrad stop:last-child');
+  if (grad0) grad0.setAttribute('stop-color', isUp ? '#3DBA6E' : '#E84545');
+  if (grad1) grad1.setAttribute('stop-color', isUp ? '#3DBA6E' : '#E84545');
+
+  // Y labels
+  const setTxt = (id, val) => { const e = document.getElementById(id); if (e) e.textContent = fmt(val); };
+  setTxt('y-top', max);
+  setTxt('y-mid', (min + max) / 2);
+  setTxt('y-bot', min);
+
+  // X labels
+  const setXTxt = (id, val) => { const e = document.getElementById(id); if (e) e.textContent = val; };
+  setXTxt('x-start', cfg.fmt(dates[0]));
+  setXTxt('x-mid',   cfg.fmt(dates[Math.floor(dates.length / 2)]));
+  setXTxt('x-end',   cfg.fmt(dates[dates.length - 1]));
+
+  // Summary bar
+  const sumEl = document.getElementById('chart-summary');
+  if (sumEl) sumEl.style.display = 'flex';
+  setTxt2('chart-open', fmt(open));
+  setTxt2('chart-high', fmt(high));
+  setTxt2('chart-low',  fmt(low));
+  const chgEl = document.getElementById('chart-chg');
+  if (chgEl) {
+    chgEl.textContent = `${isUp ? '+' : ''}${fmt(chg)} (${chgPct.toFixed(1)}%)`;
+    chgEl.style.color = isUp ? 'var(--green)' : 'var(--red)';
+  }
+
+  setChartStatus(estimated ? 'ESTIMATED' : 'HISTORICAL · GOLDAPI.IO');
 }
+
+function setTxt2(id, val) { const e = document.getElementById(id); if (e) e.textContent = val; }
 
 function setChartPeriod(period, btn) {
   document.querySelectorAll('.chart-tab').forEach(t => t.classList.remove('active'));
   if (btn) btn.classList.add('active');
-  if (silverSpot) drawChart(period, silverSpot);
+  currentPeriod = period;
+
+  // Reset to loading state if no cache
+  if (!chartCache[period]) {
+    const svgEl  = document.getElementById('price-chart');
+    const loadEl = document.getElementById('chart-loading');
+    if (svgEl)  svgEl.style.opacity = '0';
+    if (loadEl) loadEl.style.display = 'flex';
+  }
+  fetchHistoricalChart(period);
 }
 
 // ── FAQ ──────────────────────────────────────────────────────────────────────
