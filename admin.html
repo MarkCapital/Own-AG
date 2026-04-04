@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OwnAG Admin — Dealer Premium Update</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'IBM Plex Sans',sans-serif; background:#0A0A08; color:#C8C8C0; min-height:100vh; padding:40px 20px; }
+
+.container { max-width:700px; margin:0 auto; }
+
+.header { margin-bottom:40px; }
+.header h1 { font-family:'IBM Plex Mono',monospace; font-size:22px; color:#E8E8E0; letter-spacing:0.1em; margin-bottom:4px; }
+.header p { font-size:13px; color:#666; }
+
+/* Password gate */
+#gate { background:#111110; border:1px solid rgba(200,200,192,0.1); border-radius:8px; padding:40px; text-align:center; }
+#gate h2 { font-family:'IBM Plex Mono',monospace; font-size:16px; color:#E8E8E0; margin-bottom:20px; letter-spacing:0.1em; }
+#gate input { width:100%; max-width:300px; padding:12px 16px; background:#1A1A18; border:1px solid rgba(200,200,192,0.15); border-radius:4px; color:#E8E8E0; font-family:'IBM Plex Mono',monospace; font-size:16px; text-align:center; outline:none; letter-spacing:0.2em; margin-bottom:16px; display:block; margin:0 auto 16px; }
+#gate button { background:#B8BEC8; color:#0A0A08; padding:10px 28px; border:none; border-radius:4px; font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.1em; cursor:pointer; }
+#gate .error { color:#E84545; font-size:12px; margin-top:12px; font-family:'IBM Plex Mono',monospace; }
+
+/* Main panel */
+#panel { display:none; }
+
+.last-updated { font-family:'IBM Plex Mono',monospace; font-size:11px; color:#555; margin-bottom:32px; }
+
+.dealer-card { background:#111110; border:1px solid rgba(200,200,192,0.1); border-radius:8px; padding:24px; margin-bottom:16px; }
+.dealer-name { font-family:'IBM Plex Mono',monospace; font-size:14px; color:#E8E8E0; font-weight:600; margin-bottom:16px; letter-spacing:0.06em; }
+
+.field-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+.field-group { display:flex; flex-direction:column; gap:6px; }
+.field-label { font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.12em; text-transform:uppercase; color:#555; }
+
+.field-input-wrap { position:relative; }
+.field-input-wrap .prefix { position:absolute; left:12px; top:50%; transform:translateY(-50%); font-family:'IBM Plex Mono',monospace; font-size:13px; color:#666; pointer-events:none; }
+input[type="number"] {
+  width:100%; padding:10px 12px 10px 24px;
+  background:#1A1A18; border:1px solid rgba(200,200,192,0.12);
+  border-radius:4px; color:#E8E8E0;
+  font-family:'IBM Plex Mono',monospace; font-size:15px;
+  outline:none; transition:border-color 0.15s;
+  -moz-appearance:textfield;
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance:none; margin:0; }
+input[type="number"]:focus { border-color:#B8BEC8; }
+
+.computed { font-family:'IBM Plex Mono',monospace; font-size:11px; color:#3DBA6E; margin-top:6px; }
+
+.save-btn {
+  width:100%; padding:14px; margin-top:32px;
+  background:#B8BEC8; color:#0A0A08;
+  border:none; border-radius:4px;
+  font-family:'IBM Plex Mono',monospace; font-size:13px;
+  letter-spacing:0.12em; text-transform:uppercase;
+  cursor:pointer; transition:background 0.15s;
+}
+.save-btn:hover { background:#CDD3DC; }
+
+.toast {
+  position:fixed; bottom:32px; right:32px;
+  background:#3DBA6E; color:#0A0A08;
+  font-family:'IBM Plex Mono',monospace; font-size:12px;
+  padding:12px 24px; border-radius:4px;
+  opacity:0; transition:opacity 0.3s;
+  letter-spacing:0.08em; pointer-events:none;
+}
+.toast.show { opacity:1; }
+
+.spot-display { background:#1A1A18; border:1px solid rgba(200,200,192,0.1); border-radius:4px; padding:14px 18px; margin-bottom:24px; display:flex; align-items:center; justify-content:space-between; }
+.spot-display .label { font-family:'IBM Plex Mono',monospace; font-size:11px; color:#555; text-transform:uppercase; letter-spacing:0.1em; }
+.spot-display .value { font-family:'IBM Plex Mono',monospace; font-size:20px; color:#E8E8E0; }
+
+.instructions { background:#1A1A18; border:1px solid rgba(200,200,192,0.08); border-radius:8px; padding:20px 24px; margin-bottom:32px; }
+.instructions h3 { font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#555; margin-bottom:12px; }
+.instructions ol { margin-left:20px; }
+.instructions li { font-size:13px; color:#666; line-height:1.8; }
+.instructions li strong { color:#888; }
+
+.output-section { margin-top:32px; }
+.output-section h3 { font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:#555; margin-bottom:12px; }
+.code-block { background:#1A1A18; border:1px solid rgba(200,200,192,0.1); border-radius:4px; padding:16px; font-family:'IBM Plex Mono',monospace; font-size:12px; color:#B8BEC8; line-height:1.8; overflow-x:auto; white-space:pre; }
+.copy-btn { background:transparent; border:1px solid rgba(200,200,192,0.2); color:#888; padding:6px 14px; border-radius:4px; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.08em; cursor:pointer; margin-top:8px; transition:all 0.15s; }
+.copy-btn:hover { border-color:#B8BEC8; color:#E8E8E0; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>OWNAG ADMIN</h1>
+    <p>Dealer Premium Update Panel — update weekly every Monday morning</p>
+  </div>
+
+  <!-- PASSWORD GATE -->
+  <div id="gate">
+    <h2>ENTER ACCESS CODE</h2>
+    <input type="password" id="pw-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkPw()">
+    <br>
+    <button onclick="checkPw()">Enter →</button>
+    <div class="error" id="pw-error"></div>
+  </div>
+
+  <!-- MAIN PANEL -->
+  <div id="panel">
+    <div class="last-updated">Last updated: <span id="last-update-time">Never</span></div>
+
+    <div class="instructions">
+      <h3>How to Use This Panel</h3>
+      <ol>
+        <li>Check current Silver spot price at <strong>APMEX.com</strong> or <strong>JMBullion.com</strong></li>
+        <li>Visit each dealer and find their current 1oz Silver Eagle price and 1oz bar price</li>
+        <li>Subtract spot from each dealer price to get the premium — enter that below</li>
+        <li>Click <strong>Save Premiums</strong> — the code block updates automatically</li>
+        <li>Copy the generated code and paste it into <strong>ownag.html</strong> replacing the PREMIUMS constant</li>
+      </ol>
+    </div>
+
+    <div class="spot-display">
+      <span class="label">Current Silver Spot (live)</span>
+      <span class="value" id="admin-spot">Loading...</span>
+    </div>
+
+    <!-- DEALER CARDS -->
+    <div id="dealer-cards"></div>
+
+    <button class="save-btn" onclick="savePremiums()">Save Premiums & Generate Code</button>
+
+    <div class="output-section" id="output-section" style="display:none;">
+      <h3>Generated Code — Copy into ownag.html</h3>
+      <div class="code-block" id="output-code"></div>
+      <button class="copy-btn" onclick="copyCode()">Copy Code</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Saved!</div>
+
+<script>
+// ── PASSWORD ──────────────────────────────────────────────────────────────────
+// Simple password — change this to something only you know
+const PASSWORD = 'ownag2026';
+
+function checkPw() {
+  const val = document.getElementById('pw-input').value;
+  if (val === PASSWORD) {
+    document.getElementById('gate').style.display = 'none';
+    document.getElementById('panel').style.display = 'block';
+    init();
+  } else {
+    document.getElementById('pw-error').textContent = 'Incorrect code.';
+  }
+}
+
+// ── DEALERS ───────────────────────────────────────────────────────────────────
+const DEALERS = [
+  { key: 'apmex',  name: 'APMEX',        defaultEagle: 6.49, defaultBar: 4.99 },
+  { key: 'jm',     name: 'JM Bullion',   defaultEagle: 5.99, defaultBar: 3.89 },
+  { key: 'sd',     name: 'SD Bullion',   defaultEagle: 6.99, defaultBar: 3.49 },
+  { key: 'mm',     name: 'Money Metals', defaultEagle: 6.29, defaultBar: 4.19 },
+  { key: 'kitco',  name: 'Kitco',        defaultEagle: 6.79, defaultBar: 4.69 },
+];
+
+let spotPrice = 0;
+let savedPremiums = {};
+
+function init() {
+  // Load saved premiums from localStorage
+  try {
+    const saved = localStorage.getItem('ownag-premiums');
+    if (saved) {
+      savedPremiums = JSON.parse(saved);
+      const ts = localStorage.getItem('ownag-premiums-ts');
+      if (ts) document.getElementById('last-update-time').textContent = new Date(parseInt(ts)).toLocaleString();
+    }
+  } catch(e) {}
+
+  renderCards();
+  fetchSpot();
+}
+
+function fetchSpot() {
+  fetch('https://www.goldapi.io/api/XAG/USD', {
+    headers: { 'x-access-token': '07b438cbf469505af51d8acf3ac78de9c91be3735dbc456a2831dc97817ae242' }
+  })
+  .then(r => r.json())
+  .then(d => {
+    spotPrice = d.price || 74.57;
+    document.getElementById('admin-spot').textContent = '$' + spotPrice.toFixed(2) + '/oz';
+    updateComputedPrices();
+  })
+  .catch(() => {
+    spotPrice = 74.57;
+    document.getElementById('admin-spot').textContent = '$' + spotPrice.toFixed(2) + '/oz (est.)';
+    updateComputedPrices();
+  });
+}
+
+function renderCards() {
+  const container = document.getElementById('dealer-cards');
+  container.innerHTML = DEALERS.map(d => {
+    const eagle = savedPremiums[d.key]?.eagle ?? d.defaultEagle;
+    const bar   = savedPremiums[d.key]?.bar   ?? d.defaultBar;
+    return `
+    <div class="dealer-card">
+      <div class="dealer-name">${d.name}</div>
+      <div class="field-row">
+        <div class="field-group">
+          <div class="field-label">1oz Eagle Premium Over Spot</div>
+          <div class="field-input-wrap">
+            <span class="prefix">+$</span>
+            <input type="number" id="${d.key}-eagle" value="${eagle}" min="0" step="0.01" oninput="updateComputed('${d.key}')">
+          </div>
+          <div class="computed" id="${d.key}-eagle-computed">= $-- total</div>
+        </div>
+        <div class="field-group">
+          <div class="field-label">1oz Bar Premium Over Spot</div>
+          <div class="field-input-wrap">
+            <span class="prefix">+$</span>
+            <input type="number" id="${d.key}-bar" value="${bar}" min="0" step="0.01" oninput="updateComputed('${d.key}')">
+          </div>
+          <div class="computed" id="${d.key}-bar-computed">= $-- total</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function updateComputed(key) {
+  if (!spotPrice) return;
+  const eagle = parseFloat(document.getElementById(key + '-eagle').value) || 0;
+  const bar   = parseFloat(document.getElementById(key + '-bar').value)   || 0;
+  const ec = document.getElementById(key + '-eagle-computed');
+  const bc = document.getElementById(key + '-bar-computed');
+  if (ec) ec.textContent = '= $' + (spotPrice + eagle).toFixed(2) + ' total';
+  if (bc) bc.textContent = '= $' + (spotPrice + bar).toFixed(2) + ' total';
+}
+
+function updateComputedPrices() {
+  DEALERS.forEach(d => updateComputed(d.key));
+}
+
+function savePremiums() {
+  const premiums = {};
+  DEALERS.forEach(d => {
+    premiums[d.key] = {
+      eagle: parseFloat(document.getElementById(d.key + '-eagle').value) || 0,
+      bar:   parseFloat(document.getElementById(d.key + '-bar').value)   || 0,
+    };
+  });
+
+  savedPremiums = premiums;
+  try {
+    localStorage.setItem('ownag-premiums', JSON.stringify(premiums));
+    localStorage.setItem('ownag-premiums-ts', Date.now().toString());
+    document.getElementById('last-update-time').textContent = new Date().toLocaleString();
+  } catch(e) {}
+
+  generateCode(premiums);
+  showToast('Saved! Copy the code below →');
+}
+
+function generateCode(premiums) {
+  const lines = DEALERS.map(d =>
+    `  ${d.key.padEnd(6)}: { eagle: ${premiums[d.key].eagle.toFixed(2)}, bar: ${premiums[d.key].bar.toFixed(2)} },`
+  ).join('\n');
+
+  const code = `const PREMIUMS = {\n${lines}\n};`;
+
+  document.getElementById('output-code').textContent = code;
+  document.getElementById('output-section').style.display = 'block';
+  document.getElementById('output-section').scrollIntoView({ behavior: 'smooth' });
+}
+
+function copyCode() {
+  const code = document.getElementById('output-code').textContent;
+  navigator.clipboard.writeText(code).then(() => showToast('Copied!'));
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>
