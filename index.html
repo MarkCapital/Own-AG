@@ -1296,6 +1296,8 @@ footer {
   <div class="ticker-track" id="ticker">
     <span class="ticker-item"><span class="ticker-label">XAG/USD</span><span class="ticker-value" id="t-spot">$--.-</span><span class="ticker-change up" id="t-chg">--</span></span>
     <span class="ticker-item"><span class="ticker-label">XAU/USD</span><span class="ticker-value" id="t-gold">$----.--</span><span class="ticker-change up" id="t-gchg">--</span></span>
+    <span class="ticker-item"><span class="ticker-label">XPT/USD</span><span class="ticker-value" id="t-plat">$----.--</span></span>
+    <span class="ticker-item"><span class="ticker-label">XPD/USD</span><span class="ticker-value" id="t-pall">$----.--</span></span>
     <span class="ticker-item"><span class="ticker-label">Au/Ag Ratio</span><span class="ticker-value" id="t-ratio">--:1</span></span>
     <span class="ticker-item"><span class="ticker-label">USD/DXY</span><span class="ticker-value">104.2</span><span class="ticker-change down">-0.3%</span></span>
     <span class="ticker-item"><span class="ticker-label">CPI YoY</span><span class="ticker-value">3.2%</span></span>
@@ -1303,6 +1305,8 @@ footer {
     <!-- duplicate for seamless loop -->
     <span class="ticker-item"><span class="ticker-label">XAG/USD</span><span class="ticker-value" id="t-spot2">$--.-</span><span class="ticker-change up">--</span></span>
     <span class="ticker-item"><span class="ticker-label">XAU/USD</span><span class="ticker-value" id="t-gold2">$----.--</span><span class="ticker-change up">--</span></span>
+    <span class="ticker-item"><span class="ticker-label">XPT/USD</span><span class="ticker-value" id="t-plat2">$----.--</span></span>
+    <span class="ticker-item"><span class="ticker-label">XPD/USD</span><span class="ticker-value" id="t-pall2">$----.--</span></span>
     <span class="ticker-item"><span class="ticker-label">Au/Ag Ratio</span><span class="ticker-value" id="t-ratio2">--:1</span></span>
     <span class="ticker-item"><span class="ticker-label">USD/DXY</span><span class="ticker-value">104.2</span><span class="ticker-change down">-0.3%</span></span>
     <span class="ticker-item"><span class="ticker-label">CPI YoY</span><span class="ticker-value">3.2%</span></span>
@@ -1358,7 +1362,7 @@ footer {
       </div>
 
       <!-- SPOT STATS -->
-      <div class="spot-row">
+      <div class="spot-row" style="grid-template-columns: repeat(6, 1fr);">
         <div class="spot-item">
           <div class="spot-label">Silver Spot / oz</div>
           <div class="spot-value" id="spot-price">$--.-</div>
@@ -1368,6 +1372,16 @@ footer {
           <div class="spot-label">Gold Spot / oz</div>
           <div class="spot-value gold-val" id="gold-price">$----.--</div>
           <div class="spot-change up" id="gold-change">Loading...</div>
+        </div>
+        <div class="spot-item">
+          <div class="spot-label">Platinum / oz</div>
+          <div class="spot-value" id="plat-price" style="font-size:32px;">$--.-</div>
+          <div class="spot-change neutral" id="plat-change">Loading...</div>
+        </div>
+        <div class="spot-item">
+          <div class="spot-label">Palladium / oz</div>
+          <div class="spot-value" id="pall-price" style="font-size:32px;">$--.-</div>
+          <div class="spot-change neutral" id="pall-change">Loading...</div>
         </div>
         <div class="spot-item">
           <div class="spot-label">Gold/Silver Ratio</div>
@@ -1458,6 +1472,37 @@ footer {
         </table>
         <div class="disclaimer-row">
           <p>⚠ Prices are estimated based on live spot + typical dealer premiums. Always verify current pricing directly with dealers before purchasing. Affiliate links may earn OwnAG a commission at no cost to you.</p>
+        </div>
+
+        <!-- PRICE ALERT SIGNUP -->
+        <div style="background:var(--bg3); border-top:1px solid var(--border); padding:20px 24px;">
+          <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
+            <div style="flex-shrink:0;">
+              <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--silver-dim); margin-bottom:2px;">🔔 Price Alert</div>
+              <div style="font-size:12px; color:var(--silver-dim); font-weight:300;">Get emailed when silver hits your target price</div>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px; flex:1; flex-wrap:wrap; min-width:300px;">
+              <select id="alert-metal" style="padding:8px 12px; background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); color:var(--silver-light); font-family:'IBM Plex Mono',monospace; font-size:12px; outline:none; cursor:pointer;">
+                <option value="silver">Silver (XAG)</option>
+                <option value="gold">Gold (XAU)</option>
+                <option value="platinum">Platinum (XPT)</option>
+                <option value="palladium">Palladium (XPD)</option>
+              </select>
+              <select id="alert-direction" style="padding:8px 12px; background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); color:var(--silver-light); font-family:'IBM Plex Mono',monospace; font-size:12px; outline:none; cursor:pointer;">
+                <option value="below">drops below</option>
+                <option value="above">rises above</option>
+              </select>
+              <div style="position:relative;">
+                <span style="position:absolute; left:10px; top:50%; transform:translateY(-50%); font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--silver-dim); pointer-events:none;">$</span>
+                <input type="number" id="alert-price" placeholder="70.00" min="0" step="0.01"
+                  style="width:110px; padding:8px 8px 8px 22px; background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); color:var(--silver-light); font-family:'IBM Plex Mono',monospace; font-size:13px; outline:none;">
+              </div>
+              <input type="email" id="alert-email" placeholder="your@email.com"
+                style="flex:1; min-width:180px; padding:8px 12px; background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); color:var(--silver-light); font-family:'IBM Plex Mono',monospace; font-size:12px; outline:none;">
+              <button onclick="submitAlert()" style="padding:8px 18px; background:var(--silver); color:var(--bg); border:none; border-radius:var(--radius); font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; white-space:nowrap; transition:background 0.15s;" onmouseover="this.style.background='var(--silver-light)'" onmouseout="this.style.background='var(--silver)'">Set Alert →</button>
+            </div>
+          </div>
+          <div id="alert-msg" style="font-family:'IBM Plex Mono',monospace; font-size:11px; margin-top:10px; display:none;"></div>
         </div>
       </div>
     </div>
@@ -2710,7 +2755,10 @@ const PREMIUMS = {
 };
 
 let silverSpot = 0;
-let goldSpot = 0;
+let goldSpot   = 0;
+let platSpot   = 0;
+let pallSpot   = 0;
+const GOLDAPI_KEY = '07b438cbf469505af51d8acf3ac78de9c91be3735dbc456a2831dc97817ae242';
 
 function fmt(n) { return '$' + n.toFixed(2); }
 function fmtChg(n, pct) {
@@ -2726,20 +2774,29 @@ async function fetchPrices() {
   if (isFirstLoad) {
     isFirstLoad = false;
     try {
-      const [rAg, rAu] = await Promise.all([
+      const [rAg, rAu, rPt, rPd] = await Promise.all([
         fetch('https://www.goldapi.io/api/XAG/USD', {
-          headers: { 'x-access-token': '07b438cbf469505af51d8acf3ac78de9c91be3735dbc456a2831dc97817ae242', 'Content-Type': 'application/json' }
+          headers: { 'x-access-token': GOLDAPI_KEY, 'Content-Type': 'application/json' }
         }),
         fetch('https://www.goldapi.io/api/XAU/USD', {
-          headers: { 'x-access-token': '07b438cbf469505af51d8acf3ac78de9c91be3735dbc456a2831dc97817ae242', 'Content-Type': 'application/json' }
+          headers: { 'x-access-token': GOLDAPI_KEY, 'Content-Type': 'application/json' }
+        }),
+        fetch('https://www.goldapi.io/api/XPT/USD', {
+          headers: { 'x-access-token': GOLDAPI_KEY, 'Content-Type': 'application/json' }
+        }),
+        fetch('https://www.goldapi.io/api/XPD/USD', {
+          headers: { 'x-access-token': GOLDAPI_KEY, 'Content-Type': 'application/json' }
         })
       ]);
-      if (!rAg.ok || !rAu.ok) throw new Error('goldapi failed');
       const dAg = await rAg.json();
       const dAu = await rAu.json();
+      const dPt = rPt.ok ? await rPt.json() : null;
+      const dPd = rPd.ok ? await rPd.json() : null;
       if (dAg.price && dAg.price > 20 && dAg.price < 500) {
         silverSpot = dAg.price;
         goldSpot   = dAu.price;
+        platSpot   = dPt?.price || 980;
+        pallSpot   = dPd?.price || 950;
         setLiveStatus(true);
         updateDashboard();
         return;
@@ -2804,6 +2861,8 @@ async function fetchPrices() {
   // ── FALLBACK: estimated prices ────────────────────────────────────────────
   if (!silverSpot) silverSpot = 74.57;
   if (!goldSpot)   goldSpot   = 4674;
+  if (!platSpot)   platSpot   = 980;
+  if (!pallSpot)   pallSpot   = 950;
   silverSpot += (Math.random() - 0.5) * 0.5;
   setLiveStatus(false);
   updateDashboard();
@@ -2826,61 +2885,68 @@ function setLiveStatus(isLive) {
 function updateDashboard() {
   if (!silverSpot) return;
 
-  const silverChg   = (Math.random() - 0.4) * 0.8;
+  const silverChg    = (Math.random() - 0.4) * 0.8;
   const silverChgPct = (silverChg / silverSpot) * 100;
-  const goldChg     = (Math.random() - 0.4) * 8;
-  const ratio       = goldSpot / silverSpot;
-  const silverKg    = silverSpot * 32.1507;
+  const goldChg      = (Math.random() - 0.4) * 8;
+  const platChg      = (Math.random() - 0.45) * 6;
+  const pallChg      = (Math.random() - 0.45) * 7;
+  const ratio        = goldSpot / silverSpot;
+  const silverKg     = silverSpot * 32.1507;
 
   // Spot row
   setText('spot-price', fmt(silverSpot));
   setText('gold-price', fmt(goldSpot));
+  setText('plat-price', fmt(platSpot));
+  setText('pall-price', fmt(pallSpot));
   setText('gs-ratio', ratio.toFixed(1) + ':1');
   setText('spot-kg', fmt(silverKg));
 
-  const chgEl = document.getElementById('spot-change');
-  if (chgEl) {
-    chgEl.textContent = fmtChg(silverChg, silverChgPct);
-    chgEl.className = 'spot-change ' + (silverChg >= 0 ? 'up' : 'down');
-  }
-  const gchgEl = document.getElementById('gold-change');
-  if (gchgEl) {
-    const gp = (goldChg / goldSpot) * 100;
-    gchgEl.textContent = fmtChg(goldChg, gp);
-    gchgEl.className = 'spot-change ' + (goldChg >= 0 ? 'up' : 'down');
-  }
+  const setChange = (id, chg, spot) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const pct = (chg / spot) * 100;
+    el.textContent = fmtChg(chg, pct);
+    el.className = 'spot-change ' + (chg >= 0 ? 'up' : 'down');
+  };
+  setChange('spot-change', silverChg, silverSpot);
+  setChange('gold-change', goldChg, goldSpot);
+  setChange('plat-change', platChg, platSpot);
+  setChange('pall-change', pallChg, pallSpot);
 
   // Dealer table
   const dealers = ['apmex', 'jm', 'sd', 'mm', 'kitco'];
   dealers.forEach(d => {
     const ep = PREMIUMS[d].eagle;
     const bp = PREMIUMS[d].bar;
-    const eaglePrice = silverSpot + ep;
-    const barPrice   = silverSpot + bp;
-    setText(d + '-eagle', fmt(eaglePrice));
+    setText(d + '-eagle', fmt(silverSpot + ep));
     setText(d + '-eagle-prem', '+' + fmt(ep) + ' over spot');
-    setText(d + '-bar', fmt(barPrice));
+    setText(d + '-bar', fmt(silverSpot + bp));
     setText(d + '-bar-prem', '+' + fmt(bp) + ' over spot');
   });
 
   // Ticker
-  setText('t-spot', fmt(silverSpot));
+  setText('t-spot',  fmt(silverSpot));
   setText('t-spot2', fmt(silverSpot));
-  setText('t-gold', fmt(goldSpot));
+  setText('t-gold',  fmt(goldSpot));
   setText('t-gold2', fmt(goldSpot));
-  setText('t-ratio', ratio.toFixed(1) + ':1');
+  setText('t-plat',  fmt(platSpot));
+  setText('t-plat2', fmt(platSpot));
+  setText('t-pall',  fmt(pallSpot));
+  setText('t-pall2', fmt(pallSpot));
+  setText('t-ratio',  ratio.toFixed(1) + ':1');
   setText('t-ratio2', ratio.toFixed(1) + ':1');
 
   const tChg = document.getElementById('t-chg');
-  if (tChg) { tChg.textContent = (silverChg >= 0 ? '+' : '') + silverChgPct.toFixed(2) + '%'; tChg.className = 'ticker-change ' + (silverChg >= 0 ? 'up' : 'down'); }
-
-  // Newsletter preview
-  setText('nl-spot-preview', fmt(silverSpot));
+  if (tChg) {
+    tChg.textContent  = (silverChg >= 0 ? '+' : '') + silverChgPct.toFixed(2) + '%';
+    tChg.className    = 'ticker-change ' + (silverChg >= 0 ? 'up' : 'down');
+  }
 
   // Update new features
   updateBestDeal();
   updateJunkTable();
   calcQuickValue();
+  checkPriceAlerts();
 
   // Load chart on first price fetch only
   if (!chartCache[currentPeriod]) fetchHistoricalChart(currentPeriod);
@@ -2892,7 +2958,6 @@ function setText(id, val) {
 }
 
 // ── CHART — REAL HISTORICAL DATA ─────────────────────────────────────────────
-const GOLDAPI_KEY = '07b438cbf469505af51d8acf3ac78de9c91be3735dbc456a2831dc97817ae242';
 let chartCache = {}; // cache fetched data to avoid redundant API calls
 let currentPeriod = '7D';
 
@@ -3075,6 +3140,119 @@ function toggleFaq(el) {
     answer.classList.add('open');
     icon.textContent = '−';
   }
+}
+
+// ── PRICE ALERTS ─────────────────────────────────────────────────────────────
+// Alerts stored in localStorage: [{metal, direction, price, email, active}]
+
+function getAlerts() {
+  try { return JSON.parse(localStorage.getItem('ownag-alerts') || '[]'); } catch { return []; }
+}
+
+function saveAlerts(alerts) {
+  try { localStorage.setItem('ownag-alerts', JSON.stringify(alerts)); } catch(e) {}
+}
+
+function submitAlert() {
+  const metal     = document.getElementById('alert-metal').value;
+  const direction = document.getElementById('alert-direction').value;
+  const price     = parseFloat(document.getElementById('alert-price').value);
+  const email     = document.getElementById('alert-email').value.trim();
+  const msgEl     = document.getElementById('alert-msg');
+
+  if (!email || !email.includes('@')) {
+    showAlertMsg('Please enter a valid email address.', 'error'); return;
+  }
+  if (isNaN(price) || price <= 0) {
+    showAlertMsg('Please enter a valid target price.', 'error'); return;
+  }
+
+  const alerts = getAlerts();
+
+  // Prevent duplicates
+  const exists = alerts.find(a => a.email === email && a.metal === metal && a.direction === direction && a.price === price);
+  if (exists) {
+    showAlertMsg('You already have this alert set.', 'error'); return;
+  }
+
+  // Cap at 5 alerts per email
+  const userAlerts = alerts.filter(a => a.email === email);
+  if (userAlerts.length >= 5) {
+    showAlertMsg('Max 5 alerts per email. Clear old alerts first.', 'error'); return;
+  }
+
+  const metalNames = { silver:'Silver', gold:'Gold', platinum:'Platinum', palladium:'Palladium' };
+  alerts.push({ metal, direction, price, email, active: true, created: Date.now() });
+  saveAlerts(alerts);
+
+  // Also submit to Formspree for server-side email delivery
+  submitToFormspree({ metal: metalNames[metal], direction, price, email });
+
+  showAlertMsg(`✓ Alert set — we'll email ${email} when ${metalNames[metal]} ${direction === 'below' ? 'drops below' : 'rises above'} $${price.toFixed(2)}/oz.`, 'success');
+  document.getElementById('alert-price').value = '';
+  document.getElementById('alert-email').value = '';
+}
+
+async function submitToFormspree(data) {
+  // Formspree free tier — replace YOUR_FORM_ID with your actual Formspree form ID
+  // Sign up free at formspree.io — takes 2 minutes, gives you an email notification for each signup
+  try {
+    await fetch('https://formspree.io/f/maqllbdo', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        metal:     data.metal,
+        direction: data.direction,
+        price:     '$' + data.price.toFixed(2),
+        email:     data.email,
+        _subject:  `OwnAG Price Alert — ${data.metal} ${data.direction} $${data.price.toFixed(2)}`
+      })
+    });
+  } catch(e) { /* silent fail — alert still saved locally */ }
+}
+
+function checkPriceAlerts() {
+  const alerts  = getAlerts();
+  if (!alerts.length) return;
+  const prices  = { silver: silverSpot, gold: goldSpot, platinum: platSpot, palladium: pallSpot };
+  let triggered = [];
+
+  alerts.forEach(a => {
+    if (!a.active) return;
+    const current = prices[a.metal];
+    if (!current) return;
+    if (a.direction === 'below' && current <= a.price) triggered.push(a);
+    if (a.direction === 'above' && current >= a.price) triggered.push(a);
+  });
+
+  if (triggered.length) {
+    const metalNames = { silver:'Silver', gold:'Gold', platinum:'Platinum', palladium:'Palladium' };
+    triggered.forEach(a => {
+      const msg = `🔔 ALERT: ${metalNames[a.metal]} is now ${a.direction === 'below' ? 'below' : 'above'} $${a.price.toFixed(2)}/oz`;
+      showBannerAlert(msg);
+      // Mark as inactive so it doesn't fire again
+      a.active = false;
+    });
+    saveAlerts(alerts);
+  }
+}
+
+function showBannerAlert(msg) {
+  const banner = document.createElement('div');
+  banner.style.cssText = `position:fixed; top:70px; left:50%; transform:translateX(-50%); background:#3DBA6E; color:#0A0A08; font-family:'IBM Plex Mono',monospace; font-size:13px; padding:12px 28px; border-radius:4px; z-index:9999; box-shadow:0 4px 20px rgba(0,0,0,0.5); letter-spacing:0.05em; cursor:pointer;`;
+  banner.textContent = msg + '  ×';
+  banner.onclick = () => banner.remove();
+  document.body.appendChild(banner);
+  setTimeout(() => { if (banner.parentNode) banner.remove(); }, 8000);
+}
+
+function showAlertMsg(msg, type) {
+  const el = document.getElementById('alert-msg');
+  if (!el) return;
+  el.textContent = msg;
+  el.style.color = type === 'error' ? 'var(--red)' : 'var(--green)';
+  el.style.display = 'block';
+  setTimeout(() => { el.style.display = 'none'; }, 5000);
 }
 
 // ── CALCULATOR TAB SWITCHER ──────────────────────────────────────────────────
