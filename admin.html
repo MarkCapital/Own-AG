@@ -123,6 +123,16 @@ input[type="number"]:focus { border-color:#B8BEC8; }
       <span class="label">Current Silver Spot (live)</span>
       <span class="value" id="admin-spot">Loading...</span>
     </div>
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:24px;">
+      <label style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:#555; flex-shrink:0;">Override spot manually:</label>
+      <div style="position:relative; flex:1; max-width:200px;">
+        <span style="position:absolute; left:12px; top:50%; transform:translateY(-50%); font-family:'IBM Plex Mono',monospace; font-size:13px; color:#666;">$</span>
+        <input type="number" id="spot-override" placeholder="e.g. 73.83" min="0" step="0.01"
+          style="width:100%; padding:10px 12px 10px 24px; background:#1A1A18; border:1px solid rgba(200,200,192,0.12); border-radius:4px; color:#E8E8E0; font-family:'IBM Plex Mono',monospace; font-size:14px; outline:none;"
+          oninput="overrideSpot(this.value)">
+      </div>
+      <span style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:#555;">Use Kitco.com for accurate spot</span>
+    </div>
 
     <!-- DEALER CARDS -->
     <div id="dealer-cards"></div>
@@ -184,20 +194,34 @@ function init() {
 }
 
 function fetchSpot() {
-  fetch('https://www.goldapi.io/api/XAG/USD', {
-    headers: { 'x-access-token': '07b438cbf469505af51d8acf3ac78de9c91be3735dbc456a2831dc97817ae242' }
-  })
+  fetch('https://forex-data-feed.swissquote.com/public-quotes/bboquotes/instrument/XAG/USD')
   .then(r => r.json())
   .then(d => {
-    spotPrice = d.price || 74.57;
-    document.getElementById('admin-spot').textContent = '$' + spotPrice.toFixed(2) + '/oz';
-    updateComputedPrices();
+    // Swissquote returns array — use premium profile ask price
+    const price = d[0]?.spreadProfilePrices[0]?.ask;
+    if (price && price > 10) {
+      spotPrice = parseFloat(price);
+      document.getElementById('admin-spot').textContent = '$' + spotPrice.toFixed(2) + '/oz';
+      updateComputedPrices();
+    } else {
+      throw new Error('bad data');
+    }
   })
   .catch(() => {
-    spotPrice = 74.57;
-    document.getElementById('admin-spot').textContent = '$' + spotPrice.toFixed(2) + '/oz (est.)';
+    // Fallback — prompt user to enter manually
+    spotPrice = 0;
+    document.getElementById('admin-spot').textContent = 'Could not fetch — enter spot manually below';
     updateComputedPrices();
   });
+}
+
+function overrideSpot(val) {
+  const n = parseFloat(val);
+  if (!isNaN(n) && n > 0) {
+    spotPrice = n;
+    document.getElementById('admin-spot').textContent = '$' + spotPrice.toFixed(2) + '/oz (manual)';
+    updateComputedPrices();
+  }
 }
 
 function renderCards() {
