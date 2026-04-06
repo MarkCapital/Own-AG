@@ -194,11 +194,10 @@ function init() {
 }
 
 function fetchSpot() {
-  fetch('https://forex-data-feed.swissquote.com/public-quotes/bboquotes/instrument/XAG/USD')
+  fetch('https://api.metals.dev/v1/latest?api_key=AZN1UIH4LFPUQDZCJTHD437ZCJTHD&currency=USD&unit=toz')
   .then(r => r.json())
   .then(d => {
-    // Swissquote returns array — use premium profile ask price
-    const price = d[0]?.spreadProfilePrices[0]?.ask;
+    const price = d.metals?.silver;
     if (price && price > 10) {
       spotPrice = parseFloat(price);
       document.getElementById('admin-spot').textContent = '$' + spotPrice.toFixed(2) + '/oz';
@@ -208,10 +207,22 @@ function fetchSpot() {
     }
   })
   .catch(() => {
-    // Fallback — prompt user to enter manually
-    spotPrice = 0;
-    document.getElementById('admin-spot').textContent = 'Could not fetch — enter spot manually below';
-    updateComputedPrices();
+    // Fallback to Swissquote
+    fetch('https://forex-data-feed.swissquote.com/public-quotes/bboquotes/instrument/XAG/USD')
+    .then(r => r.json())
+    .then(d => {
+      const price = d[0]?.spreadProfilePrices[0]?.ask;
+      if (price && price > 10) {
+        spotPrice = parseFloat(price);
+        document.getElementById('admin-spot').textContent = '$' + spotPrice.toFixed(2) + '/oz';
+        updateComputedPrices();
+      } else throw new Error('bad data');
+    })
+    .catch(() => {
+      spotPrice = 0;
+      document.getElementById('admin-spot').textContent = 'Could not fetch — enter spot manually below';
+      updateComputedPrices();
+    });
   });
 }
 
