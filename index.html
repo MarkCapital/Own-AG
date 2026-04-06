@@ -2765,12 +2765,12 @@ function scrollToId(id) {
 // ── SILVER PRICE DATA ────────────────────────────────────────────────────────
 // Dealer premium offsets above spot (realistic current market premiums)
 const PREMIUMS = {
-  apmex : { eagle: 14.87, bar: 9.89 },
-  jm    : { eagle: 15.92, bar: 10.55 },
-  sd    : { eagle: 11.04, bar: 4.55 },
-  mm    : { eagle: 12.28, bar: 5.13 },
-  kitco : { eagle: 13.96, bar: 9.31 },
-  bgasc : { eagle: 11.58, bar: 8.70 },
+  apmex:  { eagle: 6.49, bar: 4.99 },
+  jm:     { eagle: 5.99, bar: 3.89 },
+  sd:     { eagle: 6.99, bar: 3.49 },
+  mm:     { eagle: 6.29, bar: 4.19 },
+  kitco:  { eagle: 6.79, bar: 4.69 },
+  bgasc:  { eagle: 6.19, bar: 3.79 }
 };
 
 let silverSpot = 0;
@@ -2785,50 +2785,47 @@ function fmtChg(n, pct) {
   return `${sign}${fmt(Math.abs(n))} (${sign}${pct.toFixed(2)}%)`;
 }
 
+const METALS_DEV_KEY = 'AZN1UIH4LFPUQDZCJTHD437ZCJTHD';
 let isFirstLoad = true;
 
 async function fetchPrices() {
 
-  // ── FIRST LOAD: use gold-api.com key for accurate initial price ───────────
-  if (isFirstLoad) {
-    isFirstLoad = false;
-    try {
-      const [rAg, rAu, rPt, rPd] = await Promise.all([
-        fetch('https://www.goldapi.io/api/XAG/USD', {
-          headers: { 'x-access-token': GOLDAPI_KEY, 'Content-Type': 'application/json' }
-        }),
-        fetch('https://www.goldapi.io/api/XAU/USD', {
-          headers: { 'x-access-token': GOLDAPI_KEY, 'Content-Type': 'application/json' }
-        }),
-        fetch('https://www.goldapi.io/api/XPT/USD', {
-          headers: { 'x-access-token': GOLDAPI_KEY, 'Content-Type': 'application/json' }
-        }),
-        fetch('https://www.goldapi.io/api/XPD/USD', {
-          headers: { 'x-access-token': GOLDAPI_KEY, 'Content-Type': 'application/json' }
-        })
-      ]);
-      const dAg = await rAg.json();
-      const dAu = await rAu.json();
-      const dPt = rPt.ok ? await rPt.json() : null;
-      const dPd = rPd.ok ? await rPd.json() : null;
-      if (dAg.price && dAg.price > 20 && dAg.price < 500) {
-        silverSpot = dAg.price;
-        goldSpot   = dAu.price;
-        platSpot   = dPt?.price || 980;
-        pallSpot   = dPd?.price || 950;
-        setLiveStatus(true);
-        updateDashboard();
-        return;
-      }
-      throw new Error('bad data');
-    } catch(e) {
-      // fall through to free sources below
+  // ── PRIMARY: metals.dev — accurate, CORS-enabled, all 4 metals in one call ─
+  try {
+    const r = await fetch(
+      `https://api.metals.dev/v1/latest?api_key=${METALS_DEV_KEY}&currency=USD&unit=toz`
+    );
+    if (!r.ok) throw new Error('metals.dev failed');
+    const d = await r.json();
+    const m = d.metals;
+    if (m && m.silver && m.silver > 20) {
+      silverSpot = m.silver;
+      goldSpot   = m.gold   || 4674;
+      platSpot   = m.platinum  || 980;
+      pallSpot   = m.palladium || 950;
+      setLiveStatus(true);
+      updateDashboard();
+      return;
     }
-  }
+    throw new Error('bad data');
+  } catch(e1) {}
 
-  // ── SUBSEQUENT REFRESHES: free sources only (preserves API quota) ─────────
+  // ── FALLBACK A: Swissquote (free, no key, CORS-friendly) ──────────────────
+  try {
+    const r = await fetch('https://forex-data-feed.swissquote.com/public-quotes/bboquotes/instrument/XAG/USD');
+    if (!r.ok) throw new Error('swissquote failed');
+    const d = await r.json();
+    const price = d[0]?.spreadProfilePrices[0]?.ask;
+    if (price && price > 20) {
+      silverSpot = parseFloat(price);
+      setLiveStatus(true);
+      updateDashboard();
+      return;
+    }
+    throw new Error('bad data');
+  } catch(e2) {}
 
-  // Source A: goldprice.org
+  // ── FALLBACK B: goldprice.org ──────────────────────────────────────────────
   try {
     const r = await fetch('https://data-asg.goldprice.org/dbXRates/USD');
     if (!r.ok) throw new Error('goldprice failed');
@@ -2843,41 +2840,9 @@ async function fetchPrices() {
       return;
     }
     throw new Error('bad data');
-  } catch(eA) {}
+  } catch(e3) {}
 
-  // Source B: frankfurter.app
-  try {
-    const r = await fetch('https://api.frankfurter.app/latest?from=XAG&to=USD');
-    if (!r.ok) throw new Error('frankfurter failed');
-    const d = await r.json();
-    if (d.rates && d.rates.USD && d.rates.USD > 20) {
-      silverSpot = d.rates.USD;
-      try {
-        const rg = await fetch('https://api.frankfurter.app/latest?from=XAU&to=USD');
-        if (rg.ok) { const dg = await rg.json(); if (dg.rates?.USD > 500) goldSpot = dg.rates.USD; }
-      } catch(eg) {}
-      setLiveStatus(true);
-      updateDashboard();
-      return;
-    }
-    throw new Error('bad data');
-  } catch(eB) {}
-
-  // Source C: open.er-api.com
-  try {
-    const r = await fetch('https://open.er-api.com/v6/latest/XAG');
-    if (!r.ok) throw new Error('er-api failed');
-    const d = await r.json();
-    if (d.rates && d.rates.USD && d.rates.USD > 20) {
-      silverSpot = d.rates.USD;
-      setLiveStatus(true);
-      updateDashboard();
-      return;
-    }
-    throw new Error('bad data');
-  } catch(eC) {}
-
-  // ── FALLBACK: estimated prices ────────────────────────────────────────────
+  // ── FINAL FALLBACK: estimated prices ──────────────────────────────────────
   if (!silverSpot) silverSpot = 74.57;
   if (!goldSpot)   goldSpot   = 4674;
   if (!platSpot)   platSpot   = 980;
