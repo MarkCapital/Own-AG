@@ -1426,7 +1426,7 @@ footer {
             <tr>
               <td class="dealer-name">APMEX</td>
               <td class="price-cell" id="apmex-eagle">--</td>
-              <td class="premium-cell lowest" id="apmex-eagle-prem">--</td>
+              <td class="premium-cell" id="apmex-eagle-prem">--</td>
               <td class="price-cell" id="apmex-bar">--</td>
               <td class="premium-cell" id="apmex-bar-prem">--</td>
               <td style="color: var(--silver-light); font-family: 'IBM Plex Mono', monospace; font-size:13px;">★★★★★</td>
@@ -1437,7 +1437,7 @@ footer {
               <td class="price-cell" id="jm-eagle">--</td>
               <td class="premium-cell" id="jm-eagle-prem">--</td>
               <td class="price-cell" id="jm-bar">--</td>
-              <td class="premium-cell lowest" id="jm-bar-prem">--</td>
+              <td class="premium-cell" id="jm-bar-prem">--</td>
               <td style="color: var(--silver-light); font-family: 'IBM Plex Mono', monospace; font-size:13px;">★★★★★</td>
               <td><a href="https://www.jmbullion.com" target="_blank" rel="noopener" class="buy-btn">Buy →</a></td>
             </tr>
@@ -1467,6 +1467,15 @@ footer {
               <td class="premium-cell" id="kitco-bar-prem">--</td>
               <td style="color: var(--silver-light); font-family: 'IBM Plex Mono', monospace; font-size:13px;">★★★★☆</td>
               <td><a href="https://www.kitco.com" target="_blank" rel="noopener" class="buy-btn">Buy →</a></td>
+            </tr>
+            <tr>
+              <td class="dealer-name">BGASC</td>
+              <td class="price-cell" id="bgasc-eagle">--</td>
+              <td class="premium-cell" id="bgasc-eagle-prem">--</td>
+              <td class="price-cell" id="bgasc-bar">--</td>
+              <td class="premium-cell" id="bgasc-bar-prem">--</td>
+              <td style="color: var(--silver-light); font-family: 'IBM Plex Mono', monospace; font-size:13px;">★★★★☆</td>
+              <td><a href="https://www.bgasc.com" target="_blank" rel="noopener" class="buy-btn">Buy →</a></td>
             </tr>
           </tbody>
         </table>
@@ -2524,6 +2533,13 @@ footer {
           <div style="display:flex; flex-direction:column; gap:8px;">
             <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius);">
               <div>
+                <span style="font-size:14px; color:var(--silver-light); font-weight:500;">BGASC</span>
+                <span style="font-size:12px; color:var(--silver-dim); margin-left:12px;">Great selection, consistently low premiums</span>
+              </div>
+              <a href="https://www.bgasc.com" target="_blank" rel="noopener" class="buy-btn">Shop →</a>
+            </div>
+            <div style="display:flex; align-items:center; justify-content:space-between; padding:12px 16px; background:var(--bg3); border:1px solid var(--border); border-radius:var(--radius);">
+              <div>
                 <span style="font-size:14px; color:var(--silver-light); font-weight:500;">APMEX</span>
                 <span style="font-size:12px; color:var(--silver-dim); margin-left:12px;">Largest selection, great for beginners</span>
               </div>
@@ -2669,14 +2685,16 @@ function updateBestDeal() {
     'JM Bullion':   PREMIUMS.jm.eagle,
     'SD Bullion':   PREMIUMS.sd.eagle,
     'Money Metals': PREMIUMS.mm.eagle,
-    'Kitco':        PREMIUMS.kitco.eagle
+    'Kitco':        PREMIUMS.kitco.eagle,
+    'BGASC':        PREMIUMS.bgasc.eagle
   };
   const barPremiums = {
     'APMEX':        PREMIUMS.apmex.bar,
     'JM Bullion':   PREMIUMS.jm.bar,
     'SD Bullion':   PREMIUMS.sd.bar,
     'Money Metals': PREMIUMS.mm.bar,
-    'Kitco':        PREMIUMS.kitco.bar
+    'Kitco':        PREMIUMS.kitco.bar,
+    'BGASC':        PREMIUMS.bgasc.bar
   };
 
   // Find lowest eagle premium
@@ -2751,7 +2769,8 @@ const PREMIUMS = {
   jm:     { eagle: 5.99, bar: 3.89 },
   sd:     { eagle: 6.99, bar: 3.49 },
   mm:     { eagle: 6.29, bar: 4.19 },
-  kitco:  { eagle: 6.79, bar: 4.69 }
+  kitco:  { eagle: 6.79, bar: 4.69 },
+  bgasc:  { eagle: 6.19, bar: 3.79 }
 };
 
 let silverSpot = 0;
@@ -2914,7 +2933,7 @@ function updateDashboard() {
   setChange('pall-change', pallChg, pallSpot);
 
   // Dealer table
-  const dealers = ['apmex', 'jm', 'sd', 'mm', 'kitco'];
+  const dealers = ['apmex', 'jm', 'sd', 'mm', 'kitco', 'bgasc'];
   dealers.forEach(d => {
     const ep = PREMIUMS[d].eagle;
     const bp = PREMIUMS[d].bar;
