@@ -3194,18 +3194,21 @@ function submitAlert() {
 }
 
 async function submitToFormspree(data) {
-  // Formspree free tier — replace YOUR_FORM_ID with your actual Formspree form ID
-  // Sign up free at formspree.io — takes 2 minutes, gives you an email notification for each signup
+  // Make.com webhook — receives alert signups and writes to Google Sheet
+  const WEBHOOK_URL = 'https://hook.us2.make.com/73kc5fuoyypuzomrwns96kv6dgc5fuwk';
+  if (WEBHOOK_URL.includes('PASTE')) return; // not configured yet
   try {
-    await fetch('https://formspree.io/f/maqllbdo', {
+    await fetch(WEBHOOK_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        metal:     data.metal,
-        direction: data.direction,
-        price:     '$' + data.price.toFixed(2),
-        email:     data.email,
-        _subject:  `OwnAG Price Alert — ${data.metal} ${data.direction} $${data.price.toFixed(2)}`
+        timestamp:    new Date().toISOString(),
+        email:        data.email,
+        metal:        data.metal,
+        direction:    data.direction,
+        target_price: data.price.toFixed(2),
+        status:       'ACTIVE',
+        last_checked: ''
       })
     });
   } catch(e) { /* silent fail — alert still saved locally */ }
