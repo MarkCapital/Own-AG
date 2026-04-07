@@ -126,5 +126,12 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <!-- Article: PCGS and NGC Explained -->
+  <url>
+    <loc>https://ownag.com/#art8</loc>
+    <lastmod>2026-04-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 
 </urlset>
