@@ -1140,6 +1140,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--gold); }
 .junk-coin-input { width: 80px; padding: 6px 10px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--radius); color: var(--silver-light); font-family: 'IBM Plex Mono', monospace; font-size: 13px; outline: none; text-align: right; }
 
 @media (max-width: 768px) {
+  /* Calculators */
   .calc-body { grid-template-columns: 1fr; }
   .calc-tab { font-size: 10px; padding: 8px 10px; }
   .junk-grid { grid-template-columns: 1fr; }
@@ -1262,18 +1263,141 @@ footer {
 
 /* ── MOBILE ── */
 @media (max-width: 768px) {
-  nav { padding: 0 20px; }
+  /* ── NAV ── */
+  nav { padding: 0 16px; }
   .nav-links { display: none; }
-  .hero { padding: 80px 20px 40px; }
-  section { padding: 60px 20px; }
-  .spot-row { grid-template-columns: 1fr 1fr; }
+  .nav-logo { font-size: 22px; }
+
+  /* ── HERO ── */
+  .hero { padding: 70px 16px 32px; }
+  .hero h1 { font-size: clamp(44px, 14vw, 72px); }
+  .hero-sub { font-size: 15px; }
+  .hero-actions { flex-direction: column; gap: 10px; }
+  .hero-actions .btn-primary,
+  .hero-actions .btn-outline { width: 100%; text-align: center; }
+
+  /* ── SECTIONS ── */
+  section { padding: 48px 16px; }
+
+  /* ── DASHBOARD ── */
+  .spot-row { grid-template-columns: 1fr 1fr !important; }
+  .spot-value { font-size: 28px !important; }
+  .dashboard-header { flex-direction: column; gap: 8px; align-items: flex-start; }
+
+  /* ── BEST DEAL BANNER ── */
+  #best-deal-banner { flex-wrap: wrap; gap: 6px; padding: 10px 14px; }
+  #best-deal-text { font-size: 11px; }
+
+  /* ── QUICK VALUE WIDGET ── */
+  .quick-value-wrap { flex-direction: column; gap: 8px; }
+  #quick-oz { width: 100% !important; }
+
+  /* ── DEALER TABLE ── */
+  .dealer-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  table { min-width: 560px; }
+
+  /* ── PRICE ALERT ── */
+  #best-deal-banner + div { flex-direction: column; }
+
+  /* ── STATS BAR ── */
+  .stats-inner { grid-template-columns: 1fr 1fr; gap: 20px; }
+  .stat-item { padding: 0 12px; }
+  .stat-num { font-size: 28px; }
+
+  /* ── CHART ── */
+  .chart-header { flex-direction: column; gap: 10px; align-items: flex-start; }
+  .chart-tabs { flex-wrap: wrap; gap: 4px; }
+  .chart-area { height: 200px; }
+  #chart-summary { flex-wrap: wrap; gap: 12px; }
+
+  /* ── EDUCATION GRID ── */
   .edu-grid { grid-template-columns: 1fr; }
-  .newsletter-box { grid-template-columns: 1fr; }
-  .newsletter-left { border-right: none; border-bottom: 1px solid var(--border); }
-  .footer-inner { grid-template-columns: 1fr; gap: 32px; }
-  .stats-inner { grid-template-columns: 1fr 1fr; gap: 24px; }
+
+  /* ── JUNK SILVER TABLE ── */
+  .junk-silver-grid { grid-template-columns: 1fr !important; }
+
+  /* ── SILVER VS ALTERNATIVES ── */
+  .alternatives-grid { grid-template-columns: 1fr !important; }
+
+  /* ── IRA BANNER ── */
+  .ira-banner-inner { grid-template-columns: 1fr !important; }
+
+  /* ── FAQ ── */
+  .faq-q-text { font-size: 14px; }
+
+  /* ── FOOTER ── */
+  footer { padding: 40px 16px; }
+  .footer-inner { grid-template-columns: 1fr; gap: 28px; }
   .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
-  .article-body { padding: 40px 20px 60px; }
+
+  /* ── ARTICLES ── */
+  .article-hero { padding: 90px 16px 40px; }
+  .article-body { padding: 32px 16px 48px; }
+  .article-body h2 { font-size: 22px; }
+  .article-body p, .article-body li { font-size: 15px; }
+  .article-cta { padding: 24px 16px; }
+
+  /* ── BEGINNER GUIDE ── */
+  .beginner-step { flex-direction: column; gap: 16px; }
+  .beginner-step-num { width: 44px; height: 44px; font-size: 20px; }
+  .beginner-dealers { grid-template-columns: 1fr !important; }
+
+  /* ── CALCULATORS ── */
+  .calc-tabs { flex-wrap: wrap; }
+  .calc-tab { flex: none; font-size: 10px; }
+  .calc-body { grid-template-columns: 1fr; }
+  .junk-grid { grid-template-columns: 1fr; }
+  .dca-add-row { grid-template-columns: 1fr 1fr !important; }
+  .dca-summary-grid { grid-template-columns: 1fr 1fr !important; }
+
+  /* ── PRICE ALERTS ── */
+  .alert-bar { flex-direction: column; gap: 10px; }
+  .alert-inputs { flex-direction: column; gap: 8px; }
+  .alert-inputs select,
+  .alert-inputs input { width: 100%; }
+
+  /* ── COMPARISON TABLE (silver vs gold vs btc) ── */
+  .comparison-grid { grid-template-columns: 1fr !important; }
+
+  /* ── MOBILE HAMBURGER HINT ── */
+  .mobile-menu-hint {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--silver-dim);
+    letter-spacing: 0.08em;
+  }
+
+  #mobile-menu-btn { display: block !important; }
+
+  .mobile-nav-open .nav-links {
+    display: flex !important;
+    flex-direction: column;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: rgba(10,10,8,0.98);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 20px 28px;
+    gap: 4px;
+    z-index: 99;
+  }
+
+  .mobile-nav-open .nav-links a {
+    font-size: 14px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    display: block;
+  }
+
+  .mobile-nav-open .nav-links li:last-child a {
+    border-bottom: none;
+    margin-top: 8px;
+  }
 }
 
 /* ── ANIMATIONS ── */
@@ -1326,6 +1450,8 @@ footer {
     <li><a href="#" onclick="showPage('home'); scrollToId('faq')">FAQ</a></li>
     <li><a href="mailto:ownagsupport@gmail.com" class="nav-cta">Contact Us</a></li>
   </ul>
+  <!-- Mobile menu -->
+  <button id="mobile-menu-btn" onclick="toggleMobileMenu()" style="display:none; background:transparent; border:1px solid var(--border); border-radius:var(--radius); padding:6px 12px; color:var(--silver); font-family:'IBM Plex Mono',monospace; font-size:11px; cursor:pointer; letter-spacing:0.08em;">MENU ☰</button>
 </nav>
 
 <!-- ═══════════════════════════════════════════════════ HOME PAGE -->
@@ -1676,7 +1802,7 @@ footer {
 <!-- JUNK SILVER FACE VALUE TABLE -->
 <section style="background:var(--bg2); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:80px 40px;">
   <div class="section-inner">
-    <div style="display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:start;">
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:start;" class="junk-silver-grid">
       <div>
         <div class="section-eyebrow">Quick Reference</div>
         <h2 class="section-title">JUNK SILVER<br>FACE VALUE TABLE</h2>
@@ -1713,7 +1839,7 @@ footer {
     <h2 class="section-title">SILVER VS GOLD<br>VS BITCOIN</h2>
     <p class="section-sub">How does physical silver stack up against other popular alternative assets? A side-by-side breakdown for investors weighing their options.</p>
 
-    <div style="margin-top:48px; display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden;">
+    <div class="comparison-grid" style="margin-top:48px; display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden;">
 
       <!-- Silver -->
       <div style="background:var(--bg2); padding:32px 28px;">
@@ -2831,6 +2957,24 @@ footer {
 </footer>
 
 <script>
+// ── MOBILE MENU ───────────────────────────────────────────────────────────────
+function toggleMobileMenu() {
+  document.querySelector('nav').classList.toggle('mobile-nav-open');
+  const btn = document.getElementById('mobile-menu-btn');
+  if (btn) btn.textContent = document.querySelector('nav').classList.contains('mobile-nav-open') ? 'CLOSE ✕' : 'MENU ☰';
+}
+
+// Close mobile menu when a nav link is clicked
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.addEventListener('click', () => {
+      document.querySelector('nav').classList.remove('mobile-nav-open');
+      const btn = document.getElementById('mobile-menu-btn');
+      if (btn) btn.textContent = 'MENU ☰';
+    });
+  });
+});
+
 // ── PAGE & ARTICLE NAVIGATION ────────────────────────────────────────────────
 function showPage(page) {
   document.querySelectorAll('.page, .article-page').forEach(p => {
@@ -2941,12 +3085,12 @@ function scrollToId(id) {
 // ── SILVER PRICE DATA ────────────────────────────────────────────────────────
 // Dealer premium offsets above spot (realistic current market premiums)
 const PREMIUMS = {
-  apmex : { eagle: 18.71, bar: 11.71 },
-  jm    : { eagle: 18.71, bar: 12.31 },
-  sd    : { eagle: 13.71, bar: 6.14 },
-  mm    : { eagle: 17.93, bar: 7.90 },
-  kitco : { eagle: 16.12, bar: 11.66 },
-  bgasc : { eagle: 16.00, bar: 10.52 },
+  apmex:  { eagle: 6.49, bar: 4.99 },
+  jm:     { eagle: 5.99, bar: 3.89 },
+  sd:     { eagle: 6.99, bar: 3.49 },
+  mm:     { eagle: 6.29, bar: 4.19 },
+  kitco:  { eagle: 6.79, bar: 4.69 },
+  bgasc:  { eagle: 6.19, bar: 3.79 }
 };
 
 let silverSpot = 0;
