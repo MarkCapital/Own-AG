@@ -119,5 +119,12 @@
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
+  <!-- Article: Local Coin Shop vs Online Dealer -->
+  <url>
+    <loc>https://ownag.com/#art7</loc>
+    <lastmod>2026-04-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 
 </urlset>
