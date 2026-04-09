@@ -1350,12 +1350,6 @@ footer {
   .dca-add-row { grid-template-columns: 1fr 1fr !important; }
   .dca-summary-grid { grid-template-columns: 1fr 1fr !important; }
 
-  /* ── PRICE ALERTS ── */
-  .alert-bar { flex-direction: column; gap: 10px; }
-  .alert-inputs { flex-direction: column; gap: 8px; }
-  .alert-inputs select,
-  .alert-inputs input { width: 100%; }
-
   /* ── COMPARISON TABLE (silver vs gold vs btc) ── */
   .comparison-grid { grid-template-columns: 1fr !important; }
 
@@ -1607,37 +1601,6 @@ footer {
         </table>
         <div class="disclaimer-row">
           <p>⚠ Prices are estimated based on live spot + typical dealer premiums. Always verify current pricing directly with dealers before purchasing. Affiliate links may earn OwnAG a commission at no cost to you.</p>
-        </div>
-
-        <!-- PRICE ALERT SIGNUP -->
-        <div style="background:var(--bg3); border-top:1px solid var(--border); padding:20px 24px;">
-          <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
-            <div style="flex-shrink:0;">
-              <div style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.12em; text-transform:uppercase; color:var(--silver-dim); margin-bottom:2px;">🔔 Price Alert</div>
-              <div style="font-size:12px; color:var(--silver-dim); font-weight:300;">Get emailed when silver hits your target price</div>
-            </div>
-            <div style="display:flex; align-items:center; gap:8px; flex:1; flex-wrap:wrap; min-width:300px;">
-              <select id="alert-metal" style="padding:8px 12px; background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); color:var(--silver-light); font-family:'IBM Plex Mono',monospace; font-size:12px; outline:none; cursor:pointer;">
-                <option value="silver">Silver (XAG)</option>
-                <option value="gold">Gold (XAU)</option>
-                <option value="platinum">Platinum (XPT)</option>
-                <option value="palladium">Palladium (XPD)</option>
-              </select>
-              <select id="alert-direction" style="padding:8px 12px; background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); color:var(--silver-light); font-family:'IBM Plex Mono',monospace; font-size:12px; outline:none; cursor:pointer;">
-                <option value="below">drops below</option>
-                <option value="above">rises above</option>
-              </select>
-              <div style="position:relative;">
-                <span style="position:absolute; left:10px; top:50%; transform:translateY(-50%); font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--silver-dim); pointer-events:none;">$</span>
-                <input type="number" id="alert-price" placeholder="70.00" min="0" step="0.01"
-                  style="width:110px; padding:8px 8px 8px 22px; background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); color:var(--silver-light); font-family:'IBM Plex Mono',monospace; font-size:13px; outline:none;">
-              </div>
-              <input type="email" id="alert-email" placeholder="your@email.com"
-                style="flex:1; min-width:180px; padding:8px 12px; background:var(--bg); border:1px solid var(--border); border-radius:var(--radius); color:var(--silver-light); font-family:'IBM Plex Mono',monospace; font-size:12px; outline:none;">
-              <button onclick="submitAlert()" style="padding:8px 18px; background:var(--silver); color:var(--bg); border:none; border-radius:var(--radius); font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; white-space:nowrap; transition:background 0.15s;" onmouseover="this.style.background='var(--silver-light)'" onmouseout="this.style.background='var(--silver)'">Set Alert →</button>
-            </div>
-          </div>
-          <div id="alert-msg" style="font-family:'IBM Plex Mono',monospace; font-size:11px; margin-top:10px; display:none;"></div>
         </div>
       </div>
     </div>
@@ -3085,12 +3048,12 @@ function scrollToId(id) {
 // ── SILVER PRICE DATA ────────────────────────────────────────────────────────
 // Dealer premium offsets above spot (realistic current market premiums)
 const PREMIUMS = {
-  apmex : { eagle: 18.71, bar: 11.71 },
-  jm    : { eagle: 18.71, bar: 12.31 },
-  sd    : { eagle: 13.71, bar: 6.14 },
-  mm    : { eagle: 17.93, bar: 7.90 },
-  kitco : { eagle: 16.12, bar: 11.66 },
-  bgasc : { eagle: 16.00, bar: 10.52 },
+  apmex:  { eagle: 6.49, bar: 4.99 },
+  jm:     { eagle: 5.99, bar: 3.89 },
+  sd:     { eagle: 6.99, bar: 3.49 },
+  mm:     { eagle: 6.29, bar: 4.19 },
+  kitco:  { eagle: 6.79, bar: 4.69 },
+  bgasc:  { eagle: 6.19, bar: 3.79 }
 };
 
 let silverSpot = 0;
@@ -3250,7 +3213,6 @@ function updateDashboard() {
   updateBestDeal();
   updateJunkTable();
   calcQuickValue();
-  checkPriceAlerts();
 
   // Load chart on first price fetch only
   if (!chartCache[currentPeriod]) fetchHistoricalChart(currentPeriod);
@@ -3444,122 +3406,6 @@ function toggleFaq(el) {
     answer.classList.add('open');
     icon.textContent = '−';
   }
-}
-
-// ── PRICE ALERTS ─────────────────────────────────────────────────────────────
-// Alerts stored in localStorage: [{metal, direction, price, email, active}]
-
-function getAlerts() {
-  try { return JSON.parse(localStorage.getItem('ownag-alerts') || '[]'); } catch { return []; }
-}
-
-function saveAlerts(alerts) {
-  try { localStorage.setItem('ownag-alerts', JSON.stringify(alerts)); } catch(e) {}
-}
-
-function submitAlert() {
-  const metal     = document.getElementById('alert-metal').value;
-  const direction = document.getElementById('alert-direction').value;
-  const price     = parseFloat(document.getElementById('alert-price').value);
-  const email     = document.getElementById('alert-email').value.trim();
-  const msgEl     = document.getElementById('alert-msg');
-
-  if (!email || !email.includes('@')) {
-    showAlertMsg('Please enter a valid email address.', 'error'); return;
-  }
-  if (isNaN(price) || price <= 0) {
-    showAlertMsg('Please enter a valid target price.', 'error'); return;
-  }
-
-  const alerts = getAlerts();
-
-  // Prevent duplicates
-  const exists = alerts.find(a => a.email === email && a.metal === metal && a.direction === direction && a.price === price);
-  if (exists) {
-    showAlertMsg('You already have this alert set.', 'error'); return;
-  }
-
-  // Cap at 5 alerts per email
-  const userAlerts = alerts.filter(a => a.email === email);
-  if (userAlerts.length >= 5) {
-    showAlertMsg('Max 5 alerts per email. Clear old alerts first.', 'error'); return;
-  }
-
-  const metalNames = { silver:'Silver', gold:'Gold', platinum:'Platinum', palladium:'Palladium' };
-  alerts.push({ metal, direction, price, email, active: true, created: Date.now() });
-  saveAlerts(alerts);
-
-  // Also submit to Formspree for server-side email delivery
-  submitToFormspree({ metal: metalNames[metal], direction, price, email });
-
-  showAlertMsg(`✓ Alert set — we'll email ${email} when ${metalNames[metal]} ${direction === 'below' ? 'drops below' : 'rises above'} $${price.toFixed(2)}/oz.`, 'success');
-  document.getElementById('alert-price').value = '';
-  document.getElementById('alert-email').value = '';
-}
-
-async function submitToFormspree(data) {
-  // Make.com webhook — receives alert signups and writes to Google Sheet
-  const WEBHOOK_URL = 'https://hook.us2.make.com/73kc5fuoyypuzomrwns96kv6dgc5fuwk';
-  if (WEBHOOK_URL.includes('PASTE')) return; // not configured yet
-  try {
-    await fetch(WEBHOOK_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        timestamp:    new Date().toISOString(),
-        email:        data.email,
-        metal:        data.metal,
-        direction:    data.direction,
-        target_price: data.price.toFixed(2),
-        status:       'ACTIVE',
-        last_checked: ''
-      })
-    });
-  } catch(e) { /* silent fail — alert still saved locally */ }
-}
-
-function checkPriceAlerts() {
-  const alerts  = getAlerts();
-  if (!alerts.length) return;
-  const prices  = { silver: silverSpot, gold: goldSpot, platinum: platSpot, palladium: pallSpot };
-  let triggered = [];
-
-  alerts.forEach(a => {
-    if (!a.active) return;
-    const current = prices[a.metal];
-    if (!current) return;
-    if (a.direction === 'below' && current <= a.price) triggered.push(a);
-    if (a.direction === 'above' && current >= a.price) triggered.push(a);
-  });
-
-  if (triggered.length) {
-    const metalNames = { silver:'Silver', gold:'Gold', platinum:'Platinum', palladium:'Palladium' };
-    triggered.forEach(a => {
-      const msg = `🔔 ALERT: ${metalNames[a.metal]} is now ${a.direction === 'below' ? 'below' : 'above'} $${a.price.toFixed(2)}/oz`;
-      showBannerAlert(msg);
-      // Mark as inactive so it doesn't fire again
-      a.active = false;
-    });
-    saveAlerts(alerts);
-  }
-}
-
-function showBannerAlert(msg) {
-  const banner = document.createElement('div');
-  banner.style.cssText = `position:fixed; top:70px; left:50%; transform:translateX(-50%); background:#3DBA6E; color:#0A0A08; font-family:'IBM Plex Mono',monospace; font-size:13px; padding:12px 28px; border-radius:4px; z-index:9999; box-shadow:0 4px 20px rgba(0,0,0,0.5); letter-spacing:0.05em; cursor:pointer;`;
-  banner.textContent = msg + '  ×';
-  banner.onclick = () => banner.remove();
-  document.body.appendChild(banner);
-  setTimeout(() => { if (banner.parentNode) banner.remove(); }, 8000);
-}
-
-function showAlertMsg(msg, type) {
-  const el = document.getElementById('alert-msg');
-  if (!el) return;
-  el.textContent = msg;
-  el.style.color = type === 'error' ? 'var(--red)' : 'var(--green)';
-  el.style.display = 'block';
-  setTimeout(() => { el.style.display = 'none'; }, 5000);
 }
 
 // ── CALCULATOR TAB SWITCHER ──────────────────────────────────────────────────
