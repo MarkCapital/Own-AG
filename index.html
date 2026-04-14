@@ -3043,13 +3043,26 @@ let isFirstLoad = true;
 
 async function fetchPrices() {
 
-  // ── SOURCE 1: metals.dev — re-enable after monthly quota resets ──────────
-  // try {
-  //   const r = await fetch(
-  //     `https://api.metals.dev/v1/latest?api_key=${METALS_DEV_KEY}&currency=USD&unit=toz`
-  //   );
-  //   ...
-  // } catch(e1) {}
+  // ── SOURCE 1: metals.dev (CORS-enabled, all 4 metals) ────────────────────
+  try {
+    const r = await fetch(
+      `https://api.metals.dev/v1/latest?api_key=${METALS_DEV_KEY}&currency=USD&unit=toz`
+    );
+    if (!r.ok) throw new Error('metals.dev failed');
+    const d = await r.json();
+    if (d.status !== 'success') throw new Error('bad status');
+    const m = d.metals;
+    if (m && m.silver && m.silver > 20) {
+      silverSpot = m.silver;
+      goldSpot   = m.gold      || goldSpot || 4798;
+      platSpot   = m.platinum  || platSpot || 980;
+      pallSpot   = m.palladium || pallSpot || 950;
+      setLiveStatus(true);
+      updateDashboard();
+      return;
+    }
+    throw new Error('bad data');
+  } catch(e1) {}
 
   // ── SOURCE 2: goldprice.org (free, no key) ────────────────────────────────
   try {
@@ -3614,7 +3627,7 @@ renderDca();
 
 // ── INIT ─────────────────────────────────────────────────────────────────────
 fetchPrices();
-setInterval(fetchPrices, 30 * 60 * 1000); // refresh every 30 minutes
+setInterval(fetchPrices, 15 * 60 * 1000); // refresh every 15 minutes
 </script>
 </body>
 </html>
