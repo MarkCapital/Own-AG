@@ -3480,9 +3480,7 @@ function calcJunkCoins() {
   const half40  = parseFloat(document.getElementById('j-half40').value)  || 0;
 
   // Calculate face value
-  const face = dollar * 1 + half * 0.5 + qut dime    = parseFloat(document.getElementById('j-dime').value)    || 0;
-  const nickel  = parseFloat(document.getElementById('j-nickel').value)  || 0;
-  const half40  = parseFloat(document.getElementById('j-half40').value)  || 0;
+  const face = dollar * 1 + half * 0.5 + quarter * 0.25 + dime * 0.10 + nickel * 0.05 + half40 * 0.5;
   const faceIn  = parseFloat(document.getElementById('junk-face').value) || 0;
 
   // Check if using coin counts or face value
