@@ -1442,7 +1442,7 @@ footer {
     <li><a href="#" onclick="showPage('calculators')">Calculators</a></li>
     <li><a href="#" onclick="showPage('beginner')">Beginner Guide</a></li>
     <li><a href="#" onclick="showPage('home'); scrollToId('faq')">FAQ</a></li>
-    <li><a href="/cdn-cgi/l/email-protection#2649514847415553565649545266414b474f4a0845494b" class="nav-cta">Contact Us</a></li>
+    <li><a href="mailto:ownagsupport@gmail.com" class="nav-cta">Contact Us</a></li>
   </ul>
   <!-- Mobile menu -->
   <button id="mobile-menu-btn" onclick="toggleMobileMenu()" style="display:none; background:transparent; border:1px solid var(--border); border-radius:var(--radius); padding:6px 12px; color:var(--silver); font-family:'IBM Plex Mono',monospace; font-size:11px; cursor:pointer; letter-spacing:0.08em;">MENU ☰</button>
@@ -2862,6 +2862,7 @@ footer {
     <div>
       <div class="footer-logo">OWN<span class="ag">AG</span></div>
       <div class="footer-tagline">Silver price data, education & market analysis</div>
+      <div style="font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--silver-dim); margin-bottom:12px;"><a href="mailto:ownagsupport@gmail.com" style="color:var(--silver-dim); text-decoration:none;">ownagsupport@gmail.com</a></div>
       <div style="margin: 12px 0;"><a href="/cdn-cgi/l/email-protection#9cf3ebf2fdfbefe9ececf3eee8dcfbf1fdf5f0b2fff3f1" style="font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--silver); text-decoration:none;"><span class="__cf_email__" data-cfemail="b9d6ced7d8decaccc9c9d6cbcdf9ded4d8d0d597dad6d4">[email&#160;protected]</span></a></div>
       <div class="footer-disclaimer">Nothing on OwnAG constitutes investment advice. Always consult a licensed financial adviser before making investment decisions. OwnAG may earn affiliate commissions from dealer links.</div>
     </div>
@@ -2872,7 +2873,7 @@ footer {
       <a href="#" onclick="showPage('calculators')">Silver Value Calculator</a>
       <a href="#" onclick="showPage('calculators'); switchCalc('junk', null)">Junk Silver Calculator</a>
       <a href="#" onclick="showPage('calculators'); switchCalc('dca', null)">DCA Tracker</a>
-      <a href="/cdn-cgi/l/email-protection#4b243c252a2c383e3b3b24393f0b2c262a222765282426">Contact Us</a>
+      <a href="mailto:ownagsupport@gmail.com">Contact Us</a>
     </div>
     <div class="footer-col">
       <h4>Learn</h4>
@@ -3042,36 +3043,24 @@ let isFirstLoad = true;
 
 async function fetchPrices() {
 
-  // ── PRIMARY: metals.dev — accurate, all 4 metals, CORS-enabled ───────────
-  try {
-    const r = await fetch(
-      `https://api.metals.dev/v1/latest?api_key=${METALS_DEV_KEY}&currency=USD&unit=toz`
-    );
-    if (!r.ok) throw new Error('metals.dev failed');
-    const d = await r.json();
-    const m = d.metals;
-    if (m && m.silver && m.silver > 20) {
-      silverSpot = m.silver;
-      goldSpot   = m.gold      || 4674;
-      platSpot   = m.platinum  || 980;
-      pallSpot   = m.palladium || 950;
-      setLiveStatus(true);
-      updateDashboard();
-      return;
-    }
-    throw new Error('bad data');
-  } catch(e1) {}
+  // ── SOURCE 1: metals.dev — re-enable after monthly quota resets ──────────
+  // try {
+  //   const r = await fetch(
+  //     `https://api.metals.dev/v1/latest?api_key=${METALS_DEV_KEY}&currency=USD&unit=toz`
+  //   );
+  //   ...
+  // } catch(e1) {}
 
-  // ── FALLBACK A: goldprice.org ─────────────────────────────────────────────
+  // ── SOURCE 2: goldprice.org (free, no key) ────────────────────────────────
   try {
     const r = await fetch('https://data-asg.goldprice.org/dbXRates/USD');
-    if (!r.ok) throw new Error('goldprice failed');
+    if (!r.ok) throw new Error();
     const d = await r.json();
-    const ag = d.items[0].xagPrice;
-    const au = d.items[0].xauPrice;
+    const ag = d?.items?.[0]?.xagPrice;
+    const au = d?.items?.[0]?.xauPrice;
     if (ag && ag > 20 && ag < 500) {
       silverSpot = ag;
-      goldSpot   = au;
+      if (au && au > 500) goldSpot = au;
       setLiveStatus(true);
       updateDashboard();
       return;
@@ -3079,18 +3068,14 @@ async function fetchPrices() {
     throw new Error('bad data');
   } catch(e2) {}
 
-  // ── FALLBACK B: Swissquote ────────────────────────────────────────────────
+  // ── SOURCE 3: open.er-api.com (free, no key) ──────────────────────────────
   try {
-    const r = await fetch('https://forex-data-feed.swissquote.com/public-quotes/bboquotes/instrument/XAG/USD');
-    if (!r.ok) throw new Error('swissquote failed');
+    const r = await fetch('https://open.er-api.com/v6/latest/XAG');
+    if (!r.ok) throw new Error();
     const d = await r.json();
-    const price = d[0]?.spreadProfilePrices[0]?.ask;
-    if (price && price > 20) {
-      silverSpot = parseFloat(price);
-      try {
-        const rg = await fetch('https://forex-data-feed.swissquote.com/public-quotes/bboquotes/instrument/XAU/USD');
-        const dg = await rg.json(); goldSpot = parseFloat(dg[0]?.spreadProfilePrices[0]?.ask) || 4674;
-      } catch(eg) { if (!goldSpot) goldSpot = 4674; }
+    const ag = d?.rates?.USD;
+    if (ag && ag > 20 && ag < 500) {
+      silverSpot = ag;
       setLiveStatus(true);
       updateDashboard();
       return;
@@ -3098,13 +3083,15 @@ async function fetchPrices() {
     throw new Error('bad data');
   } catch(e3) {}
 
-  // ── FINAL FALLBACK: estimated prices ──────────────────────────────────────
-  if (!silverSpot) silverSpot = 74.57;
-  if (!goldSpot)   goldSpot   = 4674;
-  if (!platSpot)   platSpot   = 980;
-  if (!pallSpot)   pallSpot   = 950;
-  silverSpot += (Math.random() - 0.5) * 0.5;
-  setLiveStatus(false);
+  // ── FINAL FALLBACK: use last known price or estimate ──────────────────────
+  if (!silverSpot) {
+    silverSpot = 78.93;
+    goldSpot   = goldSpot || 4798;
+    platSpot   = platSpot || 2088;
+    pallSpot   = pallSpot || 1568;
+    silverSpot += (Math.random() - 0.5) * 0.3;
+    setLiveStatus(false);
+  }
   updateDashboard();
 }
 
