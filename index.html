@@ -3223,8 +3223,10 @@ async function fetchHistoricalChart(period) {
       if (parts.length < 5) continue;
       const date  = new Date(parts[0]);
       const close = parseFloat(parts[4]);
-      if (!isNaN(date.getTime()) && close > 10 && close < 500) {
-        allPoints.push({ date, price: close });
+      // Stooq returns XAG in cents per oz — divide by 100 to get dollars
+      const price = close > 500 ? close / 100 : close;
+      if (!isNaN(date.getTime()) && price > 5 && price < 500) {
+        allPoints.push({ date, price });
       }
     }
 
