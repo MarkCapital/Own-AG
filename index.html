@@ -1625,10 +1625,9 @@ footer {
           <span id="chart-status" style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--silver-dim); opacity:0.6;"></span>
         </div>
         <div class="chart-tabs">
-          <button class="chart-tab active" onclick="setChartPeriod('7D', this)">7D</button>
-          <button class="chart-tab" onclick="setChartPeriod('30D', this)">30D</button>
-          <button class="chart-tab" onclick="setChartPeriod('90D', this)">90D</button>
-          <button class="chart-tab" onclick="setChartPeriod('1Y', this)">1Y</button>
+          <button class="chart-tab active" onclick="setChartPeriod('1Y', this)">1Y</button>
+          <button class="chart-tab" onclick="setChartPeriod('5Y', this)">5Y</button>
+          <button class="chart-tab" onclick="setChartPeriod('10Y', this)">10Y</button>
         </div>
       </div>
       <div class="chart-area" style="position:relative;">
@@ -3196,13 +3195,12 @@ function setText(id, val) {
 
 // ── CHART — REAL HISTORICAL DATA ─────────────────────────────────────────────
 let chartCache = {}; // cache fetched data to avoid redundant API calls
-let currentPeriod = '7D';
+let currentPeriod = '1Y';
 
 const PERIOD_CONFIG = {
-  '7D':  { days: 7,   label: '7 Days',   fmt: (d) => d.toLocaleDateString('en-US', {month:'short', day:'numeric'}) },
-  '30D': { days: 30,  label: '30 Days',  fmt: (d) => d.toLocaleDateString('en-US', {month:'short', day:'numeric'}) },
-  '90D': { days: 90,  label: '90 Days',  fmt: (d) => d.toLocaleDateString('en-US', {month:'short', year:'numeric'}) },
-  '1Y':  { days: 365, label: '1 Year',   fmt: (d) => d.toLocaleDateString('en-US', {month:'short', year:'numeric'}) },
+  '1Y':  { days: 365,  label: '1 Year',   fmt: (d) => d.toLocaleDateString('en-US', {month:'short', year:'numeric'}) },
+  '5Y':  { days: 1825, label: '5 Years',  fmt: (d) => d.toLocaleDateString('en-US', {month:'short', year:'numeric'}) },
+  '10Y': { days: 3650, label: '10 Years', fmt: (d) => d.toLocaleDateString('en-US', {year:'numeric'}) },
 };
 
 async function fetchHistoricalChart(period) {
@@ -3266,7 +3264,7 @@ async function fetchHistoricalChart(period) {
 }
 
 function generateFallbackHistory(dates, currentSpot, period) {
-  const vols = { '7D': 0.008, '30D': 0.012, '90D': 0.022, '1Y': 0.035 };
+  const vols = { '1Y': 0.035, '5Y': 0.055, '10Y': 0.075 };
   const vol  = vols[period] || 0.015;
   const prices = [currentSpot * (0.88 + Math.random() * 0.08)];
   for (let i = 1; i < dates.length - 1; i++) {
