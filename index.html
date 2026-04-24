@@ -309,15 +309,6 @@ nav {
   margin-bottom: 40px;
 }
 
-.hero-tagline {
-  display: block;
-  margin-top: 10px;
-  font-size: 20px;
-  font-weight: 500;
-  color: var(--silver);
-  letter-spacing: 0.02em;
-}
-
 .hero-actions {
   display: flex;
   gap: 16px;
@@ -1467,7 +1458,7 @@ footer {
   <div class="hero-inner">
     <div class="hero-eyebrow fade-up delay-1">Live Silver Market Data</div>
     <h1 class="fade-up delay-2">OWN THE<br><span class="highlight">METAL.</span></h1>
-    <p class="hero-sub fade-up delay-3">Track live silver prices, compare dealer premiums, and learn how to build real wealth with physical silver. Free tools, no fluff. <span class="hero-tagline">Every purveyor. Every premium.</span></p>
+    <p class="hero-sub fade-up delay-3">Track live silver prices, compare dealer premiums, and learn how to build real wealth with physical silver. Free tools, no fluff.</p>
     <div class="hero-actions fade-up delay-4">
       <button class="btn-primary" onclick="scrollToId('prices')">Compare Prices Now</button>
       <button class="btn-outline" onclick="showPage('education')">Learn the Basics</button>
@@ -1591,7 +1582,7 @@ footer {
           </tbody>
         </table>
         <div class="disclaimer-row">
-          <p>⚠ Prices are estimated based on live spot + typical dealer premiums for an order quantity of 1. Always verify current pricing directly with dealers before purchasing. Affiliate links may earn OwnAG a commission at no cost to you.</p>
+          <p>⚠ Prices are estimated based on live spot + typical dealer premiums. Always verify current pricing directly with dealers before purchasing. Affiliate links may earn OwnAG a commission at no cost to you.</p>
         </div>
       </div>
     </div>
@@ -3028,9 +3019,9 @@ function scrollToId(id) {
 // ── SILVER PRICE DATA ────────────────────────────────────────────────────────
 // Dealer premium offsets above spot (realistic current market premiums)
 const PREMIUMS = {
-  jm    : { eagle: 18.72, bar: 12.32 },
-  mm    : { eagle: 17.84, bar: 8.34 },
-  kitco : { eagle: 14.25, bar: 11.80 },
+  jm    : { eagle: 18.59, bar: 12.68 },
+  mm    : { eagle: 17.79, bar: 8.33 },
+  kitco : { eagle: 16.21, bar: 11.71 },
   bgasc : { eagle: 16.81, bar: 10.51 },
 };
 
@@ -3058,7 +3049,6 @@ async function fetchPrices() {
     );
     if (!r.ok) throw new Error('metals.dev failed');
     const d = await r.json();
-    if (d.status !== 'success') throw new Error('bad status');
     const m = d.metals;
     if (m && m.silver && m.silver > 20) {
       silverSpot = m.silver;
@@ -3089,14 +3079,14 @@ async function fetchPrices() {
     throw new Error('bad data');
   } catch(e2) {}
 
-  // ── SOURCE 3: open.er-api.com (free, no key) ──────────────────────────────
+  // ── SOURCE 3: gold-api.com (keyed backup) ─────────────────────────────────
   try {
-    const r = await fetch('https://open.er-api.com/v6/latest/XAG');
-    if (!r.ok) throw new Error();
+    const r = await fetch('https://www.goldapi.io/api/XAG/USD', {
+      headers: { 'x-access-token': GOLDAPI_KEY }
+    });
     const d = await r.json();
-    const ag = d?.rates?.USD;
-    if (ag && ag > 20 && ag < 500) {
-      silverSpot = ag;
+    if (d.price && d.price > 20 && d.price < 500) {
+      silverSpot = d.price;
       setLiveStatus(true);
       updateDashboard();
       return;
@@ -3104,7 +3094,7 @@ async function fetchPrices() {
     throw new Error('bad data');
   } catch(e3) {}
 
-  // ── FINAL FALLBACK: use last known price or estimate ──────────────────────
+  // ── FINAL FALLBACK ────────────────────────────────────────────────────────
   if (!silverSpot) {
     silverSpot = 78.93;
     goldSpot   = goldSpot || 4798;
@@ -3219,53 +3209,56 @@ async function fetchHistoricalChart(period) {
   if (chartCache[period]) { renderChart(chartCache[period], period); return; }
 
   const cfg  = PERIOD_CONFIG[period];
-  const dates = [];
-  const today = new Date();
-  for (let i = cfg.days; i >= 0; i--) {
-    const d = new Date(today);
-    d.setDate(today.getDate() - i);
-    if (d.getDay() !== 0 && d.getDay() !== 6) { // skip weekends
-      dates.push(d);
-    }
-  }
-
-  // Sample dates to stay within API limits — max 30 data points
-  const step    = Math.max(1, Math.floor(dates.length / 30));
-  const sampled = dates.filter((_, i) => i % step === 0);
-  // Always include today
-  if (sampled[sampled.length - 1]?.toDateString() !== today.toDateString()) {
-    sampled.push(today);
-  }
-
   setChartStatus('Loading...');
 
   try {
-    // Fetch each date — gold-api.com historical endpoint
-    const results = await Promise.all(
-      sampled.map(async d => {
-        const ds = d.toISOString().slice(0, 10).replace(/-/g, '');
-        try {
-          const r = await fetch(`https://www.goldapi.io/api/XAG/USD/${ds}`, {
-            headers: { 'x-access-token': GOLDAPI_KEY, 'Content-Type': 'application/json' }
-          });
-          if (!r.ok) return null;
-          const j = await r.json();
-          return { date: d, price: j.price || j.close || null };
-        } catch { return null; }
-      })
-    );
+    // Stooq — free, no key, full daily history CSV
+    const r = await fetch('https://stooq.com/q/d/l/?s=xagusd&i=d');
+    if (!r.ok) throw new Error('stooq failed');
+    const csv = await r.text();
 
-    const valid = results.filter(r => r && r.price && r.price > 10);
-    if (valid.length < 3) throw new Error('insufficient data');
+    // Parse CSV — format: Date,Open,High,Low,Close,Volume
+    const lines = csv.trim().split('\n').slice(1); // skip header
+    const allPoints = [];
+    for (const line of lines) {
+      const parts = line.split(',');
+      if (parts.length < 5) continue;
+      const date  = new Date(parts[0]);
+      const close = parseFloat(parts[4]);
+      if (!isNaN(date.getTime()) && close > 10 && close < 500) {
+        allPoints.push({ date, price: close });
+      }
+    }
 
-    chartCache[period] = { points: valid, period };
+    // Sort oldest to newest
+    allPoints.sort((a, b) => a.date - b.date);
+
+    // Filter to requested period
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - cfg.days);
+    const filtered = allPoints.filter(p => p.date >= cutoff);
+
+    if (filtered.length < 3) throw new Error('insufficient data');
+
+    // Sample to max 60 points for clean rendering
+    const step = Math.max(1, Math.floor(filtered.length / 60));
+    const sampled = filtered.filter((_, i) => i % step === 0);
+
+    chartCache[period] = { points: sampled, period };
     renderChart(chartCache[period], period);
     setChartStatus('HISTORICAL DATA');
 
   } catch(e) {
     // Fallback: generate realistic simulated data anchored to current spot
     console.warn('Chart API failed, using estimated data:', e);
-    const fallback = generateFallbackHistory(sampled, silverSpot || 74.57, period);
+    const today = new Date();
+    const dates = [];
+    for (let i = cfg.days; i >= 0; i--) {
+      const d = new Date(today);
+      d.setDate(today.getDate() - i);
+      if (d.getDay() !== 0 && d.getDay() !== 6) dates.push(d);
+    }
+    const fallback = generateFallbackHistory(dates, silverSpot || 74.57, period);
     chartCache[period] = { points: fallback, period, estimated: true };
     renderChart(chartCache[period], period);
     setChartStatus('ESTIMATED');
