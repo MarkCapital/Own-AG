@@ -3209,72 +3209,84 @@ async function fetchHistoricalChart(period) {
   const cfg  = PERIOD_CONFIG[period];
   setChartStatus('Loading...');
 
-  try {
-    // Stooq — free, no key, full daily history CSV
-    const r = await fetch('https://stooq.com/q/d/l/?s=xagusd&i=d');
-    if (!r.ok) throw new Error('stooq failed');
-    const csv = await r.text();
+  // Try multiple CORS proxies for Stooq
+  const stooqUrl = 'https://stooq.com/q/d/l/?s=xagusd&i=d';
+  const proxies = [
+    `https://corsproxy.io/?${encodeURIComponent(stooqUrl)}`,
+    `https://api.allorigins.win/raw?url=${encodeURIComponent(stooqUrl)}`,
+    stooqUrl
+  ];
 
-    // Parse CSV — format: Date,Open,High,Low,Close,Volume
-    const lines = csv.trim().split('\n').slice(1); // skip header
-    const allPoints = [];
-    for (const line of lines) {
-      const parts = line.split(',');
-      if (parts.length < 5) continue;
-      const date  = new Date(parts[0]);
-      const close = parseFloat(parts[4]);
-      // Stooq returns XAG in cents per oz — divide by 100 to get dollars
-      const price = close > 500 ? close / 100 : close;
-      if (!isNaN(date.getTime()) && price > 5 && price < 500) {
-        allPoints.push({ date, price });
+  for (const url of proxies) {
+    try {
+      const r = await fetch(url);
+      if (!r.ok) continue;
+      const csv = await r.text();
+      if (!csv.includes(',')) continue; // not CSV data
+
+      const lines = csv.trim().split('\n').slice(1);
+      const allPoints = [];
+      for (const line of lines) {
+        const parts = line.split(',');
+        if (parts.length < 5) continue;
+        const date  = new Date(parts[0]);
+        const close = parseFloat(parts[4]);
+        // Handle both dollar and cent formats
+        const price = close > 500 ? close / 100 : close;
+        if (!isNaN(date.getTime()) && price > 5 && price < 200) {
+          allPoints.push({ date, price });
+        }
       }
-    }
 
-    // Sort oldest to newest
-    allPoints.sort((a, b) => a.date - b.date);
+      allPoints.sort((a, b) => a.date - b.date);
 
-    // Filter to requested period
-    const cutoff = new Date();
-    cutoff.setDate(cutoff.getDate() - cfg.days);
-    const filtered = allPoints.filter(p => p.date >= cutoff);
+      const cutoff = new Date();
+      cutoff.setDate(cutoff.getDate() - cfg.days);
+      const filtered = allPoints.filter(p => p.date >= cutoff);
 
-    if (filtered.length < 3) throw new Error('insufficient data');
+      if (filtered.length < 3) continue;
 
-    // Sample to max 60 points for clean rendering
-    const step = Math.max(1, Math.floor(filtered.length / 60));
-    const sampled = filtered.filter((_, i) => i % step === 0);
+      const step = Math.max(1, Math.floor(filtered.length / 60));
+      const sampled = filtered.filter((_, i) => i % step === 0);
 
-    chartCache[period] = { points: sampled, period };
-    renderChart(chartCache[period], period);
-    setChartStatus('HISTORICAL DATA');
-
-  } catch(e) {
-    // Fallback: generate realistic simulated data anchored to current spot
-    console.warn('Chart API failed, using estimated data:', e);
-    const today = new Date();
-    const dates = [];
-    for (let i = cfg.days; i >= 0; i--) {
-      const d = new Date(today);
-      d.setDate(today.getDate() - i);
-      if (d.getDay() !== 0 && d.getDay() !== 6) dates.push(d);
-    }
-    const fallback = generateFallbackHistory(dates, silverSpot || 74.57, period);
-    chartCache[period] = { points: fallback, period, estimated: true };
-    renderChart(chartCache[period], period);
-    setChartStatus('ESTIMATED');
+      chartCache[period] = { points: sampled, period };
+      renderChart(chartCache[period], period);
+      setChartStatus('HISTORICAL DATA');
+      return;
+    } catch(e) { continue; }
   }
+
+  // All sources failed — use realistic fallback
+  const fallback = generateFallbackHistory(cfg.days, silverSpot || 32, period);
+  chartCache[period] = { points: fallback, period, estimated: true };
+  renderChart(chartCache[period], period);
+  setChartStatus('ESTIMATED');
 }
 
-function generateFallbackHistory(dates, currentSpot, period) {
-  const vols = { '1Y': 0.035, '5Y': 0.055, '10Y': 0.075 };
-  const vol  = vols[period] || 0.015;
-  const prices = [currentSpot * (0.88 + Math.random() * 0.08)];
-  for (let i = 1; i < dates.length - 1; i++) {
-    const prev = prices[i - 1];
-    prices.push(Math.max(prev + prev * (Math.random() - 0.47) * vol, currentSpot * 0.5));
+function generateFallbackHistory(days, currentSpot, period) {
+  // Realistic silver price anchors by year for believable fallback
+  const now = new Date();
+  const points = [];
+  const totalPoints = Math.min(days, 120);
+  const step = days / totalPoints;
+
+  // Silver historical approximate prices for realistic rendering
+  const yearPrices = {
+    2014: 15, 2015: 14, 2016: 17, 2017: 17, 2018: 15,
+    2019: 16, 2020: 21, 2021: 25, 2022: 21, 2023: 23,
+    2024: 28, 2025: 31, 2026: currentSpot
+  };
+
+  for (let i = totalPoints; i >= 0; i--) {
+    const d = new Date(now);
+    d.setDate(now.getDate() - Math.round(i * step));
+    const year = d.getFullYear();
+    // Interpolate between known year prices
+    const basePrice = yearPrices[year] || currentSpot;
+    const noise = (Math.random() - 0.5) * 2;
+    points.push({ date: d, price: Math.max(10, basePrice + noise) });
   }
-  prices.push(currentSpot);
-  return dates.map((d, i) => ({ date: d, price: prices[i] }));
+  return points;
 }
 
 function setChartStatus(msg) {
