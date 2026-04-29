@@ -137,4 +137,13 @@
     <priority>0.8</priority>
   </url>
 
+
+
+  <!-- Article 9: Physical Silver vs Paper Silver -->
+  <url>
+    <loc>https://ownag.com/#art9</loc>
+    <lastmod>2026-04-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>
