@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-05-28T20:57:27+00:00",
+  "updatedAt": "2026-05-28T21:32:33+00:00",
   "spot": {
     "silver": 75.7075,
     "gold": null,
@@ -10,8 +10,8 @@
   "dealers": {
     "jm": {
       "name": "JM Bullion",
-      "eagle": 91.34,
-      "eaglePremium": 15.63,
+      "eagle": 91.37,
+      "eaglePremium": 15.66,
       "eagleSource": "dealer-live",
       "bar": 86.27,
       "barPremium": 10.56,
@@ -76,7 +76,7 @@
     }
   },
   "dealerLookup": {
-    "updatedAt": "2026-05-28T20:57:27+00:00",
+    "updatedAt": "2026-05-28T21:32:33+00:00",
     "source": "dealer product pages + manual fallback",
     "errors": {
       "mm.eagle": "HTTP Error 403: Forbidden",
