@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-05-28T21:32:33+00:00",
+  "updatedAt": "2026-05-28T21:57:27+00:00",
   "spot": {
     "silver": 75.7075,
     "gold": null,
@@ -13,9 +13,13 @@
       "eagle": 91.37,
       "eaglePremium": 15.66,
       "eagleSource": "dealer-live",
-      "bar": 86.27,
-      "barPremium": 10.56,
+      "eagleFallbackPremium": 15.66,
+      "eagleFallbackUpdatedAt": "2026-05-28T21:57:27+00:00",
+      "bar": 86.22,
+      "barPremium": 10.51,
       "barSource": "dealer-live",
+      "barFallbackPremium": 10.51,
+      "barFallbackUpdatedAt": "2026-05-28T21:57:27+00:00",
       "url": "https://www.jmbullion.com",
       "products": {
         "eagle": {
@@ -34,9 +38,13 @@
       "eagle": 87.44,
       "eaglePremium": 11.73,
       "eagleSource": "manual-premium",
+      "eagleFallbackPremium": 11.73,
+      "eagleFallbackUpdatedAt": null,
       "bar": 83.34,
       "barPremium": 7.63,
       "barSource": "manual-premium",
+      "barFallbackPremium": 7.63,
+      "barFallbackUpdatedAt": null,
       "url": "https://www.awin1.com/cread.php?awinmid=88985&awinaffid=2837494",
       "products": {
         "eagle": {
@@ -55,9 +63,13 @@
       "eagle": 83.62,
       "eaglePremium": 7.91,
       "eagleSource": "manual-premium",
+      "eagleFallbackPremium": 7.91,
+      "eagleFallbackUpdatedAt": null,
       "bar": 86.44,
       "barPremium": 10.73,
       "barSource": "manual-premium",
+      "barFallbackPremium": 10.73,
+      "barFallbackUpdatedAt": null,
       "url": "https://www.awin1.com/cread.php?awinmid=84579&awinaffid=2837494",
       "products": {},
       "source": "manual-premium"
@@ -67,17 +79,21 @@
       "eagle": 90.02,
       "eaglePremium": 14.31,
       "eagleSource": "manual-premium",
+      "eagleFallbackPremium": 14.31,
+      "eagleFallbackUpdatedAt": null,
       "bar": 85.73,
       "barPremium": 10.02,
       "barSource": "manual-premium",
+      "barFallbackPremium": 10.02,
+      "barFallbackUpdatedAt": null,
       "url": "https://www.bgasc.com",
       "products": {},
       "source": "manual-premium"
     }
   },
   "dealerLookup": {
-    "updatedAt": "2026-05-28T21:32:33+00:00",
-    "source": "dealer product pages + manual fallback",
+    "updatedAt": "2026-05-28T21:57:27+00:00",
+    "source": "dealer product pages + last-known premium fallback",
     "errors": {
       "mm.eagle": "HTTP Error 403: Forbidden",
       "mm.bar": "HTTP Error 403: Forbidden"
@@ -85,7 +101,8 @@
   },
   "notes": [
     "Spot prices are refreshed automatically by GitHub Actions.",
-    "JM Bullion and Money Metals product pages are checked automatically when possible.",
-    "If a dealer lookup fails, OwnAG safely falls back to manually curated premiums."
+    "Dealer product pages are checked automatically when possible.",
+    "Live dealer prices refresh the saved fallback premiums automatically.",
+    "If a dealer lookup fails, OwnAG safely falls back to the last known good premium or the manual baseline."
   ]
 }

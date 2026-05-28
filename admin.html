@@ -245,16 +245,18 @@ function updateDealerLookupStatus(snapshot) {
   if (!el) return;
   const dealers = snapshot?.dealers || {};
   let live = 0;
+  let lastKnown = 0;
   let total = 0;
   Object.values(dealers).forEach(dealer => {
     ['eagleSource', 'barSource'].forEach(key => {
       if (dealer[key]) total++;
       if (dealer[key] === 'dealer-live') live++;
+      if (dealer[key] === 'last-known-premium') lastKnown++;
     });
   });
   const errors = Object.keys(snapshot?.dealerLookup?.errors || {}).length;
   const updatedAt = snapshot?.dealerLookup?.updatedAt ? new Date(snapshot.dealerLookup.updatedAt).toLocaleString() : 'unknown time';
-  el.textContent = `Dealer lookup status: ${live}/${total || 8} live product prices · ${errors} fallback${errors === 1 ? '' : 's'} · ${updatedAt}`;
+  el.textContent = `Dealer lookup status: ${live}/${total || 8} live · ${lastKnown} last known · ${errors} manual fallback${errors === 1 ? '' : 's'} · ${updatedAt}`;
 }
 
 function renderCards() {

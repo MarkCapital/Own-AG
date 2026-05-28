@@ -181,10 +181,16 @@ def load_existing_dealers() -> dict[str, dict[str, Any]]:
         # later fails, fall back to the known manual baseline.
         existing_eagle = as_price(existing.get("eaglePremium")) if existing.get("eagleSource", "manual-premium") == "manual-premium" else None
         existing_bar = as_price(existing.get("barPremium")) if existing.get("barSource", "manual-premium") == "manual-premium" else None
+        eagle_fallback = as_price(existing.get("eagleFallbackPremium"))
+        bar_fallback = as_price(existing.get("barFallbackPremium"))
         merged[key] = {
             **default,
             "eaglePremium": existing_eagle if existing_eagle and existing_eagle >= 1 else default["eaglePremium"],
             "barPremium": existing_bar if existing_bar and existing_bar >= 1 else default["barPremium"],
+            "eagleFallbackPremium": eagle_fallback,
+            "eagleFallbackUpdatedAt": existing.get("eagleFallbackUpdatedAt") if eagle_fallback else None,
+            "barFallbackPremium": bar_fallback,
+            "barFallbackUpdatedAt": existing.get("barFallbackUpdatedAt") if bar_fallback else None,
             "products": default.get("products", {}),
         }
     return merged
@@ -305,44 +311,83 @@ def build_snapshot(
     dealer_errors: dict[str, str] | None = None,
 ) -> dict[str, Any]:
     silver = float(spot["silver"])
+    snapshot_time = datetime.now(timezone.utc).isoformat(timespec="seconds")
     out_dealers: dict[str, dict[str, Any]] = {}
     dealer_prices = dealer_prices or {}
     dealer_errors = dealer_errors or {}
 
     for key, d in dealers.items():
-        eagle_fallback_premium = float(d["eaglePremium"])
-        bar_fallback_premium = float(d["barPremium"])
+        manual_eagle_premium = float(d["eaglePremium"])
+        manual_bar_premium = float(d["barPremium"])
         live = dealer_prices.get(key, {})
         eagle_live = as_price(live.get("eagle"))
         bar_live = as_price(live.get("bar"))
 
-        eagle_price = eagle_live if eagle_live else round(silver + eagle_fallback_premium, 2)
-        bar_price = bar_live if bar_live else round(silver + bar_fallback_premium, 2)
-        eagle_premium = round(eagle_price - silver, 2) if eagle_live else round(eagle_fallback_premium, 2)
-        bar_premium = round(bar_price - silver, 2) if bar_live else round(bar_fallback_premium, 2)
+        prior_eagle_fallback = as_price(d.get("eagleFallbackPremium"))
+        prior_bar_fallback = as_price(d.get("barFallbackPremium"))
+        eagle_fallback_updated_at = d.get("eagleFallbackUpdatedAt") if prior_eagle_fallback else None
+        bar_fallback_updated_at = d.get("barFallbackUpdatedAt") if prior_bar_fallback else None
+
+        if eagle_live:
+            eagle_price = eagle_live
+            eagle_premium = round(eagle_price - silver, 2)
+            eagle_fallback_premium = eagle_premium
+            eagle_fallback_updated_at = snapshot_time
+            eagle_source = "dealer-live"
+        elif prior_eagle_fallback:
+            eagle_premium = round(prior_eagle_fallback, 2)
+            eagle_fallback_premium = eagle_premium
+            eagle_price = round(silver + eagle_premium, 2)
+            eagle_source = "last-known-premium"
+        else:
+            eagle_premium = round(manual_eagle_premium, 2)
+            eagle_fallback_premium = eagle_premium
+            eagle_price = round(silver + eagle_premium, 2)
+            eagle_source = "manual-premium"
+
+        if bar_live:
+            bar_price = bar_live
+            bar_premium = round(bar_price - silver, 2)
+            bar_fallback_premium = bar_premium
+            bar_fallback_updated_at = snapshot_time
+            bar_source = "dealer-live"
+        elif prior_bar_fallback:
+            bar_premium = round(prior_bar_fallback, 2)
+            bar_fallback_premium = bar_premium
+            bar_price = round(silver + bar_premium, 2)
+            bar_source = "last-known-premium"
+        else:
+            bar_premium = round(manual_bar_premium, 2)
+            bar_fallback_premium = bar_premium
+            bar_price = round(silver + bar_premium, 2)
+            bar_source = "manual-premium"
 
         products = d.get("products") or {}
         out_dealers[key] = {
             "name": d["name"],
             "eagle": round(eagle_price, 2),
             "eaglePremium": eagle_premium,
-            "eagleSource": "dealer-live" if eagle_live else "manual-premium",
+            "eagleSource": eagle_source,
+            "eagleFallbackPremium": eagle_fallback_premium,
+            "eagleFallbackUpdatedAt": eagle_fallback_updated_at,
             "bar": round(bar_price, 2),
             "barPremium": bar_premium,
-            "barSource": "dealer-live" if bar_live else "manual-premium",
+            "barSource": bar_source,
+            "barFallbackPremium": bar_fallback_premium,
+            "barFallbackUpdatedAt": bar_fallback_updated_at,
             "url": d.get("url"),
             "products": products,
-            "source": "dealer-live" if eagle_live or bar_live else "manual-premium",
+            "source": "dealer-live" if eagle_live or bar_live else ("last-known-premium" if prior_eagle_fallback or prior_bar_fallback else "manual-premium"),
         }
 
     lookup_status = {
-        "updatedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "source": "dealer product pages + manual fallback",
+        "updatedAt": snapshot_time,
+        "source": "dealer product pages + last-known premium fallback",
         "errors": dealer_errors,
     }
 
     return {
-        "updatedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "updatedAt": snapshot_time,
         "spot": {
             "silver": round(silver, 4),
             "gold": round(float(spot["gold"]), 4) if spot.get("gold") else None,
@@ -354,8 +399,9 @@ def build_snapshot(
         "dealerLookup": lookup_status,
         "notes": [
             "Spot prices are refreshed automatically by GitHub Actions.",
-            "JM Bullion and Money Metals product pages are checked automatically when possible.",
-            "If a dealer lookup fails, OwnAG safely falls back to manually curated premiums.",
+            "Dealer product pages are checked automatically when possible.",
+            "Live dealer prices refresh the saved fallback premiums automatically.",
+            "If a dealer lookup fails, OwnAG safely falls back to the last known good premium or the manual baseline.",
         ],
     }
 
