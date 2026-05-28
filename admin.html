@@ -111,11 +111,10 @@ input[type="number"]:focus { border-color:#B8BEC8; }
     <div class="instructions">
       <h3>How to Use This Panel</h3>
       <ol>
-        <li>Check current Silver spot price at <strong>APMEX.com</strong> or <strong>JMBullion.com</strong></li>
-        <li>Visit each dealer and find their current 1oz Silver Eagle price and 1oz bar price</li>
-        <li>Subtract spot from each dealer price to get the premium — enter that below</li>
-        <li>Click <strong>Save Premiums</strong> — the code block updates automatically</li>
-        <li>Copy the generated code and paste it into <strong>ownag.html</strong> replacing the PREMIUMS constant</li>
+        <li>Use this panel only for manual backup premium edits; the public site now reads <strong>data/prices.json</strong></li>
+        <li>The GitHub Action checks live silver spot and selected dealer product pages automatically</li>
+        <li>If a dealer lookup fails, the site safely falls back to these saved premium estimates</li>
+        <li>Copy generated premium code only if you intentionally want to change the manual fallback values</li>
       </ol>
     </div>
 
@@ -123,6 +122,7 @@ input[type="number"]:focus { border-color:#B8BEC8; }
       <span class="label">Current Silver Spot (live)</span>
       <span class="value" id="admin-spot">Loading...</span>
     </div>
+    <div class="last-updated" id="dealer-lookup-status">Dealer lookup status: Loading...</div>
     <div style="display:flex; align-items:center; gap:12px; margin-bottom:24px;">
       <label style="font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:0.1em; text-transform:uppercase; color:#555; flex-shrink:0;">Override spot manually:</label>
       <div style="position:relative; flex:1; max-width:200px;">
@@ -167,10 +167,10 @@ function checkPw() {
 
 // ── DEALERS ───────────────────────────────────────────────────────────────────
 const DEALERS = [
-  { key: 'jm',     name: 'JM Bullion',   defaultEagle: 18.59, defaultBar: 12.68 },
-  { key: 'mm',     name: 'Money Metals', defaultEagle: 17.79, defaultBar: 8.33 },
-  { key: 'kitco',  name: 'Kitco',        defaultEagle: 16.21, defaultBar: 11.71 },
-  { key: 'bgasc',  name: 'BGASC',        defaultEagle: 16.81, defaultBar: 10.51 },
+  { key: 'jm',     name: 'JM Bullion',   defaultEagle: 16.74, defaultBar: 11.62 },
+  { key: 'mm',     name: 'Money Metals', defaultEagle: 11.73, defaultBar: 7.63 },
+  { key: 'kitco',  name: 'Kitco',        defaultEagle: 7.91, defaultBar: 10.73 },
+  { key: 'bgasc',  name: 'BGASC',        defaultEagle: 14.31, defaultBar: 10.02 },
 ];
 
 let spotPrice = 0;
@@ -205,6 +205,7 @@ function fetchSpot() {
       spotPrice = price;
       const src = d.spot?.source ? ' · ' + d.spot.source : '';
       document.getElementById('admin-spot').textContent = '$' + spotPrice.toFixed(2) + '/oz' + src;
+      updateDealerLookupStatus(d);
       updateComputedPrices();
     } else {
       throw new Error('bad data');
@@ -237,6 +238,23 @@ function overrideSpot(val) {
     document.getElementById('admin-spot').textContent = '$' + spotPrice.toFixed(2) + '/oz (manual)';
     updateComputedPrices();
   }
+}
+
+function updateDealerLookupStatus(snapshot) {
+  const el = document.getElementById('dealer-lookup-status');
+  if (!el) return;
+  const dealers = snapshot?.dealers || {};
+  let live = 0;
+  let total = 0;
+  Object.values(dealers).forEach(dealer => {
+    ['eagleSource', 'barSource'].forEach(key => {
+      if (dealer[key]) total++;
+      if (dealer[key] === 'dealer-live') live++;
+    });
+  });
+  const errors = Object.keys(snapshot?.dealerLookup?.errors || {}).length;
+  const updatedAt = snapshot?.dealerLookup?.updatedAt ? new Date(snapshot.dealerLookup.updatedAt).toLocaleString() : 'unknown time';
+  el.textContent = `Dealer lookup status: ${live}/${total || 8} live product prices · ${errors} fallback${errors === 1 ? '' : 's'} · ${updatedAt}`;
 }
 
 function renderCards() {

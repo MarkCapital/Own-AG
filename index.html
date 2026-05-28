@@ -1582,7 +1582,7 @@ footer {
           </tbody>
         </table>
         <div class="disclaimer-row">
-          <p>⚠ Prices are estimated based on live spot + typical dealer premiums. Always verify current pricing directly with dealers before purchasing. Affiliate links may earn OwnAG a commission at no cost to you.</p>
+          <p id="dealer-lookup-note">⚠ Dealer prices may be live product lookups or estimates based on live spot + typical dealer premiums. Always verify current pricing directly with dealers before purchasing. Affiliate links may earn OwnAG a commission at no cost to you.</p>
         </div>
       </div>
     </div>
@@ -3111,6 +3111,7 @@ let silverSpot = 0;
 let goldSpot   = 0;
 let platSpot   = 0;
 let pallSpot   = 0;
+let DEALER_SOURCES = {};
 const FALLBACK_SPOT = { silver: 78.93, gold: 4798, platinum: 2088, palladium: 1568 };
 // Keep API keys out of public JavaScript. GitHub Actions uses repository secrets
 // to generate data/prices.json instead.
@@ -3136,12 +3137,17 @@ async function fetchGeneratedPriceSnapshot() {
     pallSpot   = parseFloat(spot.palladium) || pallSpot || FALLBACK_SPOT.palladium;
 
     if (data.dealers) {
+      DEALER_SOURCES = {};
       Object.entries(data.dealers).forEach(([key, dealer]) => {
         if (!PREMIUMS[key]) PREMIUMS[key] = {};
         const eaglePremium = parseFloat(dealer.eaglePremium);
         const barPremium   = parseFloat(dealer.barPremium);
         if (!isNaN(eaglePremium)) PREMIUMS[key].eagle = eaglePremium;
         if (!isNaN(barPremium)) PREMIUMS[key].bar = barPremium;
+        DEALER_SOURCES[key] = {
+          eagle: dealer.eagleSource || dealer.source || 'manual-premium',
+          bar: dealer.barSource || dealer.source || 'manual-premium'
+        };
       });
     }
 
@@ -3237,14 +3243,25 @@ function updateDashboard() {
 
   // Dealer table
   const dealers = ['jm', 'mm', 'kitco', 'bgasc'];
+  let liveDealerCells = 0;
   dealers.forEach(d => {
     const ep = PREMIUMS[d].eagle;
     const bp = PREMIUMS[d].bar;
+    const eagleSource = DEALER_SOURCES[d]?.eagle || 'manual-premium';
+    const barSource = DEALER_SOURCES[d]?.bar || 'manual-premium';
+    if (eagleSource === 'dealer-live') liveDealerCells++;
+    if (barSource === 'dealer-live') liveDealerCells++;
     setText(d + '-eagle', fmt(silverSpot + ep));
-    setText(d + '-eagle-prem', '+' + fmt(ep) + ' over spot');
+    setText(d + '-eagle-prem', '+' + fmt(ep) + ' over spot' + (eagleSource === 'dealer-live' ? ' · live' : ' · est.'));
     setText(d + '-bar', fmt(silverSpot + bp));
-    setText(d + '-bar-prem', '+' + fmt(bp) + ' over spot');
+    setText(d + '-bar-prem', '+' + fmt(bp) + ' over spot' + (barSource === 'dealer-live' ? ' · live' : ' · est.'));
   });
+  const lookupNote = document.getElementById('dealer-lookup-note');
+  if (lookupNote) {
+    lookupNote.textContent = liveDealerCells > 0
+      ? `⚠ ${liveDealerCells} dealer product price${liveDealerCells === 1 ? '' : 's'} loaded live; the rest use spot + saved premium estimates. Always verify current pricing directly with dealers before purchasing.`
+      : '⚠ Dealer prices are estimated from live spot + saved premium estimates. Always verify current pricing directly with dealers before purchasing.';
+  }
 
   // Ticker
   setText('t-spot',  fmt(silverSpot));
