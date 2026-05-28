@@ -1,0 +1,52 @@
+{
+  "updatedAt": "2026-05-28T19:17:04+00:00",
+  "spot": {
+    "silver": 75.5885,
+    "gold": null,
+    "platinum": null,
+    "palladium": null,
+    "source": "Swissquote XAG/USD"
+  },
+  "dealers": {
+    "jm": {
+      "name": "JM Bullion",
+      "eagle": 92.33,
+      "eaglePremium": 16.74,
+      "bar": 87.21,
+      "barPremium": 11.62,
+      "url": "https://www.jmbullion.com",
+      "source": "manual-premium"
+    },
+    "mm": {
+      "name": "Money Metals",
+      "eagle": 87.32,
+      "eaglePremium": 11.73,
+      "bar": 83.22,
+      "barPremium": 7.63,
+      "url": "https://www.awin1.com/cread.php?awinmid=88985&awinaffid=2837494",
+      "source": "manual-premium"
+    },
+    "kitco": {
+      "name": "Kitco",
+      "eagle": 83.5,
+      "eaglePremium": 7.91,
+      "bar": 86.32,
+      "barPremium": 10.73,
+      "url": "https://www.awin1.com/cread.php?awinmid=84579&awinaffid=2837494",
+      "source": "manual-premium"
+    },
+    "bgasc": {
+      "name": "BGASC",
+      "eagle": 89.9,
+      "eaglePremium": 14.31,
+      "bar": 85.61,
+      "barPremium": 10.02,
+      "url": "https://www.bgasc.com",
+      "source": "manual-premium"
+    }
+  },
+  "notes": [
+    "Spot prices are refreshed automatically by GitHub Actions.",
+    "Dealer premiums are currently manually curated and applied above live silver spot."
+  ]
+}
