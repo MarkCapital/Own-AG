@@ -2,20 +2,20 @@
 """Update OwnAG generated price snapshot.
 
 This script is designed for GitHub Actions and local use. It fetches live spot
-metal prices from server-side sources, preserves the current manually curated
-dealer premiums, and writes data/prices.json for the static frontend to consume.
+metal prices from server-side sources, attempts safe dealer product lookups for
+specific product URLs, falls back to manually curated premiums when lookups fail,
+and writes data/prices.json for the static frontend to consume.
 """
 from __future__ import annotations
 
-import csv
+import html as html_lib
 import json
 import os
-import random
+import re
 import sys
-import time
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
@@ -23,38 +23,81 @@ from urllib.request import Request, urlopen
 ROOT = Path(__file__).resolve().parents[1]
 PRICE_FILE = ROOT / "data" / "prices.json"
 
+# V1 tracks exact product pages. Dealer sites change often, so every lookup is
+# best-effort and manual-premium fallback remains the safe default.
 DEFAULT_PREMIUMS: dict[str, dict[str, Any]] = {
     "jm": {
         "name": "JM Bullion",
         "eaglePremium": 16.74,
         "barPremium": 11.62,
         "url": "https://www.jmbullion.com",
+        "products": {
+            "eagle": {
+                "name": "1 oz American Silver Eagle",
+                "url": "https://www.jmbullion.com/1-oz-american-silver-eagle/",
+            },
+            "bar": {
+                "name": "1 oz SilverTowne Silver Bar",
+                "url": "https://www.jmbullion.com/1-oz-silvertowne-silver-bar/",
+            },
+        },
     },
     "mm": {
         "name": "Money Metals",
         "eaglePremium": 11.73,
         "barPremium": 7.63,
         "url": "https://www.awin1.com/cread.php?awinmid=88985&awinaffid=2837494",
+        "products": {
+            "eagle": {
+                "name": "1 oz American Silver Eagle",
+                "url": "https://www.moneymetals.com/american-silver-eagle/2",
+            },
+            "bar": {
+                "name": "1 oz Silver Bar",
+                "url": "https://www.moneymetals.com/silver-bars/1-oz-silver-bars",
+            },
+        },
     },
     "kitco": {
         "name": "Kitco",
         "eaglePremium": 7.91,
         "barPremium": 10.73,
         "url": "https://www.awin1.com/cread.php?awinmid=84579&awinaffid=2837494",
+        "products": {},
     },
     "bgasc": {
         "name": "BGASC",
         "eaglePremium": 14.31,
         "barPremium": 10.02,
         "url": "https://www.bgasc.com",
+        "products": {},
     },
 }
 
+USER_AGENT = (
+    "Mozilla/5.0 (compatible; OwnAG price updater/1.1; "
+    "+https://ownag.com; dealer lookup bot)"
+)
+
 
 def http_json(url: str, headers: dict[str, str] | None = None, timeout: int = 20) -> Any:
-    req = Request(url, headers={"User-Agent": "OwnAG price updater/1.0", **(headers or {})})
+    req = Request(url, headers={"User-Agent": USER_AGENT, **(headers or {})})
     with urlopen(req, timeout=timeout) as response:
         return json.loads(response.read().decode("utf-8"))
+
+
+def http_text(url: str, headers: dict[str, str] | None = None, timeout: int = 25) -> str:
+    req = Request(
+        url,
+        headers={
+            "User-Agent": USER_AGENT,
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "en-US,en;q=0.9",
+            **(headers or {}),
+        },
+    )
+    with urlopen(req, timeout=timeout) as response:
+        return response.read().decode("utf-8", errors="ignore")
 
 
 def fetch_metals_dev() -> dict[str, Any] | None:
@@ -133,29 +176,170 @@ def load_existing_dealers() -> dict[str, dict[str, Any]]:
     merged: dict[str, dict[str, Any]] = {}
     for key, default in DEFAULT_PREMIUMS.items():
         existing = dealers.get(key) or {}
+        # Preserve manually curated premiums, but do not turn a previously
+        # scraped live premium into the new fallback. If a lookup was bad or
+        # later fails, fall back to the known manual baseline.
+        existing_eagle = as_price(existing.get("eaglePremium")) if existing.get("eagleSource", "manual-premium") == "manual-premium" else None
+        existing_bar = as_price(existing.get("barPremium")) if existing.get("barSource", "manual-premium") == "manual-premium" else None
         merged[key] = {
             **default,
-            "eaglePremium": as_price(existing.get("eaglePremium")) or default["eaglePremium"],
-            "barPremium": as_price(existing.get("barPremium")) or default["barPremium"],
+            "eaglePremium": existing_eagle if existing_eagle and existing_eagle >= 1 else default["eaglePremium"],
+            "barPremium": existing_bar if existing_bar and existing_bar >= 1 else default["barPremium"],
+            "products": default.get("products", {}),
         }
     return merged
 
 
-def build_snapshot(spot: dict[str, Any], dealers: dict[str, dict[str, Any]]) -> dict[str, Any]:
+def _walk_json_prices(value: Any) -> list[float]:
+    prices: list[float] = []
+    if isinstance(value, dict):
+        for key, child in value.items():
+            if str(key).lower() in {"price", "lowprice", "highprice", "saleprice"}:
+                price = as_price(str(child).replace(",", "") if child is not None else None)
+                if price:
+                    prices.append(price)
+            prices.extend(_walk_json_prices(child))
+    elif isinstance(value, list):
+        for child in value:
+            prices.extend(_walk_json_prices(child))
+    return prices
+
+
+def _json_ld_prices(page_html: str) -> list[float]:
+    prices: list[float] = []
+    scripts = re.findall(
+        r'<script[^>]+type=["\']application/ld\+json["\'][^>]*>(.*?)</script>',
+        page_html,
+        flags=re.I | re.S,
+    )
+    for script in scripts:
+        text = html_lib.unescape(script).strip()
+        try:
+            data = json.loads(text)
+        except json.JSONDecodeError:
+            continue
+        prices.extend(_walk_json_prices(data))
+    return prices
+
+
+def _visible_price_candidates(page_html: str) -> list[float]:
+    cleaned = page_html.replace("<!-- -->", "")
+    cleaned = re.sub(r"<script\b.*?</script>", " ", cleaned, flags=re.I | re.S)
+    cleaned = re.sub(r"<style\b.*?</style>", " ", cleaned, flags=re.I | re.S)
+    text = html_lib.unescape(re.sub(r"<[^>]+>", " ", cleaned))
+    text = re.sub(r"\s+", " ", text)
+
+    candidates: list[float] = []
+    contextual_patterns = [
+        r"(?:as\s+low\s+as|our\s+price|price\s+as\s+low\s+as|cash\s+price|check\s*/?\s*wire)\D{0,80}\$\s*([0-9][0-9,]*(?:\.[0-9]{2})?)",
+        r"\$\s*([0-9][0-9,]*(?:\.[0-9]{2})?)\D{0,80}(?:as\s+low\s+as|each|per\s+coin|per\s+bar)",
+    ]
+    for pattern in contextual_patterns:
+        for match in re.finditer(pattern, text, flags=re.I):
+            price = as_price(match.group(1).replace(",", ""))
+            if price:
+                candidates.append(price)
+
+    # Last-resort fallback for dealer pages that render product data in escaped
+    # Next.js/React payloads instead of clean HTML. Later validation filters out
+    # spot quotes and absurd values.
+    for match in re.finditer(r"\$\s*([0-9][0-9,]*(?:\.[0-9]{2})?)", text):
+        price = as_price(match.group(1).replace(",", ""))
+        if price:
+            candidates.append(price)
+
+    return candidates
+
+
+def extract_product_price(page_html: str, expected_spot: float, min_premium: float = 1.00) -> float | None:
+    """Extract a likely 1 oz product price from a dealer product page.
+
+    The chosen price must be above spot by at least ``min_premium`` and not
+    absurdly high. This intentionally rejects spot quotes from site headers.
+    """
+    candidates = _json_ld_prices(page_html) + _visible_price_candidates(page_html)
+    valid: list[float] = []
+    for price in candidates:
+        if expected_spot + min_premium <= price <= expected_spot + 100:
+            valid.append(round(price, 2))
+    if not valid:
+        return None
+    return min(valid)
+
+
+def fetch_dealer_prices(
+    dealers: dict[str, dict[str, Any]],
+    silver_spot: float,
+    fetch_html: Callable[[str], str] = http_text,
+) -> tuple[dict[str, dict[str, float | None]], dict[str, str]]:
+    results: dict[str, dict[str, float | None]] = {}
+    errors: dict[str, str] = {}
+    for dealer_key, dealer in dealers.items():
+        products = dealer.get("products") or {}
+        if not products:
+            continue
+        results[dealer_key] = {}
+        for product_key, product in products.items():
+            label = f"{dealer_key}.{product_key}"
+            url = product.get("url")
+            if not url:
+                results[dealer_key][product_key] = None
+                errors[label] = "missing product URL"
+                continue
+            try:
+                page = fetch_html(url)
+                price = extract_product_price(page, expected_spot=silver_spot)
+                if price is None:
+                    raise ValueError("no valid product price found")
+                results[dealer_key][product_key] = price
+            except Exception as exc:  # Keep the whole snapshot job alive.
+                results[dealer_key][product_key] = None
+                errors[label] = str(exc)
+    return results, errors
+
+
+def build_snapshot(
+    spot: dict[str, Any],
+    dealers: dict[str, dict[str, Any]],
+    dealer_prices: dict[str, dict[str, float | None]] | None = None,
+    dealer_errors: dict[str, str] | None = None,
+) -> dict[str, Any]:
     silver = float(spot["silver"])
     out_dealers: dict[str, dict[str, Any]] = {}
+    dealer_prices = dealer_prices or {}
+    dealer_errors = dealer_errors or {}
+
     for key, d in dealers.items():
-        eagle_premium = float(d["eaglePremium"])
-        bar_premium = float(d["barPremium"])
+        eagle_fallback_premium = float(d["eaglePremium"])
+        bar_fallback_premium = float(d["barPremium"])
+        live = dealer_prices.get(key, {})
+        eagle_live = as_price(live.get("eagle"))
+        bar_live = as_price(live.get("bar"))
+
+        eagle_price = eagle_live if eagle_live else round(silver + eagle_fallback_premium, 2)
+        bar_price = bar_live if bar_live else round(silver + bar_fallback_premium, 2)
+        eagle_premium = round(eagle_price - silver, 2) if eagle_live else round(eagle_fallback_premium, 2)
+        bar_premium = round(bar_price - silver, 2) if bar_live else round(bar_fallback_premium, 2)
+
+        products = d.get("products") or {}
         out_dealers[key] = {
             "name": d["name"],
-            "eagle": round(silver + eagle_premium, 2),
-            "eaglePremium": round(eagle_premium, 2),
-            "bar": round(silver + bar_premium, 2),
-            "barPremium": round(bar_premium, 2),
+            "eagle": round(eagle_price, 2),
+            "eaglePremium": eagle_premium,
+            "eagleSource": "dealer-live" if eagle_live else "manual-premium",
+            "bar": round(bar_price, 2),
+            "barPremium": bar_premium,
+            "barSource": "dealer-live" if bar_live else "manual-premium",
             "url": d.get("url"),
-            "source": "manual-premium",
+            "products": products,
+            "source": "dealer-live" if eagle_live or bar_live else "manual-premium",
         }
+
+    lookup_status = {
+        "updatedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "source": "dealer product pages + manual fallback",
+        "errors": dealer_errors,
+    }
 
     return {
         "updatedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -167,9 +351,11 @@ def build_snapshot(spot: dict[str, Any], dealers: dict[str, dict[str, Any]]) -> 
             "source": spot["source"],
         },
         "dealers": out_dealers,
+        "dealerLookup": lookup_status,
         "notes": [
             "Spot prices are refreshed automatically by GitHub Actions.",
-            "Dealer premiums are currently manually curated and applied above live silver spot.",
+            "JM Bullion and Money Metals product pages are checked automatically when possible.",
+            "If a dealer lookup fails, OwnAG safely falls back to manually curated premiums.",
         ],
     }
 
@@ -194,10 +380,23 @@ def fetch_spot() -> dict[str, Any]:
 def main() -> int:
     spot = fetch_spot()
     dealers = load_existing_dealers()
-    snapshot = build_snapshot(spot, dealers)
+    dealer_prices, dealer_errors = fetch_dealer_prices(dealers, float(spot["silver"]))
+    snapshot = build_snapshot(spot, dealers, dealer_prices=dealer_prices, dealer_errors=dealer_errors)
     PRICE_FILE.parent.mkdir(parents=True, exist_ok=True)
     PRICE_FILE.write_text(json.dumps(snapshot, indent=2, sort_keys=False) + "\n")
-    print(f"updated {PRICE_FILE.relative_to(ROOT)} from {snapshot['spot']['source']} at {snapshot['updatedAt']}")
+    dealer_live_count = sum(
+        1
+        for dealer in snapshot["dealers"].values()
+        for source_key in ("eagleSource", "barSource")
+        if dealer.get(source_key) == "dealer-live"
+    )
+    print(
+        f"updated {PRICE_FILE.relative_to(ROOT)} from {snapshot['spot']['source']} "
+        f"with {dealer_live_count} live dealer product prices at {snapshot['updatedAt']}"
+    )
+    if dealer_errors:
+        for label, message in dealer_errors.items():
+            print(f"warning: dealer lookup failed for {label}: {message}", file=sys.stderr)
     return 0
 
 

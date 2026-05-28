@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-05-28T19:20:48+00:00",
+  "updatedAt": "2026-05-28T20:52:47+00:00",
   "spot": {
-    "silver": 75.6205,
+    "silver": 75.6935,
     "gold": null,
     "platinum": null,
     "palladium": null,
@@ -10,43 +10,83 @@
   "dealers": {
     "jm": {
       "name": "JM Bullion",
-      "eagle": 92.36,
+      "eagle": 92.43,
       "eaglePremium": 16.74,
-      "bar": 87.24,
-      "barPremium": 11.62,
+      "eagleSource": "manual-premium",
+      "bar": 86.27,
+      "barPremium": 10.58,
+      "barSource": "dealer-live",
       "url": "https://www.jmbullion.com",
-      "source": "manual-premium"
+      "products": {
+        "eagle": {
+          "name": "1 oz American Silver Eagle",
+          "url": "https://www.jmbullion.com/1-oz-american-silver-eagle/"
+        },
+        "bar": {
+          "name": "1 oz SilverTowne Silver Bar",
+          "url": "https://www.jmbullion.com/1-oz-silvertowne-silver-bar/"
+        }
+      },
+      "source": "dealer-live"
     },
     "mm": {
       "name": "Money Metals",
-      "eagle": 87.35,
+      "eagle": 87.42,
       "eaglePremium": 11.73,
-      "bar": 83.25,
+      "eagleSource": "manual-premium",
+      "bar": 83.32,
       "barPremium": 7.63,
+      "barSource": "manual-premium",
       "url": "https://www.awin1.com/cread.php?awinmid=88985&awinaffid=2837494",
+      "products": {
+        "eagle": {
+          "name": "1 oz American Silver Eagle",
+          "url": "https://www.moneymetals.com/american-silver-eagle/2"
+        },
+        "bar": {
+          "name": "1 oz Silver Bar",
+          "url": "https://www.moneymetals.com/silver-bars/1-oz-silver-bars"
+        }
+      },
       "source": "manual-premium"
     },
     "kitco": {
       "name": "Kitco",
-      "eagle": 83.53,
+      "eagle": 83.6,
       "eaglePremium": 7.91,
-      "bar": 86.35,
+      "eagleSource": "manual-premium",
+      "bar": 86.42,
       "barPremium": 10.73,
+      "barSource": "manual-premium",
       "url": "https://www.awin1.com/cread.php?awinmid=84579&awinaffid=2837494",
+      "products": {},
       "source": "manual-premium"
     },
     "bgasc": {
       "name": "BGASC",
-      "eagle": 89.93,
+      "eagle": 90.0,
       "eaglePremium": 14.31,
-      "bar": 85.64,
+      "eagleSource": "manual-premium",
+      "bar": 85.71,
       "barPremium": 10.02,
+      "barSource": "manual-premium",
       "url": "https://www.bgasc.com",
+      "products": {},
       "source": "manual-premium"
+    }
+  },
+  "dealerLookup": {
+    "updatedAt": "2026-05-28T20:52:47+00:00",
+    "source": "dealer product pages + manual fallback",
+    "errors": {
+      "jm.eagle": "no valid product price found",
+      "mm.eagle": "HTTP Error 403: Forbidden",
+      "mm.bar": "HTTP Error 403: Forbidden"
     }
   },
   "notes": [
     "Spot prices are refreshed automatically by GitHub Actions.",
-    "Dealer premiums are currently manually curated and applied above live silver spot."
+    "JM Bullion and Money Metals product pages are checked automatically when possible.",
+    "If a dealer lookup fails, OwnAG safely falls back to manually curated premiums."
   ]
 }
