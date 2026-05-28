@@ -3210,6 +3210,12 @@ function setLiveStatus(isLive, updatedAt = null, source = '') {
   }
 }
 
+function dealerSourceLabel(source) {
+  if (source === 'dealer-live') return ' · live';
+  if (source === 'last-known-premium') return ' · last known';
+  return ' · est.';
+}
+
 function updateDashboard() {
   if (!silverSpot) return;
 
@@ -3244,6 +3250,7 @@ function updateDashboard() {
   // Dealer table
   const dealers = ['jm', 'mm', 'kitco', 'bgasc'];
   let liveDealerCells = 0;
+  let lastKnownDealerCells = 0;
   dealers.forEach(d => {
     const ep = PREMIUMS[d].eagle;
     const bp = PREMIUMS[d].bar;
@@ -3251,16 +3258,18 @@ function updateDashboard() {
     const barSource = DEALER_SOURCES[d]?.bar || 'manual-premium';
     if (eagleSource === 'dealer-live') liveDealerCells++;
     if (barSource === 'dealer-live') liveDealerCells++;
+    if (eagleSource === 'last-known-premium') lastKnownDealerCells++;
+    if (barSource === 'last-known-premium') lastKnownDealerCells++;
     setText(d + '-eagle', fmt(silverSpot + ep));
-    setText(d + '-eagle-prem', '+' + fmt(ep) + ' over spot' + (eagleSource === 'dealer-live' ? ' · live' : ' · est.'));
+    setText(d + '-eagle-prem', '+' + fmt(ep) + ' over spot' + dealerSourceLabel(eagleSource));
     setText(d + '-bar', fmt(silverSpot + bp));
-    setText(d + '-bar-prem', '+' + fmt(bp) + ' over spot' + (barSource === 'dealer-live' ? ' · live' : ' · est.'));
+    setText(d + '-bar-prem', '+' + fmt(bp) + ' over spot' + dealerSourceLabel(barSource));
   });
   const lookupNote = document.getElementById('dealer-lookup-note');
   if (lookupNote) {
     lookupNote.textContent = liveDealerCells > 0
-      ? `⚠ ${liveDealerCells} dealer product price${liveDealerCells === 1 ? '' : 's'} loaded live; the rest use spot + saved premium estimates. Always verify current pricing directly with dealers before purchasing.`
-      : '⚠ Dealer prices are estimated from live spot + saved premium estimates. Always verify current pricing directly with dealers before purchasing.';
+      ? `⚠ ${liveDealerCells} dealer product price${liveDealerCells === 1 ? '' : 's'} loaded live; ${lastKnownDealerCells} using last known good premium; the rest use manual estimates. Always verify current pricing directly with dealers before purchasing.`
+      : `⚠ Dealer prices are estimated from live spot + ${lastKnownDealerCells ? 'last known good premiums/manual estimates' : 'manual premium estimates'}. Always verify current pricing directly with dealers before purchasing.`;
   }
 
   // Ticker
