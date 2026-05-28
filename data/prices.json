@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-05-28T20:54:32+00:00",
+  "updatedAt": "2026-05-28T20:56:41+00:00",
   "spot": {
-    "silver": 75.6985,
+    "silver": 75.7075,
     "gold": null,
     "platinum": null,
     "palladium": null,
@@ -10,17 +10,17 @@
   "dealers": {
     "jm": {
       "name": "JM Bullion",
-      "eagle": 92.44,
-      "eaglePremium": 16.74,
-      "eagleSource": "manual-premium",
+      "eagle": 91.34,
+      "eaglePremium": 15.63,
+      "eagleSource": "dealer-live",
       "bar": 86.27,
-      "barPremium": 10.57,
+      "barPremium": 10.56,
       "barSource": "dealer-live",
       "url": "https://www.jmbullion.com",
       "products": {
         "eagle": {
           "name": "1 oz American Silver Eagle",
-          "url": "https://www.jmbullion.com/1-oz-american-silver-eagle/"
+          "url": "https://www.jmbullion.com/2026-1-oz-american-silver-eagle-coin/"
         },
         "bar": {
           "name": "1 oz SilverTowne Silver Bar",
@@ -31,10 +31,10 @@
     },
     "mm": {
       "name": "Money Metals",
-      "eagle": 87.43,
+      "eagle": 87.44,
       "eaglePremium": 11.73,
       "eagleSource": "manual-premium",
-      "bar": 83.33,
+      "bar": 83.34,
       "barPremium": 7.63,
       "barSource": "manual-premium",
       "url": "https://www.awin1.com/cread.php?awinmid=88985&awinaffid=2837494",
@@ -52,10 +52,10 @@
     },
     "kitco": {
       "name": "Kitco",
-      "eagle": 83.61,
+      "eagle": 83.62,
       "eaglePremium": 7.91,
       "eagleSource": "manual-premium",
-      "bar": 86.43,
+      "bar": 86.44,
       "barPremium": 10.73,
       "barSource": "manual-premium",
       "url": "https://www.awin1.com/cread.php?awinmid=84579&awinaffid=2837494",
@@ -64,10 +64,10 @@
     },
     "bgasc": {
       "name": "BGASC",
-      "eagle": 90.01,
+      "eagle": 90.02,
       "eaglePremium": 14.31,
       "eagleSource": "manual-premium",
-      "bar": 85.72,
+      "bar": 85.73,
       "barPremium": 10.02,
       "barSource": "manual-premium",
       "url": "https://www.bgasc.com",
@@ -76,10 +76,9 @@
     }
   },
   "dealerLookup": {
-    "updatedAt": "2026-05-28T20:54:32+00:00",
+    "updatedAt": "2026-05-28T20:56:41+00:00",
     "source": "dealer product pages + manual fallback",
     "errors": {
-      "jm.eagle": "no valid product price found",
       "mm.eagle": "HTTP Error 403: Forbidden",
       "mm.bar": "HTTP Error 403: Forbidden"
     }
