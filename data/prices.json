@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-05-28T19:17:04+00:00",
+  "updatedAt": "2026-05-28T19:20:48+00:00",
   "spot": {
-    "silver": 75.5885,
+    "silver": 75.6205,
     "gold": null,
     "platinum": null,
     "palladium": null,
@@ -10,36 +10,36 @@
   "dealers": {
     "jm": {
       "name": "JM Bullion",
-      "eagle": 92.33,
+      "eagle": 92.36,
       "eaglePremium": 16.74,
-      "bar": 87.21,
+      "bar": 87.24,
       "barPremium": 11.62,
       "url": "https://www.jmbullion.com",
       "source": "manual-premium"
     },
     "mm": {
       "name": "Money Metals",
-      "eagle": 87.32,
+      "eagle": 87.35,
       "eaglePremium": 11.73,
-      "bar": 83.22,
+      "bar": 83.25,
       "barPremium": 7.63,
       "url": "https://www.awin1.com/cread.php?awinmid=88985&awinaffid=2837494",
       "source": "manual-premium"
     },
     "kitco": {
       "name": "Kitco",
-      "eagle": 83.5,
+      "eagle": 83.53,
       "eaglePremium": 7.91,
-      "bar": 86.32,
+      "bar": 86.35,
       "barPremium": 10.73,
       "url": "https://www.awin1.com/cread.php?awinmid=84579&awinaffid=2837494",
       "source": "manual-premium"
     },
     "bgasc": {
       "name": "BGASC",
-      "eagle": 89.9,
+      "eagle": 89.93,
       "eaglePremium": 14.31,
-      "bar": 85.61,
+      "bar": 85.64,
       "barPremium": 10.02,
       "url": "https://www.bgasc.com",
       "source": "manual-premium"
