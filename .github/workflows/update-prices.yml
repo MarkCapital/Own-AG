@@ -1,0 +1,40 @@
+name: Update price data
+
+on:
+  schedule:
+    # Refresh near-real-time spot pricing without depending on each visitor's browser.
+    - cron: "*/30 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-prices:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Update generated price snapshot
+        env:
+          METALS_DEV_API_KEY: ${{ secrets.METALS_DEV_API_KEY }}
+          GOLDAPI_KEY: ${{ secrets.GOLDAPI_KEY }}
+        run: python scripts/update_prices.py
+
+      - name: Commit price snapshot if changed
+        run: |
+          if git diff --quiet -- data/prices.json; then
+            echo "No price changes to commit."
+            exit 0
+          fi
+          git config user.name "ownag-price-bot"
+          git config user.email "actions@github.com"
+          git add data/prices.json
+          git commit -m "chore: update generated price data"
+          git push
