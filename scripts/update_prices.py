@@ -34,7 +34,7 @@ DEFAULT_PREMIUMS: dict[str, dict[str, Any]] = {
         "products": {
             "eagle": {
                 "name": "1 oz American Silver Eagle",
-                "url": "https://www.jmbullion.com/1-oz-american-silver-eagle/",
+                "url": "https://www.jmbullion.com/2026-1-oz-american-silver-eagle-coin/",
             },
             "bar": {
                 "name": "1 oz SilverTowne Silver Bar",
