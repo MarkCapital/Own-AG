@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-05-29T10:32:01+00:00",
+  "updatedAt": "2026-05-29T14:13:03+00:00",
   "spot": {
-    "silver": 75.5465,
+    "silver": 75.5535,
     "gold": null,
     "platinum": null,
     "palladium": null,
@@ -10,16 +10,16 @@
   "dealers": {
     "jm": {
       "name": "JM Bullion",
-      "eagle": 91.14,
-      "eaglePremium": 15.59,
+      "eagle": 91.27,
+      "eaglePremium": 15.72,
       "eagleSource": "dealer-live",
-      "eagleFallbackPremium": 15.59,
-      "eagleFallbackUpdatedAt": "2026-05-29T10:32:01+00:00",
-      "bar": 86.12,
-      "barPremium": 10.57,
+      "eagleFallbackPremium": 15.72,
+      "eagleFallbackUpdatedAt": "2026-05-29T14:13:03+00:00",
+      "bar": 86.13,
+      "barPremium": 10.58,
       "barSource": "dealer-live",
-      "barFallbackPremium": 10.57,
-      "barFallbackUpdatedAt": "2026-05-29T10:32:01+00:00",
+      "barFallbackPremium": 10.58,
+      "barFallbackUpdatedAt": "2026-05-29T14:13:03+00:00",
       "url": "https://www.jmbullion.com",
       "products": {
         "eagle": {
@@ -92,7 +92,7 @@
     }
   },
   "dealerLookup": {
-    "updatedAt": "2026-05-29T10:32:01+00:00",
+    "updatedAt": "2026-05-29T14:13:03+00:00",
     "source": "dealer product pages + last-known premium fallback",
     "errors": {
       "mm.eagle": "HTTP Error 403: Forbidden",
