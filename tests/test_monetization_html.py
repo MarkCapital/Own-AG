@@ -22,5 +22,11 @@ def test_deals_page_includes_monetized_ctas_and_disclosures():
     assert "Best Silver Deals Today" in HTML
     assert "Open a Silver IRA" in HTML
     assert "equitytrustcompany380f9.referralrock.com" in HTML
-    assert "Get Weekly Silver Deal Alerts" in HTML
     assert "Affiliate disclosure" in HTML
+
+
+def test_deals_page_does_not_include_placeholder_alert_signup():
+    assert "Get Weekly Silver Deal Alerts" not in HTML
+    assert "Request Alerts" not in HTML
+    assert "repeat buyer list" not in HTML
+    assert "newsletter support" not in HTML
