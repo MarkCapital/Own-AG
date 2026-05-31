@@ -1138,6 +1138,7 @@ input:focus, select:focus, textarea:focus { border-color: var(--gold); }
 @media (max-width: 768px) {
   /* Calculators */
   .calc-body { grid-template-columns: 1fr; }
+  .deals-highlight-grid { grid-template-columns: 1fr !important; }
   .calc-tab { font-size: 10px; padding: 8px 10px; }
   .junk-grid { grid-template-columns: 1fr; }
 }
@@ -1433,6 +1434,7 @@ footer {
   <a href="#" class="nav-logo" onclick="showPage('home')">OWN<span class="ag">AG</span></a>
   <ul class="nav-links">
     <li><a href="#" onclick="showPage('home'); scrollToId('prices')">Prices</a></li>
+    <li><a href="#" onclick="showPage('deals')">Deals</a></li>
     <li><a href="#" onclick="showPage('home'); scrollToId('chart')">Charts</a></li>
     <li><a href="#" onclick="showPage('education')">Learn</a></li>
     <li><a href="#" onclick="showPage('calculators')">Calculators</a></li>
@@ -1457,6 +1459,7 @@ footer {
     <p class="hero-sub fade-up delay-3">Track live silver prices, compare dealer premiums, and learn how to build real wealth with physical silver. Free tools, no fluff. <span class="hero-tagline">For Patrons & Purveyors.</span></p>
     <div class="hero-actions fade-up delay-4">
       <button class="btn-primary" onclick="scrollToId('prices')">Compare Prices Now</button>
+      <button class="btn-outline" onclick="showPage('deals')">Best Deals Today</button>
       <button class="btn-outline" onclick="showPage('education')">Learn the Basics</button>
     </div>
 
@@ -1999,6 +2002,83 @@ footer {
 </section>
 
 </div><!-- end home -->
+
+<!-- ═══════════════════════════════════════════════════ BEST DEALS PAGE: Best Silver Deals Today -->
+<div id="page-deals" class="page">
+  <section style="background: var(--bg2); padding: 120px 40px 60px; border-bottom: 1px solid var(--border);">
+    <div class="section-inner">
+      <div class="section-eyebrow">Daily Buyer Shortcut</div>
+      <h1 class="section-title">BEST SILVER<br>DEALS TODAY</h1>
+      <p class="section-sub">A quick, buyer-focused view of the lowest tracked premiums across OwnAG's dealer list. Prices may be live, last-known, or estimated — always confirm at the dealer before buying.</p>
+    </div>
+  </section>
+
+  <section style="background: var(--bg); padding: 60px 40px 100px;">
+    <div style="max-width: 1100px; margin: 0 auto;">
+      <div style="display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:18px; margin-bottom:24px;" class="deals-highlight-grid">
+        <div id="deal-best-eagle" style="background:var(--bg2); border:1px solid rgba(61,186,110,0.35); border-radius:var(--radius-lg); padding:28px; min-height:170px;">
+          <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.14em; color:var(--green); text-transform:uppercase; margin-bottom:10px;">Lowest tracked Silver Eagle premium</div>
+          <h2 style="font-family:'Bebas Neue',sans-serif; font-size:34px; letter-spacing:2px; color:var(--silver-light); margin-bottom:8px;">Loading...</h2>
+          <p style="color:var(--silver-dim); font-size:14px; line-height:1.7;">Checking current OwnAG dealer data.</p>
+        </div>
+        <div id="deal-best-bar" style="background:var(--bg2); border:1px solid rgba(61,186,110,0.35); border-radius:var(--radius-lg); padding:28px; min-height:170px;">
+          <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.14em; color:var(--green); text-transform:uppercase; margin-bottom:10px;">Lowest tracked 1 oz bar premium</div>
+          <h2 style="font-family:'Bebas Neue',sans-serif; font-size:34px; letter-spacing:2px; color:var(--silver-light); margin-bottom:8px;">Loading...</h2>
+          <p style="color:var(--silver-dim); font-size:14px; line-height:1.7;">Checking current OwnAG dealer data.</p>
+        </div>
+      </div>
+
+      <div style="background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius-lg); overflow:hidden; margin-bottom:24px;">
+        <div style="padding:20px 24px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+          <div>
+            <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.14em; color:var(--silver-dim); text-transform:uppercase; margin-bottom:6px;">Ranked by premium over spot</div>
+            <h2 style="font-family:'Bebas Neue',sans-serif; font-size:28px; letter-spacing:2px; color:var(--silver-light);">Tracked Dealer Deals</h2>
+          </div>
+          <div id="deals-updated" style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--silver-dim);">Loading price snapshot...</div>
+        </div>
+        <div class="dealer-table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Product</th>
+                <th>Dealer</th>
+                <th>Estimated Price</th>
+                <th>Premium</th>
+                <th>Source</th>
+                <th>Buy</th>
+              </tr>
+            </thead>
+            <tbody id="deals-table-body">
+              <tr><td colspan="7" style="padding:20px; color:var(--silver-dim);">Loading silver deals...</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="disclaimer-row">
+          <p id="deals-affiliate-note"><strong>Affiliate disclosure:</strong> OwnAG may earn a commission from dealer links at no cost to you. Dealer prices may be live, last-known, or estimated from spot plus tracked premiums; verify final price, shipping, payment fees, and availability directly with the dealer.</p>
+        </div>
+      </div>
+
+      <div style="display:grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap:16px;" class="deals-highlight-grid">
+        <div style="background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius-lg); padding:22px;">
+          <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.14em; color:var(--silver-dim); text-transform:uppercase; margin-bottom:10px;">Get Weekly Silver Deal Alerts</div>
+          <p style="font-size:14px; color:var(--silver-dim); line-height:1.7; margin-bottom:16px;">Ask for a weekly email when OwnAG adds newsletter support. This is the ideal place to build a repeat buyer list.</p>
+          <a href="mailto:ownagsupport@gmail.com?subject=Subscribe%20me%20to%20OwnAG%20weekly%20silver%20deal%20alerts" class="buy-btn">Request Alerts →</a>
+        </div>
+        <div style="background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius-lg); padding:22px;">
+          <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.14em; color:var(--silver-dim); text-transform:uppercase; margin-bottom:10px;">Retirement Angle</div>
+          <p style="font-size:14px; color:var(--silver-dim); line-height:1.7; margin-bottom:16px;">Want tax-advantaged precious metals exposure? Learn how a Self-Directed IRA can hold eligible physical silver.</p>
+          <a href="https://equitytrustcompany380f9.referralrock.com/l/JONATHANST01/" target="_blank" rel="noopener" class="buy-btn">Open a Silver IRA ↗</a>
+        </div>
+        <div style="background:var(--bg2); border:1px solid var(--border); border-radius:var(--radius-lg); padding:22px;">
+          <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.14em; color:var(--silver-dim); text-transform:uppercase; margin-bottom:10px;">Before You Buy</div>
+          <p style="font-size:14px; color:var(--silver-dim); line-height:1.7; margin-bottom:16px;">Compare premiums, payment fees, shipping minimums, and resale liquidity before choosing coins, bars, or rounds.</p>
+          <button class="btn-outline" onclick="showPage('beginner')" style="font-size:11px; padding:8px 14px;">Read Beginner Guide →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</div><!-- end deals -->
 
 <!-- ═══════════════════════════════════════════════════ EDUCATION PAGE -->
 <div id="page-education" class="page">
@@ -2942,9 +3022,10 @@ footer {
     </div>
     <div class="footer-col">
       <h4>Tools</h4>
-      <a href="#" onclick="showPage('home'); scrollToId('prices')">Price Comparison</a>
-      <a href="#" onclick="showPage('home'); scrollToId('chart')">Price Charts</a>
-      <a href="#" onclick="showPage('calculators')">Silver Value Calculator</a>
+      <a href="#" onclick="showPage('home'); scrollToId('prices')">Price Tracker</a>
+      <a href="#" onclick="showPage('deals')">Best Silver Deals Today</a>
+      <a href="#" onclick="showPage('home'); scrollToId('chart')">Charts</a>
+      <a href="#" onclick="showPage('calculators')">Calculators</a>
       <a href="#" onclick="showPage('calculators'); switchCalc('junk', null)">Junk Silver Calculator</a>
       <a href="#" onclick="showPage('calculators'); switchCalc('dca', null)">DCA Tracker</a>
       <a href="mailto:ownagsupport@gmail.com">Contact Us</a>
@@ -3010,34 +3091,77 @@ function calcQuickValue() {
 }
 
 // ── BEST DEAL BANNER ──────────────────────────────────────────────────────────
+function getDealerDealRows() {
+  if (!silverSpot) return [];
+  const rows = [];
+  Object.entries(DEALER_INFO).forEach(([key, info]) => {
+    const premiums = PREMIUMS[key] || DEFAULT_PREMIUMS[key];
+    if (!premiums) return;
+    [
+      { type: 'eagle', label: '1 oz Silver Eagle' },
+      { type: 'bar', label: '1 oz Silver Bar' }
+    ].forEach(product => {
+      const premium = parseFloat(premiums[product.type]);
+      if (isNaN(premium)) return;
+      rows.push({
+        dealerKey: key,
+        dealer: info.name,
+        product: product.label,
+        productType: product.type,
+        price: silverSpot + premium,
+        premium,
+        source: DEALER_SOURCES[key]?.[product.type] || 'manual-premium',
+        url: info.url
+      });
+    });
+  });
+  return rows.sort((a, b) => a.premium - b.premium || a.dealer.localeCompare(b.dealer));
+}
+
+function renderDealHighlight(id, row) {
+  const el = document.getElementById(id);
+  if (!el || !row) return;
+  el.innerHTML = `
+    <div style="font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.14em; color:var(--green); text-transform:uppercase; margin-bottom:10px;">Lowest tracked ${row.product} premium</div>
+    <h2 style="font-family:'Bebas Neue',sans-serif; font-size:34px; letter-spacing:2px; color:var(--silver-light); margin-bottom:8px;">${row.dealer}</h2>
+    <p style="color:var(--silver-dim); font-size:14px; line-height:1.7; margin-bottom:14px;">${fmt(row.price)} estimated price · +${fmt(row.premium)} over spot · ${dealerSourceLabel(row.source).replace(' · ', '')}</p>
+    <a href="${row.url}" target="_blank" rel="noopener" class="buy-btn">Check Dealer Price →</a>
+  `;
+}
+
+function renderDealsPage() {
+  const tbody = document.getElementById('deals-table-body');
+  if (!tbody || !silverSpot) return;
+  const rows = getDealerDealRows();
+  const bestEagle = rows.find(row => row.productType === 'eagle');
+  const bestBar = rows.find(row => row.productType === 'bar');
+
+  renderDealHighlight('deal-best-eagle', bestEagle);
+  renderDealHighlight('deal-best-bar', bestBar);
+  setText('deals-updated', `Silver spot ${fmt(silverSpot)} · ${rows.length} tracked dealer offers`);
+
+  tbody.innerHTML = rows.map((row, index) => `
+    <tr>
+      <td style="font-family:'IBM Plex Mono',monospace; color:var(--silver-light);">#${index + 1}</td>
+      <td>${row.product}</td>
+      <td class="dealer-name">${row.dealer}</td>
+      <td class="price-cell">${fmt(row.price)}</td>
+      <td class="premium-cell">+${fmt(row.premium)} over spot</td>
+      <td style="font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--silver-dim); text-transform:uppercase;">${dealerSourceLabel(row.source).replace(' · ', '')}</td>
+      <td><a href="${row.url}" target="_blank" rel="noopener" class="buy-btn">Buy →</a></td>
+    </tr>
+  `).join('');
+}
+
 function updateBestDeal() {
   if (!silverSpot) return;
-  const spot = silverSpot;
-
-  const eaglePremiums = {
-    'JM Bullion':   PREMIUMS.jm.eagle,
-    'Money Metals': PREMIUMS.mm.eagle,
-    'Kitco':        PREMIUMS.kitco.eagle,
-    'BGASC':        PREMIUMS.bgasc.eagle
-  };
-  const barPremiums = {
-    'JM Bullion':   PREMIUMS.jm.bar,
-    'Money Metals': PREMIUMS.mm.bar,
-    'Kitco':        PREMIUMS.kitco.bar,
-    'BGASC':        PREMIUMS.bgasc.bar
-  };
-
-  // Find lowest eagle premium
-  let bestEagleDealer = '', bestEaglePrem = Infinity;
-  Object.entries(eaglePremiums).forEach(([d, p]) => { if (p < bestEaglePrem) { bestEaglePrem = p; bestEagleDealer = d; } });
-
-  // Find lowest bar premium
-  let bestBarDealer = '', bestBarPrem = Infinity;
-  Object.entries(barPremiums).forEach(([d, p]) => { if (p < bestBarPrem) { bestBarPrem = p; bestBarDealer = d; } });
+  const rows = getDealerDealRows();
+  const bestEagle = rows.find(row => row.productType === 'eagle');
+  const bestBar = rows.find(row => row.productType === 'bar');
 
   const el = document.getElementById('best-deal-text');
-  if (el) {
-    el.textContent = `${bestEagleDealer} 1oz Eagle at +$${bestEaglePrem.toFixed(2)}/oz  ·  ${bestBarDealer} 1oz Bar at +$${bestBarPrem.toFixed(2)}/oz`;
+  if (el && bestEagle && bestBar) {
+    el.textContent = `${bestEagle.dealer} 1oz Eagle at +$${bestEagle.premium.toFixed(2)}/oz  ·  ${bestBar.dealer} 1oz Bar at +$${bestBar.premium.toFixed(2)}/oz`;
   }
 }
 
@@ -3100,6 +3224,12 @@ const DEFAULT_PREMIUMS = {
   mm    : { eagle: 11.73, bar: 7.63 },
   kitco : { eagle: 7.91, bar: 10.73 },
   bgasc : { eagle: 14.31, bar: 10.02 },
+};
+const DEALER_INFO = {
+  jm:    { name: 'JM Bullion',   url: 'https://www.jmbullion.com', rating: '★★★★★' },
+  mm:    { name: 'Money Metals', url: 'https://www.awin1.com/cread.php?awinmid=88985&awinaffid=2837494', rating: '★★★★☆' },
+  kitco: { name: 'Kitco',        url: 'https://www.awin1.com/cread.php?awinmid=84579&awinaffid=2837494', rating: '★★★★☆' },
+  bgasc: { name: 'BGASC',        url: 'https://www.bgasc.com', rating: '★★★★☆' },
 };
 let PREMIUMS = JSON.parse(JSON.stringify(DEFAULT_PREMIUMS));
 
@@ -3264,8 +3394,8 @@ function updateDashboard() {
   const lookupNote = document.getElementById('dealer-lookup-note');
   if (lookupNote) {
     lookupNote.textContent = liveDealerCells > 0
-      ? `⚠ ${liveDealerCells} dealer product price${liveDealerCells === 1 ? '' : 's'} loaded live; ${lastKnownDealerCells} using last known good premium; the rest use manual estimates. Always verify current pricing directly with dealers before purchasing.`
-      : `⚠ Dealer prices are estimated from live spot + ${lastKnownDealerCells ? 'last known good premiums/manual estimates' : 'manual premium estimates'}. Always verify current pricing directly with dealers before purchasing.`;
+      ? `⚠ ${liveDealerCells} dealer product price${liveDealerCells === 1 ? '' : 's'} loaded live; ${lastKnownDealerCells} using last known good premium; the rest use manual estimates. Always verify current pricing directly with dealers before purchasing. OwnAG may earn a commission from dealer links at no cost to you.`
+      : `⚠ Dealer prices are estimated from live spot + ${lastKnownDealerCells ? 'last known good premiums/manual estimates' : 'manual premium estimates'}. Always verify current pricing directly with dealers before purchasing. OwnAG may earn a commission from dealer links at no cost to you.`;
   }
 
   // Ticker
@@ -3288,6 +3418,7 @@ function updateDashboard() {
 
   // Update new features
   updateBestDeal();
+  renderDealsPage();
   updateJunkTable();
   calcQuickValue();
 
