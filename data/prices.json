@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-06-01T22:21:44+00:00",
+  "updatedAt": "2026-06-01T23:52:53+00:00",
   "spot": {
-    "silver": 74.8185,
+    "silver": 75.0505,
     "gold": null,
     "platinum": null,
     "palladium": null,
@@ -10,16 +10,16 @@
   "dealers": {
     "jm": {
       "name": "JM Bullion",
-      "eagle": 90.69,
-      "eaglePremium": 15.87,
+      "eagle": 90.73,
+      "eaglePremium": 15.68,
       "eagleSource": "dealer-live",
-      "eagleFallbackPremium": 15.87,
-      "eagleFallbackUpdatedAt": "2026-06-01T22:21:44+00:00",
-      "bar": 85.86,
-      "barPremium": 11.04,
+      "eagleFallbackPremium": 15.68,
+      "eagleFallbackUpdatedAt": "2026-06-01T23:52:53+00:00",
+      "bar": 85.92,
+      "barPremium": 10.87,
       "barSource": "dealer-live",
-      "barFallbackPremium": 11.04,
-      "barFallbackUpdatedAt": "2026-06-01T22:21:44+00:00",
+      "barFallbackPremium": 10.87,
+      "barFallbackUpdatedAt": "2026-06-01T23:52:53+00:00",
       "url": "https://www.jmbullion.com",
       "products": {
         "eagle": {
@@ -35,12 +35,12 @@
     },
     "mm": {
       "name": "Money Metals",
-      "eagle": 86.55,
+      "eagle": 86.78,
       "eaglePremium": 11.73,
       "eagleSource": "last-known-premium",
       "eagleFallbackPremium": 11.73,
       "eagleFallbackUpdatedAt": null,
-      "bar": 82.45,
+      "bar": 82.68,
       "barPremium": 7.63,
       "barSource": "last-known-premium",
       "barFallbackPremium": 7.63,
@@ -60,12 +60,12 @@
     },
     "kitco": {
       "name": "Kitco",
-      "eagle": 82.73,
+      "eagle": 82.96,
       "eaglePremium": 7.91,
       "eagleSource": "last-known-premium",
       "eagleFallbackPremium": 7.91,
       "eagleFallbackUpdatedAt": null,
-      "bar": 85.55,
+      "bar": 85.78,
       "barPremium": 10.73,
       "barSource": "last-known-premium",
       "barFallbackPremium": 10.73,
@@ -76,12 +76,12 @@
     },
     "bgasc": {
       "name": "BGASC",
-      "eagle": 89.13,
+      "eagle": 89.36,
       "eaglePremium": 14.31,
       "eagleSource": "last-known-premium",
       "eagleFallbackPremium": 14.31,
       "eagleFallbackUpdatedAt": null,
-      "bar": 84.84,
+      "bar": 85.07,
       "barPremium": 10.02,
       "barSource": "last-known-premium",
       "barFallbackPremium": 10.02,
@@ -92,7 +92,7 @@
     }
   },
   "dealerLookup": {
-    "updatedAt": "2026-06-01T22:21:44+00:00",
+    "updatedAt": "2026-06-01T23:52:53+00:00",
     "source": "dealer product pages + last-known premium fallback",
     "errors": {
       "mm.eagle": "HTTP Error 403: Forbidden",
