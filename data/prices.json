@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-06-18T22:19:44+00:00",
+  "updatedAt": "2026-06-19T00:11:02+00:00",
   "spot": {
-    "silver": 65.6515,
+    "silver": 65.2705,
     "gold": null,
     "platinum": null,
     "palladium": null,
@@ -10,12 +10,12 @@
   "dealers": {
     "jm": {
       "name": "JM Bullion",
-      "eagle": 81.36,
+      "eagle": 80.98,
       "eaglePremium": 15.71,
       "eagleSource": "last-known-premium",
       "eagleFallbackPremium": 15.71,
       "eagleFallbackUpdatedAt": "2026-06-18T16:37:42+00:00",
-      "bar": 76.28,
+      "bar": 75.9,
       "barPremium": 10.63,
       "barSource": "last-known-premium",
       "barFallbackPremium": 10.63,
@@ -35,12 +35,12 @@
     },
     "mm": {
       "name": "Money Metals",
-      "eagle": 77.38,
+      "eagle": 77.0,
       "eaglePremium": 11.73,
       "eagleSource": "last-known-premium",
       "eagleFallbackPremium": 11.73,
       "eagleFallbackUpdatedAt": null,
-      "bar": 73.28,
+      "bar": 72.9,
       "barPremium": 7.63,
       "barSource": "last-known-premium",
       "barFallbackPremium": 7.63,
@@ -60,12 +60,12 @@
     },
     "kitco": {
       "name": "Kitco",
-      "eagle": 73.56,
+      "eagle": 73.18,
       "eaglePremium": 7.91,
       "eagleSource": "last-known-premium",
       "eagleFallbackPremium": 7.91,
       "eagleFallbackUpdatedAt": null,
-      "bar": 76.38,
+      "bar": 76.0,
       "barPremium": 10.73,
       "barSource": "last-known-premium",
       "barFallbackPremium": 10.73,
@@ -76,12 +76,12 @@
     },
     "bgasc": {
       "name": "BGASC",
-      "eagle": 79.96,
+      "eagle": 79.58,
       "eaglePremium": 14.31,
       "eagleSource": "last-known-premium",
       "eagleFallbackPremium": 14.31,
       "eagleFallbackUpdatedAt": null,
-      "bar": 75.67,
+      "bar": 75.29,
       "barPremium": 10.02,
       "barSource": "last-known-premium",
       "barFallbackPremium": 10.02,
@@ -92,7 +92,7 @@
     }
   },
   "dealerLookup": {
-    "updatedAt": "2026-06-18T22:19:44+00:00",
+    "updatedAt": "2026-06-19T00:11:02+00:00",
     "source": "dealer product pages + last-known premium fallback",
     "errors": {
       "jm.eagle": "HTTP Error 401: Unauthorized",
