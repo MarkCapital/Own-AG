@@ -1,7 +1,7 @@
 {
-  "updatedAt": "2026-06-30T21:15:54+00:00",
+  "updatedAt": "2026-06-30T22:51:35+00:00",
   "spot": {
-    "silver": 58.7275,
+    "silver": 58.7335,
     "gold": null,
     "platinum": null,
     "palladium": null,
@@ -92,7 +92,7 @@
     }
   },
   "dealerLookup": {
-    "updatedAt": "2026-06-30T21:15:54+00:00",
+    "updatedAt": "2026-06-30T22:51:35+00:00",
     "source": "dealer product pages + last-known premium fallback",
     "errors": {
       "jm.eagle": "HTTP Error 401: Unauthorized",
